@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-<form action="index.html" method="post" class="definewidth m20">
+<form action="index.jsp" method="post" class="definewidth m20">
 <input type="hidden" name="id" value="{$user.id}" />
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
@@ -86,7 +86,7 @@
 <script>
     $(function () {       
 		$('#backid').click(function(){
-				window.location.href="index.html";
+				window.location.href="index.jsp";
 		 });
     });
 </script>

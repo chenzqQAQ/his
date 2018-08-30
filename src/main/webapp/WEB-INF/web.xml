@@ -6,7 +6,7 @@
     <display-name>Archetype Created Web Application</display-name>
     <!--<servlet>-->
         <!--<servlet-name>Hello</servlet-name>-->
-        <!--<servlet-class>com.youma.action.UserAction</servlet-class>-->
+        <!--<servlet-class>com.youma.action.UserAddActionion</servlet-class>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>Hello</servlet-name>-->

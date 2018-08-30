@@ -4,7 +4,7 @@
     <facet type="javaeeApplication" name="javaEEApplication">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/src/main/webapp/web/Js/ckeditor/_samples/adobeair/application.xml" />
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/src/main/webapp/Js/ckeditor/_samples/adobeair/application.xml" />
         </descriptors>
       </configuration>
     </facet>

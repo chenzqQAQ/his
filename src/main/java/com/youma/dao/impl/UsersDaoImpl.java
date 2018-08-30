@@ -23,16 +23,15 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public int userAdd(Users user) {
         conn = ConnectionDB.getConnection();
-        String sql = "insert into users(userID,userName,userPassword,modifyTime,roleID) values(?,?,?,?,?)";
+        String sql = "insert into users(userName,userPassword,modifyTime,roleID) values(?,?,?,?,?)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, user.getUserID());
-            ps.setObject(2, user.getUserName());
-            ps.setObject(3, user.getUserPassword());
+            ps.setObject(1, user.getUserName());
+            ps.setObject(2, user.getUserPassword());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            ps.setObject(4, sdf.format(new Date()));
-            ps.setObject(5, user.getRoleID());
+            ps.setObject(3, sdf.format(new Date()));
+            ps.setObject(4, user.getRoleID());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

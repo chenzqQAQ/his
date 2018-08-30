@@ -13,13 +13,20 @@
         a {
             text-decoration: none;
         }
+
+        td {
+            font-size: 2em;
+        }
     </style>
 </head>
 <body>
 <table>
     <tr>
         <td>
-            欢迎用户<%=request.getParameter("userName") %>添加<%=request.getAttribute("flag") %>
+            欢迎用户<%=request.getParameter("userName") %>
+        </td>
+        <td>
+            添加<%=request.getAttribute("flag") %>
         </td>
     </tr>
     <tr>
