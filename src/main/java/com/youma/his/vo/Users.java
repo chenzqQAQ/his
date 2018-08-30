@@ -31,7 +31,20 @@ public class Users {
      */
     private String modifyTime;
 
+    /**
+     * 角色id外键
+     */
+    private int roleID;
+
     public Users() {
+    }
+
+    public Users(int userID, String userName, String userPassword, String modifyTime, int roleID) {
+        this.userID = userID;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.modifyTime = modifyTime;
+        this.roleID = roleID;
     }
 
     public Users(String userName, String userPassword) {
@@ -52,9 +65,18 @@ public class Users {
         this.modifyTime = modifyTime;
     }
 
+    public int getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+
     public int getUserID() {
         return userID;
     }
+
     public void setUserID(int userID) {
         this.userID = userID;
     }

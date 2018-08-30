@@ -51,16 +51,30 @@ public class UserAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Users users = new Users();
         UsersDao ud = new UsersDaoImpl();
-        String flag;
-        users.setUserName(req.getParameter("userName"));
-        users.setUserPassword(req.getParameter("userPassword"));
-        if (0 != ud.userAdd(users)) {
-            System.out.println("添加成功");
-            flag = "success";
-        } else {
-            flag = "fail";
+        String flag = "fial";
+        if (null != req.getParameter("userName") &&
+                null != req.getParameter("userPassword")) {
+
+            users.setUserName(req.getParameter("userName"));
+            users.setUserPassword(req.getParameter("userPassword"));
+            if (0 != ud.userAdd(users)) {
+                System.out.println("添加成功");
+                flag = "success";
+            }
         }
         req.setAttribute("flag", flag);
         req.getRequestDispatcher("/web/User/add.jsp").forward(req, resp);
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("执行销毁方法");
+        super.destroy();
+    }
+
+    @Override
+    public void init() throws ServletException {
+        System.out.println("执行init初始化方法");
+        super.init();
     }
 }
