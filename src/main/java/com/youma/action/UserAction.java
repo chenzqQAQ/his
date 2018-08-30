@@ -10,9 +10,9 @@
 package com.youma.action;
 
 
-import com.youma.his.dao.UsersDao;
-import com.youma.his.dao.impl.UsersDaoImpl;
-import com.youma.his.vo.Users;
+import com.youma.server.UsersServer;
+import com.youma.server.impl.UsersServerImpl;
+import com.youma.vo.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,14 +50,14 @@ public class UserAction extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         Users users = new Users();
-        UsersDao ud = new UsersDaoImpl();
+        UsersServer us = new UsersServerImpl();
         String flag = "fial";
         if (null != req.getParameter("userName") &&
                 null != req.getParameter("userPassword")) {
 
             users.setUserName(req.getParameter("userName"));
             users.setUserPassword(req.getParameter("userPassword"));
-            if (0 != ud.userAdd(users)) {
+            if (0 != us.userAdd(users)) {
                 System.out.println("添加成功");
                 flag = "success";
             }

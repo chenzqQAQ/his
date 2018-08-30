@@ -7,11 +7,11 @@
  * <author> <Time> <version> <desc>
  * 陈泽群  时间    版本号  描述
  */
-package com.youma.his.dao.impl;
+package com.youma.dao.impl;
 
-import com.youma.his.dao.UsersDao;
-import com.youma.his.util.ConnectionDB;
-import com.youma.his.vo.Users;
+import com.youma.dao.UsersDao;
+import com.youma.util.ConnectionDB;
+import com.youma.vo.Users;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

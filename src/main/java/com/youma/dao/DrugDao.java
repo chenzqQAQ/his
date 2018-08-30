@@ -1,6 +1,6 @@
-package com.youma.his.dao;
+package com.youma.dao;
 
-import com.youma.his.vo.Drug;
+import com.youma.vo.Drug;
 
 import java.util.List;
 

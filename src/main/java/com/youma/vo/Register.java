@@ -7,7 +7,7 @@
  * <author> <Time> <version> <desc>
  * 陈泽群  时间    版本号  描述
  */
-package com.youma.his.vo;
+package com.youma.vo;
 
 /**
  * 挂号信息实体类

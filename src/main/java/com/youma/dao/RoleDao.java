@@ -1,6 +1,6 @@
-package com.youma.his.dao;
+package com.youma.dao;
 
-import com.youma.his.vo.Role;
+import com.youma.vo.Role;
 
 import java.util.List;
 

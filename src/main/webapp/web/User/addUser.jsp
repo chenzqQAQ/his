@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +34,13 @@
 
 
     </style>
+    <script>
+    $(function () {       
+		$('#backid').click(function(){
+				window.location.href="index.html";
+		 });
+    });
+</script>
 </head>
 <body>
 <form action="index.html" method="post" class="definewidth m20">
@@ -40,7 +48,7 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">登录名</td>
-            <td>admin</td>
+            <td><input type="text" name="username"/></td>
         </tr>
         <tr>
             <td class="tableleft">密码</td>
@@ -48,11 +56,11 @@
         </tr>
         <tr>
             <td class="tableleft">真实姓名</td>
-            <td><input type="text" name="realname" value="admin"/></td>
+            <td><input type="text" name="realname"/></td>
         </tr>
         <tr>
             <td class="tableleft">邮箱</td>
-            <td><input type="text" name="email" value="qq@qq.com"/></td>
+            <td><input type="text" name="email"/></td>
         </tr>
         <tr>
             <td class="tableleft">状态</td>
@@ -66,7 +74,7 @@
             <td>
             	<select name="role">
         			<option value="">--请选择--
-        			<option value="1" selected>管理员
+        			<option value="1">管理员
         			<option value="2">院长
             		<option value="3">医生护士
        			 </select>
@@ -82,10 +90,3 @@
 </form>
 </body>
 </html>
-<script>
-    $(function () {       
-		$('#backid').click(function(){
-				window.location.href="index.html";
-		 });
-    });
-</script>

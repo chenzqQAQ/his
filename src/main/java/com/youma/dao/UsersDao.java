@@ -1,6 +1,6 @@
-package com.youma.his.dao;
+package com.youma.dao;
 
-import com.youma.his.vo.Users;
+import com.youma.vo.Users;
 
 import java.util.List;
 

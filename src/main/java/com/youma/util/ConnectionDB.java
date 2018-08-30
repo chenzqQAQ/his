@@ -7,7 +7,7 @@
  * <author> <Time> <version> <desc>
  * 陈泽群  时间    版本号  描述
  */
-package com.youma.his.util;
+package com.youma.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

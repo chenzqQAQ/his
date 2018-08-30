@@ -7,9 +7,9 @@
  * <author> <Time> <version> <desc>
  * 陈泽群  时间    版本号  描述
  */
-package com.youma.his.dao;
+package com.youma.dao;
 
-import com.youma.his.vo.Register;
+import com.youma.vo.Register;
 
 import java.util.List;
 
