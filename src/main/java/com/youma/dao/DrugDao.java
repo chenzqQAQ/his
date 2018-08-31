@@ -5,6 +5,7 @@ import com.youma.vo.Drug;
 import java.util.List;
 
 /**
+ * 药品管理
  * @author Administrator
  */
 public interface DrugDao {

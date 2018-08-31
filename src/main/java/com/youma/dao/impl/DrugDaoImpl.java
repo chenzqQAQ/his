@@ -118,10 +118,11 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
     @Override
     public int delDrug(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "delete from drug where drugID = " + id;
+        String sql = "delete from drug where drugID = ?";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,7 +133,7 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
     @Override
     public List<Drug> findAllDrug() {
         conn = ConnectionDB.getConnection();
-        String sql = "SELECT drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
+        String sql = "SELECT drug.drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
                 "drugType , description , productionDate , overdueDate , qualityLife , \n" +
                 "detailedDes , manufacturer , takingDes , totalVolume , inventory , \n" +
                 "flag , remark \n" +

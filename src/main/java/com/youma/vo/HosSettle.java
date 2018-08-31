@@ -1,6 +1,6 @@
 /**
  * Copyright (C),2015-2018
- * FileNmae: HosSettle
+ * FileNmae: HosSettleDao
  * Author:   Administrator
  * Date:     2018/8/2720:20
  * History:
@@ -11,49 +11,62 @@ package com.youma.vo;
 
 /**
  * 住院结算表
+ *
  * @author Administrator
  */
 public class HosSettle {
     /**
-     *id
+     * id
      */
     private int id;
     /**
-     *病历号
+     * 病历号
      */
     private int medicalNum;
     /**
-     *状态
+     * 状态
      */
     private int flag;
     /**
-     *总花费
+     * 总花费
      */
     private double cost;
     /**
-     *押金
+     * 押金
      */
     private double deposit;
     /**
-     *还需缴纳
+     * 还需缴纳
      */
     private double overplusCost;
     /**
-     *余额
+     * 余额
      */
     private double balance;
     /**
-     *医疗费用
+     * 结算日期
+     */
+    private String payDate;
+    /**
+     * 医疗费用
      */
     private double medicalCost;
     /**
-     *药品费用
+     * 药品费用
      */
     private double drugCost;
     /**
-     *已缴金额
+     * 已缴金额
      */
     private double paidCost;
+
+    public String getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(String payDate) {
+        this.payDate = payDate;
+    }
 
     public int getId() {
         return id;
