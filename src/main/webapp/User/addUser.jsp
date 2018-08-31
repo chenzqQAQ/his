@@ -43,7 +43,7 @@
     </script>
 </head>
 <body>
-<form action="/UserAddAction" method="post" class="definewidth m20">
+<form action="../UserAddAction" method="post" class="definewidth m20">
     <input type="hidden" name="id" value="{$user.id}"/>
     <table class="table table-bordered table-hover definewidth m10">
         <tr>

@@ -23,7 +23,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public int userAdd(Users user) {
         conn = ConnectionDB.getConnection();
-        String sql = "insert into users(userName,userPassword,modifyTime,roleID) values(?,?,?,?,?)";
+        String sql = "insert into users(userName,userPassword,modifyTime,roleID) values(?,?,?,?)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);

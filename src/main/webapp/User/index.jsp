@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +38,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "addUser.html";
+                window.location.href = "addUser.jsp";
             });
         });
 
@@ -78,6 +80,7 @@
     用户名称：
     <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
     <button type="submit" class="btn btn-primary">查询</button>
+    <a href="../usersFindAllAction">全部</a>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
