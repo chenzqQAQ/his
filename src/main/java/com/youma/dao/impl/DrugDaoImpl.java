@@ -176,10 +176,11 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
                 "drugType , description , productionDate , overdueDate , qualityLife , \n" +
                 "detailedDes , manufacturer , takingDes , totalVolume , inventory , \n" +
                 "flag , remark \n" +
-                "FROM drug where drugID=" + id;
+                "FROM drug where drugID=?";
         Drug drug = new Drug();
         try {
             ps = conn.prepareStatement(sql);
+            ps.setObject(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
                 int i = 1;
