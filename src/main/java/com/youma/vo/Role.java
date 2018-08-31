@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 角色实体类
+ * @author Administrator
  */
 public class Role {
     /**

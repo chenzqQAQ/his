@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 用户实体类
+ * @author Administrator
  */
 public class Users {
     /**
@@ -35,6 +35,18 @@ public class Users {
      * 角色id外键
      */
     private int roleID;
+    /**
+     * 状态1启用,0禁用
+     */
+    private int flag;
+    /**
+     * 用户真实姓名
+     */
+    private String realName;
+    /**
+     * 用户邮箱
+     */
+    private String email;
 
     public Users() {
     }
@@ -103,5 +115,29 @@ public class Users {
 
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

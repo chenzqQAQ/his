@@ -23,7 +23,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public int userAdd(Users user) {
         conn = ConnectionDB.getConnection();
-        String sql = "insert into users(userName,userPassword,modifyTime,roleID) values(?,?,?,?)";
+        String sql = "insert into users(userName,userPassword,modifyTime,roleID,flag,realName,email) values(?,?,?,?,?,?,?)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -32,6 +32,9 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             ps.setObject(3, sdf.format(new Date()));
             ps.setObject(4, user.getRoleID());
+            ps.setObject(5, user.getFlag());
+            ps.setObject(6, user.getRealName());
+            ps.setObject(7, user.getEmail());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,7 +45,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public int updateUsers(Users user) {
         conn = ConnectionDB.getConnection();
-        String sql = "update users set username=?,userPassword=?,modifyTime=?,roleID=?\n" +
+        String sql = "update users set username=?,userPassword=?,modifyTime=?,roleID=?," +
+                "flag=?,realName=?,email=?\n" +
                 "where userID=?";
         int col = 0;
         try {
@@ -52,7 +56,10 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             ps.setObject(3, sdf.format(new Date()));
             ps.setObject(4, user.getRoleID());
-            ps.setObject(5, user.getUserID());
+            ps.setObject(5, user.getFlag());
+            ps.setObject(6, user.getRealName());
+            ps.setObject(7, user.getEmail());
+            ps.setObject(8, user.getUserID());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,15 +86,19 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public List<Users> findAllUsers() {
         conn = ConnectionDB.getConnection();
-        String sql = "select userID,userName,userPassword,modifyTime,roleID from users";
-        List list = new ArrayList();
+        String sql = "select userID,userName,userPassword,modifyTime,roleID,flag,realName,email from users";
+        List<Users> list = new ArrayList();
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             col = rs.getMetaData().getColumnCount();
             while (rs.next()) {
+
                 Users users = new Users(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+                users.setFlag(rs.getInt("flag"));
+                users.setRealName(rs.getString("realName"));
+                users.setEmail(rs.getString("email"));
                 list.add(users);
             }
         } catch (SQLException e) {
@@ -99,7 +110,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public Users findUsers(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "select userID,userName,userPassword,modifyTime,roleID from users where userID=?";
+        String sql = "select userID,userName,userPassword,modifyTime,roleID,flag,realName,email from users where userID=?";
         Users user = new Users();
         try {
             ps = conn.prepareStatement(sql);
@@ -112,6 +123,9 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
                 user.setModifyTime(sdf.format(rs.getDate("modifyTime")));
                 user.setUserID(rs.getInt("userID"));
                 user.setRoleID(rs.getInt("roleID"));
+                user.setFlag(rs.getInt("flag"));
+                user.setRealName(rs.getString("realName"));
+                user.setEmail(rs.getString("email"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 收费项目表
+ * @author Administrator
  */
 public class PayProject {
     /**

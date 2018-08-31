@@ -35,7 +35,7 @@ public class Drug {
      */
     private String drugName;
     /**
-     * 药品类型
+     * 药品类型0"处方", 1"中药", 2"西药", 3"非处方"
      */
     private int drugType;
     /**
@@ -75,7 +75,7 @@ public class Drug {
      */
     private int inventory;
     /**
-     * 状态
+     * 状态0"销售中", 1"售罄", 2"进货"
      */
     private int flag;
     /**

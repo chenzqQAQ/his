@@ -1,6 +1,6 @@
 /**
  * Copyright (C),2015-2018
- * FileNmae: Department
+ * FileNmae: DepartmentDao
  * Author:   Administrator
  * Date:     2018/8/2719:29
  * History:
@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 科室实体类
+ * @author Administrator
  */
 public class Department {
 

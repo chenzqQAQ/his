@@ -10,8 +10,9 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 医生实体类
+ *
+ * @author Administrator
  */
 public class Doctor {
     /**

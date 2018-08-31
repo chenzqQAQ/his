@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 住院信息表
+ * @author Administrator
  */
 public class Inpatient {
     /**

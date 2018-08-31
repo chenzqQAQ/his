@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
 <%@page isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +91,12 @@
                 <option>西药</option>
                 <option>处方</option>
                 <option>非处方</option>
-                <%String[] type = {"处方", "中药", "西药", "非处方"}; %>
+                <%
+                    String[] type = {"处方", "中药", "西药", "非处方"};
+                    String[] flag = {"销售中", "售罄", "进货"};
+                    request.setAttribute("type", type);
+                    request.setAttribute("flag", flag);
+                %>
             </select></td>
         </tr>
         <tr>
@@ -120,37 +126,62 @@
         <th>操作</th>
     </tr>
     </thead>
-    <%
+    <c:forEach items="${drugs}" var="it">
+        <tr>
+            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
+            <td style="vertical-align:middle;"><c:out value="${it.drugID}"/>
+            </td>
+            <td style="vertical-align:middle;">
+                <c:out value="${it.drugName}"/>
+            </td>
+            <td style="vertical-align:middle;">
+                <c:out value="${type[it.drugType]}"/>
+            </td>
+            <td style="vertical-align:middle;">
+                <c:out value="${it.description}"/>
+            </td>
+            <td style="vertical-align:middle;">
+                <c:out value="${flag[it.flag]}"/>
+            </td>
+            <td style="vertical-align:middle;">
+                <c:out value="${it.inventory}"/>
+            </td>
+            <td style="vertical-align:middle;"><a href="/his/drugFindAction?drugid=${it.drugID}">更改</a>&nbsp;&nbsp;&nbsp;
+                <a href="look.html">详情>>></a>
+            </td>
+        </tr>
+    </c:forEach>
+    <%--<%--%>
 
-        List<Drug> list = (List<Drug>) request.getAttribute("drugs");
-        String str;
-        if (null != list) {
-            for (int i = 0; i < list.size(); i++) {
-                str="/his/drugFindAction?drugid="+list.get(i).getDrugID();
-                request.setAttribute("str",str);
-                // user1 = list.get(i);
-    %>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;"><%=list.get(i).getDrugID() %>
-        </td>
-        <td style="vertical-align:middle;"><%=list.get(i).getDrugName() %>
-        </td>
-        <td style="vertical-align:middle;"><%=type[list.get(i).getDrugType()] %>
-        </td>
-        <td style="vertical-align:middle;"><%=list.get(i).getDescription() %>
-        </td>
-        <td style="vertical-align:middle;"><%=(0 == list.get(i).getFlag()) ? "销售中" : "售完" %>
-        </td>
-        <td style="vertical-align:middle;"><%=list.get(i).getInventory() %>
-        </td>
-        <td style="vertical-align:middle;"><a href="${str}">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.html">详情>>></a>
-        </td>
-    </tr>
-    <%
-            }
-        }
-    %>
+    <%--List<Drug> list = (List<Drug>) request.getAttribute("drugs");--%>
+    <%--String str;--%>
+    <%--if (null != list) {--%>
+    <%--for (int i = 0; i < list.size(); i++) {--%>
+    <%--str="/his/drugFindAction?drugid="+list.get(i).getDrugID();--%>
+    <%--request.setAttribute("str",str);--%>
+    <%--// user1 = list.get(i);--%>
+    <%--%>--%>
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugID() %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugName() %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><%=type[list.get(i).getDrugType()] %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><%=list.get(i).getDescription() %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><%=(0 == list.get(i).getFlag()) ? "销售中" : "售完" %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><%=list.get(i).getInventory() %>--%>
+    <%--</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="${str}">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.html">详情>>></a>--%>
+    <%--</td>--%>
+    <%--</tr>--%>
+    <%--<%--%>
+    <%--}--%>
+    <%--}--%>
+    <%--%>--%>
 
     <tr>
         <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>

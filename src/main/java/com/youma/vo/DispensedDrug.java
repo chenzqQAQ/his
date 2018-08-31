@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 发药实体类
+ * @author Administrator
  */
 public class DispensedDrug {
     /**

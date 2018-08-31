@@ -45,7 +45,7 @@
     </script>
 </head>
 <body>
-<form action="../drugAddAtion" method="post" class="definewidth m20">
+<form action="../drugAddAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品编号</td>

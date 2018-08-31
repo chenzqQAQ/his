@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 住院结算表
+ * @author Administrator
  */
 public class HosSettle {
     /**

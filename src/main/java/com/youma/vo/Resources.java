@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 权限资源实体类
+ * @author Administrator
  */
 public class Resources {
     /**

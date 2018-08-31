@@ -10,8 +10,8 @@
 package com.youma.vo;
 
 /**
- * @author Administrator
  * 收费管理实体类
+ * @author Administrator
  */
 public class PayManager {
     /**
