@@ -39,13 +39,13 @@ public class UsersFindAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         UsersServer usersServer = new UsersServerImpl();
-        if (null != req.getParameter("id")) {
-            int id = Integer.parseInt(req.getParameter("id"));
+        if (null != req.getParameter("drugid")) {
+            int id = Integer.parseInt(req.getParameter("drugid"));
             System.out.println(id);
             Users user = usersServer.findUsers(id);
             req.setAttribute("user", user);
         }
-        req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        req.getRequestDispatcher("/User/editUser.jsp").forward(req, resp);
 
     }
 }

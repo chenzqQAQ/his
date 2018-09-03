@@ -74,9 +74,9 @@
             <td>
                 <select name="role">
                     <option value="">--请选择--
-                    <option value="1">管理员
-                    <option value="2">院长
-                    <option value="3">医生护士
+                    <option value="0">管理员
+                    <option value="1">院长
+                    <option value="2">医生护士
                 </select>
             </td>
         </tr>

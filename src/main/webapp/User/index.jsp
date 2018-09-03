@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,7 +82,7 @@
     用户名称：
     <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
     <button type="submit" class="btn btn-primary">查询</button>
-    <a href="../usersFindAllAction">全部</a>
+    <a href="/his/usersFindAllAction">全部</a>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
@@ -89,18 +91,40 @@
         <th>用户账户</th>
         <th>真实姓名</th>
         <th>角色</th>
+        <%
+            String[] type = {"管理员", "院长", "医生护士"};
+            request.setAttribute("type", type);
+        %>
         <th width="10%">操作</th>
     </tr>
     </thead>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td>admin</td>
-        <td>管理员</td>
-        <td>管理员</td>
-        <td>
-            <a href="editUser.jsp">编辑</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('删除成功！');">删除</a>
-        </td>
-    </tr>
+    <c:forEach items="${users}" var="user" varStatus="id">
+        <tr>
+            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
+            <td style="text-align:center;">
+                <c:out value="${user.userName}"></c:out>
+            </td>
+            <td style="text-align:center;">
+                <c:out value="${user.realName}"></c:out>
+            </td>
+            <td style="text-align:center;">
+                <c:out value="${type[user.roleID]}"></c:out>
+            </td>
+            <td style="text-align:center;">
+                <a href="/his/usersFindAction?drugid=${user.userID}">编辑</a>&nbsp;&nbsp;&nbsp;<a
+                    href="/his/usersDelAction?drugid=${user.userID}">删除</a>
+            </td>
+        </tr>
+    </c:forEach>
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td>admin</td>--%>
+    <%--<td>管理员</td>--%>
+    <%--<td>管理员</td>--%>
+    <%--<td>--%>
+    <%--<a href="editUser.jsp">编辑</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('删除成功！');">删除</a>--%>
+    <%--</td>--%>
+    <%--</tr>--%>
 </table>
 <table class="table table-bordered table-hover definewidth m10">
     <tr>

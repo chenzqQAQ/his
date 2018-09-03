@@ -43,6 +43,6 @@ public class UsersFindAllAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         req.setAttribute("users", list);
-        req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        req.getRequestDispatcher("/User/index.jsp").forward(req, resp);
     }
 }

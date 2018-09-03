@@ -54,9 +54,9 @@ public class UserAddAction extends HttpServlet {
         Users users = new Users();
         UsersServer us = new UsersServerImpl();
         String flag = "fial";
-        if (null != req.getParameter("userName") &&
-                null != req.getParameter("userPassword") &&
-                null != req.getParameter("role")) {
+        if ("" != req.getParameter("userName") &&
+                "" != req.getParameter("userPassword") &&
+                "" != req.getParameter("role")) {
 
             users.setUserName(req.getParameter("userName"));
             users.setUserPassword(req.getParameter("userPassword"));
@@ -64,13 +64,12 @@ public class UserAddAction extends HttpServlet {
             if (0 != us.userAdd(users)) {
                 System.out.println("添加成功");
                 flag = "success";
+                req.getRequestDispatcher("/web/User/index.jsp").forward(req, resp);
             }
         } else {
             System.out.println("传值有空");
+            resp.sendRedirect("/his/User/addUser.jsp");
         }
-        req.setAttribute("flag", flag);
-        System.out.println("啊哈哈哈哈哈哈哈哈");
-        // req.getRequestDispatcher("/web/User/add.jsp").forward(req, resp);
     }
 
 }
