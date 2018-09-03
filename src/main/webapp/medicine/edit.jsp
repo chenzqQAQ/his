@@ -72,11 +72,14 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">药品类型</td>
-            <td><input type="radio" name="drugType" value="0" checked/>处方药&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="drugType" value="1"/>中药&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="drugType" value="2"/>西药&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="drugType" value="3"/>非处方药
+            <td><input id="type0" type="radio" name="drugType" value="0"/>处方药&nbsp;&nbsp;&nbsp;
+                <input id="type1" type="radio" name="drugType" value="1"/>中药&nbsp;&nbsp;&nbsp;
+                <input id="type2" type="radio" name="drugType" value="2"/>西药&nbsp;&nbsp;&nbsp;
+                <input id="type3" type="radio" name="drugType" value="3"/>非处方药
             </td>
+            <script>
+                document.getElementById('type'+${drug.drugType}).setAttribute("checked",'true');
+            </script>
         </tr>
         <tr>
             <td width="10%" class="tableleft">简单描述</td>

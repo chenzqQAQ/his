@@ -172,7 +172,7 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
     }
 
     @Override
-    public Drug findDrug(int id) {
+    public Drug findDrug(String id) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
                 "drugType , description , productionDate , overdueDate , qualityLife , \n" +
@@ -182,7 +182,7 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
         Drug drug = new Drug();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, id);
+            ps.setString(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
                 int i = 1;
@@ -209,5 +209,91 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
         }
 
         return drug;
+    }
+
+    @Override
+    public List<Drug> findNameDrug(Drug drug1) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT drug.drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
+                "drugType , description , productionDate , overdueDate , qualityLife , \n" +
+                "detailedDes , manufacturer , takingDes , totalVolume , inventory , \n" +
+                "flag , remark \n" +
+                "FROM drug\n" +
+                "WHERE drugType=? and drugName=?";
+        List<Drug> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, drug1.getDrugType());
+            ps.setString(2, drug1.getDrugName());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Drug drug = new Drug();
+                int i = 1;
+                drug.setDrugID(rs.getString(i++));
+                drug.setDrugUrl(rs.getString(i++));
+                drug.setPurchasePrice(rs.getDouble(i++));
+                drug.setSellingPrice(rs.getDouble(i++));
+                drug.setDrugName(rs.getString(i++));
+                drug.setDrugType(rs.getInt(i++));
+                drug.setDescription(rs.getString(i++));
+                drug.setProductionDate(sdf1.format(rs.getDate(i++)));
+                drug.setOverdueDate(sdf1.format(rs.getDate(i++)));
+                drug.setQualityLife(rs.getInt(i++));
+                drug.setDetailedDes(rs.getString(i++));
+                drug.setManufacturer(rs.getString(i++));
+                drug.setTakingDes(rs.getString(i++));
+                drug.setTotalVolume(rs.getInt(i++));
+                drug.setInventory(rs.getInt(i++));
+                drug.setFlag(rs.getInt(i++));
+                drug.setRemark(rs.getString(i++));
+                list.add(drug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Drug> findTypeDrug(int type) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT drug.drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
+                "drugType , description , productionDate , overdueDate , qualityLife , \n" +
+                "detailedDes , manufacturer , takingDes , totalVolume , inventory , \n" +
+                "flag , remark \n" +
+                "FROM drug WHERE drugType=?";
+        List<Drug> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, type);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Drug drug = new Drug();
+                int i = 1;
+                drug.setDrugID(rs.getString(i++));
+                drug.setDrugUrl(rs.getString(i++));
+                drug.setPurchasePrice(rs.getDouble(i++));
+                drug.setSellingPrice(rs.getDouble(i++));
+                drug.setDrugName(rs.getString(i++));
+                drug.setDrugType(rs.getInt(i++));
+                drug.setDescription(rs.getString(i++));
+                drug.setProductionDate(sdf1.format(rs.getDate(i++)));
+                drug.setOverdueDate(sdf1.format(rs.getDate(i++)));
+                drug.setQualityLife(rs.getInt(i++));
+                drug.setDetailedDes(rs.getString(i++));
+                drug.setManufacturer(rs.getString(i++));
+                drug.setTakingDes(rs.getString(i++));
+                drug.setTotalVolume(rs.getInt(i++));
+                drug.setInventory(rs.getInt(i++));
+                drug.setFlag(rs.getInt(i++));
+                drug.setRemark(rs.getString(i++));
+                list.add(drug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

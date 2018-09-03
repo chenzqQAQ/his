@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * 药品管理
+ *
  * @author Administrator
  */
 public interface DrugDao {
@@ -46,5 +47,19 @@ public interface DrugDao {
      * @param id 药品id
      * @return Drug 药品信息
      */
-    public Drug findDrug(int id);
+    public Drug findDrug(String id);
+
+    /**
+     * 查询所需要的药品信息操作(药品名称)
+     *
+     * @return List<Drug> 药品信息集合
+     */
+    public List<Drug> findNameDrug(Drug drug);
+
+    /**
+     * 查询所需要的药品信息操作(药品类型)
+     *
+     * @return List<Drug> 药品信息集合
+     */
+    public List<Drug> findTypeDrug(int type);
 }

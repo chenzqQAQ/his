@@ -79,25 +79,30 @@
 </head>
 <body>
 
-<form action="index.jsp" method="post" class="definewidth m20">
+<form action="/his/drugFindNameAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品名称：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="drugName" value=""/></td>
 
             <td width="10%" class="tableleft">药品类型：</td>
-            <td><select>
-                <option>中药</option>
-                <option>西药</option>
-                <option>处方</option>
-                <option>非处方</option>
+            <td><select name="drugType" id="select">
+                <option value="0">处方</option>
+                <option value="1">中药</option>
+                <option value="2">西药</option>
+                <option value="3">非处方</option>
                 <%
                     String[] type = {"处方", "中药", "西药", "非处方"};
                     String[] flag = {"销售中", "售罄", "进货"};
                     request.setAttribute("type", type);
                     request.setAttribute("flag", flag);
                 %>
-            </select></td>
+            </select>
+                <script>
+                    document.getElementById('select').value =${drugType};
+                    console.log(${drugType});
+                </script>
+            </td>
         </tr>
         <tr>
 
@@ -105,7 +110,7 @@
             <td colspan="4">
                 <center>
                     <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="submit" class="btn btn-primary" type="button">清空</button>
+                    <button type="reset" class="btn btn-primary" type="button">清空</button>
                     <a href="/his/drugFindAllAction">全部</a>
                 </center>
             </td>
@@ -183,17 +188,17 @@
     <%--}--%>
     <%--%>--%>
 
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;">J1121</td>
-        <td style="vertical-align:middle;">感冒药</td>
-        <td style="vertical-align:middle;">处方</td>
-        <td style="vertical-align:middle;">用于普通感冒</td>
-        <td style="vertical-align:middle;">销售中</td>
-        <td style="vertical-align:middle;">1000袋</td>
-        <td style="vertical-align:middle;"><a href="/his/medicine/edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.html">详情>>></a>
-        </td>
-    </tr>
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td style="vertical-align:middle;">J1121</td>--%>
+    <%--<td style="vertical-align:middle;">感冒药</td>--%>
+    <%--<td style="vertical-align:middle;">处方</td>--%>
+    <%--<td style="vertical-align:middle;">用于普通感冒</td>--%>
+    <%--<td style="vertical-align:middle;">销售中</td>--%>
+    <%--<td style="vertical-align:middle;">1000袋</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="/his/medicine/edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.html">详情>>></a>--%>
+    <%--</td>--%>
+    <%--</tr>--%>
 
 </table>
 

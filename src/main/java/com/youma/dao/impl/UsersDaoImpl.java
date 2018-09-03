@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public int userAdd(Users user) {

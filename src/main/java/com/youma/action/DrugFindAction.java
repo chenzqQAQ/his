@@ -32,14 +32,13 @@ public class DrugFindAction extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DrugServer drugServer = new DrugServerImpl();
-        int id = Integer.parseInt(req.getParameter("drugid"));
-        System.out.println(req.getParameter("drugid"));
-        Drug drug = drugServer.findDrug(id);
-        // System.out.println("全查" + list.size());
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        DrugServer drugServer = new DrugServerImpl();
+        String id = req.getParameter("drugid");
+        Drug drug = drugServer.findDrug(id);
+        // System.out.println("全查" + list.size());
         req.setAttribute("drug", drug);
         req.getRequestDispatcher("/medicine/edit.jsp").forward(req, resp);
     }

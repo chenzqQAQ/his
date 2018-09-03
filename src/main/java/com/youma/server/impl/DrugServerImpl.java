@@ -43,7 +43,19 @@ public class DrugServerImpl implements DrugServer {
     }
 
     @Override
-    public Drug findDrug(int id) {
+    public Drug findDrug(String id) {
         return drugDao.findDrug(id);
     }
+
+    @Override
+    public List<Drug> findTypeDrug(Drug drug) {
+        if (null != drug.getDrugName() && "" != drug.getDrugName()) {
+            // System.out.println(drug.getDrugName());
+            // System.out.println(drug.getDrugType());
+            return drugDao.findNameDrug(drug);
+        }
+        // System.out.println(drug.getDrugType());
+        return drugDao.findTypeDrug(drug.getDrugType());
+    }
+
 }

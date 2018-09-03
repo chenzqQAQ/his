@@ -36,11 +36,11 @@ public class DrugFindAllAction extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DrugServer drugServer = new DrugServerImpl();
-        List<Drug> list = drugServer.findAllDrug();
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        DrugServer drugServer = new DrugServerImpl();
+        List<Drug> list = drugServer.findAllDrug();
         req.setAttribute("drugs", list);
         req.getRequestDispatcher("/medicine/index.jsp").forward(req, resp);
     }
