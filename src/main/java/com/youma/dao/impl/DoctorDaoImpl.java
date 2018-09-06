@@ -25,7 +25,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     public int doctorAdd(Doctor doctor) {
         conn = ConnectionDB.getConnection();
         String sql = "INSERT INTO doctor \n" +
-                "( ID ,\n" +
+                "(" +
                 " doctorName ,\n" +
                 " identifierType ,\n" +
                 " identifierNum ,\n" +
@@ -39,7 +39,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 " degree ,\n" +
                 " remark )\n" +
                 "VALUES\n" +
-                "(?,\n" +
+                "(" +
                 "?,\n" +
                 "?,\n" +
                 "?,\n" +
@@ -55,19 +55,19 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, doctor.getId());
-            ps.setObject(2, doctor.getDoctorName());
-            ps.setObject(3, doctor.getIdentifierType());
-            ps.setObject(4, doctor.getIdentifierNum());
-            ps.setObject(5, doctor.getPhoneNum());
-            ps.setObject(6, doctor.getSetaPhoneNum());
-            ps.setObject(7, doctor.getSex());
-            ps.setObject(8, doctor.getAge());
-            ps.setObject(9, doctor.getBirthday());
-            ps.setObject(10, doctor.getEmail());
-            ps.setObject(11, doctor.getDepId());
-            ps.setObject(12, doctor.getDegree());
-            ps.setObject(13, doctor.getRemark());
+            // ps.setObject(1, doctor.getId());
+            ps.setObject(1, doctor.getDoctorName());
+            ps.setObject(2, doctor.getIdentifierType());
+            ps.setObject(3, doctor.getIdentifierNum());
+            ps.setObject(4, doctor.getPhoneNum());
+            ps.setObject(5, doctor.getSetaPhoneNum());
+            ps.setObject(6, doctor.getSex());
+            ps.setObject(7, doctor.getAge());
+            ps.setObject(8, doctor.getBirthday());
+            ps.setObject(9, doctor.getEmail());
+            ps.setObject(10, doctor.getDepId());
+            ps.setObject(11, doctor.getDegree());
+            ps.setObject(12, doctor.getRemark());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

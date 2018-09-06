@@ -12,9 +12,65 @@
 <html>
 <head>
     <title>Title</title>
+    <script type="text/javascript" src="/his/jquery-3.3.1.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="./Js/My97DatePicker/WdatePicker.js"></script>
+    <script>
+        // alert();
+        var datepicker1 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '1949-10-1',
+            maxDate: new Date(),
+            startDate: '1990-1-1',
+            readOnly: true,
+            highLineWeekDay: true
+        };
+        var datepicker2 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '#F{$dp.$D(\'start\')}',
+            startDate: '#F{$dp.$D(\'start\')}',
+            maxDate: new Date(),
+            readOnly: true,
+            highLineWeekDay: true
+        };
+        $(function () {
+
+
+            // function a() {
+            //     alert('bug');
+            // }
+            //
+            $('#bu').click(function (event) {
+                // alert('bug');
+               a();
+                // event.stopPropagation();
+                // event.preventDefault();
+                return false;
+            });
+            console.log($('#name'));
+            // console.log(document.getElementsByTagName('p'));
+        });
+        function  a() {
+            console.log("这是个方法");
+        }
+    </script>
 </head>
 <body>
-
+<form id="form1">
+    <input id="name" value="123"/>
+    <button name="bu" id="bu">点我</button>
+</form>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<form>
+    开始时间<input type="text" id="start" class="Wdate" autocomplete="off" onfocus="WdatePicker(datepicker1)"><br/>
+    结束时间<input type="text" id="end" class="Wdate" autocomplete="off" onfocus="WdatePicker(datepicker2)"><br/>
+</form>
 </body>
 </html>

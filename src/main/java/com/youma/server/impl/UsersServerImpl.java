@@ -46,4 +46,9 @@ public class UsersServerImpl implements UsersServer {
     public Users findUsers(int id) {
         return usersDao.findUsers(id);
     }
+
+    @Override
+    public int findUsers(String userName) {
+        return usersDao.findUsers(userName);
+    }
 }

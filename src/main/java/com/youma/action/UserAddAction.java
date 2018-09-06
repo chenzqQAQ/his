@@ -54,17 +54,20 @@ public class UserAddAction extends HttpServlet {
         Users users = new Users();
         UsersServer us = new UsersServerImpl();
         String flag = "fial";
-        if ("" != req.getParameter("userName") &&
-                "" != req.getParameter("userPassword") &&
-                "" != req.getParameter("role")) {
+        if (!"".equals(req.getParameter("userName")) &&
+                !"".equals(req.getParameter("userPassword")) &&
+                !"".equals(req.getParameter("role"))) {
 
             users.setUserName(req.getParameter("userName"));
             users.setUserPassword(req.getParameter("userPassword"));
             users.setRoleID(Integer.parseInt(req.getParameter("role")));
+            users.setRealName(req.getParameter("realname"));
+            users.setEmail(req.getParameter("email"));
+            users.setFlag(Integer.parseInt(req.getParameter("status")));
             if (0 != us.userAdd(users)) {
                 System.out.println("添加成功");
                 flag = "success";
-                req.getRequestDispatcher("/web/User/index.jsp").forward(req, resp);
+                req.getRequestDispatcher("/usersFindAllAction").forward(req, resp);
             }
         } else {
             System.out.println("传值有空");

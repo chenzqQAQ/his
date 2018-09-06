@@ -37,20 +37,20 @@
     </style>
 </head>
 <body>
-<form action="index.jsp" method="post" class="definewidth m20">
-    <input type="hidden" name="id" value="${user.userID}"/>
+<form action="/his/userUpdateAction" method="post" class="definewidth m20">
+    <input type="hidden" name="userID" value="${user.userID}"/>
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">登录名</td>
-            <td><input type="text" name="name" value="${user.userName}"/></td>
+            <td><input type="text" name="userName" value="${user.userName}"/></td>
         </tr>
         <tr>
             <td class="tableleft">密码</td>
-            <td><input type="password" name="password" value="${user.userPassword}"/></td>
+            <td><input type="password" name="userPassword" value="${user.userPassword}"/></td>
         </tr>
         <tr>
             <td class="tableleft">真实姓名</td>
-            <td><input type="text" name="realname" value="${user.realName}"/></td>
+            <td><input type="text" name="realName" value="${user.realName}"/></td>
         </tr>
         <tr>
             <td class="tableleft">邮箱</td>
@@ -59,9 +59,12 @@
         <tr>
             <td class="tableleft">状态</td>
             <td>
-                <input type="radio" name="status" value="0" checked/> 启用
-                <input type="radio" name="status" value="1"/> 禁用
+                <input type="radio" name="flag" value="0"/> 启用
+                <input type="radio" name="flag" value="1"/> 禁用
             </td>
+            <script>
+                document.getElementsByName('flag')[${user.flag}].setAttribute("checked", "true");
+            </script>
         </tr>
         <tr>
             <td class="tableleft">角色</td>

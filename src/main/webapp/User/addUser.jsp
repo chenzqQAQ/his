@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
     <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
     <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
+    <%--<script type="text/javascript" src="../Js/jquery.sorted.js"></script>--%>
     <script type="text/javascript" src="../Js/bootstrap.js"></script>
     <script type="text/javascript" src="../Js/ckform.js"></script>
     <script type="text/javascript" src="../Js/common.js"></script>
@@ -36,9 +36,34 @@
     </style>
     <script>
         $(function () {
+            console.log("jQuery可用");
             $('#backid').click(function () {
                 window.location.href = "index.jsp";
             });
+            $('#userName').blur(function () {
+                console.log("用户名失去焦点");
+                var str = $('#userName').val();
+                console.log(str);
+                $.ajax({
+                    url: "/his/ajaxAction?userName=" + str,
+                    type: "GET",
+                    dataType: "text",
+                    success: function (msg) {
+                        console.log(msg);
+                        if (msg == 1) {
+                            $('#userName').next("span").text("用户名已存在");
+                        } else if (msg == 0) {
+                            $('#userName').next("span").text("用户名可用");
+                        }
+                        else if (msg == 2) {
+                            $('#userName').next("span").text("用户名不能为空");
+                        }
+                        console.log("执行回调函数");
+                    }
+                })
+                return false;
+
+            })
         });
     </script>
 </head>
@@ -48,7 +73,9 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">登录名</td>
-            <td><input type="text" name="userName"/></td>
+            <td><input type="text" name="userName" id="userName"/>
+                <span></span>
+            </td>
         </tr>
         <tr>
             <td class="tableleft">密码</td>

@@ -1,13 +1,11 @@
-<%@ page import="com.youma.vo.Drug" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isELIgnored="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>药品查询----2015</title>
+    <title>门诊医生---2015</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
@@ -41,7 +39,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "/his/medicine/add.jsp";
+                window.location.href = "add.jsp";
             });
         });
 
@@ -58,7 +56,6 @@
                 }
             }
         }
-
 
         function delAll() {
             var alls = document.getElementsByName("check");
@@ -80,39 +77,23 @@
 </head>
 <body>
 
-<form action="/his/drugFindNameAction" method="post" class="definewidth m20">
+<form action="index.jsp" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
-            <td width="10%" class="tableleft">药品名称：</td>
-            <td><input type="text" name="drugName" value=""/></td>
+            <td width="10%" class="tableleft">医生编号：</td>
+            <td><input type="text" name="pname" value=""/></td>
 
-            <td width="10%" class="tableleft">药品类型：</td>
-            <td><select name="drugType" id="select">
-                <option value="0">处方</option>
-                <option value="1">中药</option>
-                <option value="2">西药</option>
-                <option value="3">非处方</option>
-                <%
-                    String[] type = {"处方", "中药", "西药", "非处方"};
-                    String[] flag = {"销售中", "售罄", "进货"};
-                    request.setAttribute("type", type);
-                    request.setAttribute("flag", flag);
-                %>
-            </select>
-                <script>
-                    document.getElementById('select').value =${drugType};
-                    console.log(${drugType});
-                </script>
-            </td>
+            <td width="10%" class="tableleft">医生姓名：</td>
+            <td><input type="text" name="pname" value=""/></td>
+
+            <td width="10%" class="tableleft">科室：</td>
+            <td><input type="text" name="pname" value=""/></td>
         </tr>
         <tr>
-
-
-            <td colspan="4">
+            <td colspan="6">
                 <center>
                     <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="reset" class="btn btn-primary" type="button">清空</button>
-                    <a href="/his/drugFindAllAction">全部</a>
+                    <button type="submit" class="btn btn-primary" type="button">清空</button>
                 </center>
             </td>
         </tr>
@@ -123,84 +104,73 @@
     <thead>
     <tr>
         <th><input type="checkbox" id="checkall" onChange="checkall();"></th>
-        <th>药品编号</th>
-        <th>药品名称</th>
-        <th>药品类型</th>
-        <th>简单描述</th>
-        <th>状态</th>
-        <th>剩余量</th>
+        <th>医生编号</th>
+        <th>医生姓名</th>
+        <th>入院时间</th>
+        <th>所属科室</th>
         <th>操作</th>
     </tr>
     </thead>
-    <c:forEach items="${drugs}" var="it">
+    <c:forEach items="${doctors}" var="doctor">
         <tr>
             <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-            <td style="vertical-align:middle;"><c:out value="${it.drugID}"/>
+            <td style="vertical-align:middle;">
+                <c:out value="${doctor.id}"/>
             </td>
             <td style="vertical-align:middle;">
-                <c:out value="${it.drugName}"/>
+                <c:out value="${doctor.doctorName}"/>
             </td>
             <td style="vertical-align:middle;">
-                <c:out value="${type[it.drugType]}"/>
+                <c:out value="入院时间"/>
             </td>
             <td style="vertical-align:middle;">
-                <c:out value="${it.description}"/>
+                <c:out value="${doctor.depId}"/>
             </td>
-            <td style="vertical-align:middle;">
-                <c:out value="${flag[it.flag]}"/>
-            </td>
-            <td style="vertical-align:middle;">
-                <c:out value="${it.inventory}"/>
-            </td>
-            <td style="vertical-align:middle;"><a href="/his/drugFindAction?drugid=${it.drugID}">更改</a>&nbsp;&nbsp;&nbsp;
-                <a href="look.html">详情>>></a>
+            <td style="vertical-align:middle;"><a href="/his/doctorFindAction?id=${doctor.id}">详情>>></a>&nbsp;&nbsp;&nbsp;<a
+                    href="/his/doctorFindAction?id=${doctor.id}">更改</a>
             </td>
         </tr>
     </c:forEach>
-    <%--<%--%>
-
-    <%--List<Drug> list = (List<Drug>) request.getAttribute("drugs");--%>
-    <%--String str;--%>
-    <%--if (null != list) {--%>
-    <%--for (int i = 0; i < list.size(); i++) {--%>
-    <%--str="/his/drugFindAction?drugid="+list.get(i).getDrugID();--%>
-    <%--request.setAttribute("str",str);--%>
-    <%--// user1 = list.get(i);--%>
-    <%--%>--%>
     <%--<tr>--%>
     <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugID() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugName() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=type[list.get(i).getDrugType()] %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDescription() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=(0 == list.get(i).getFlag()) ? "销售中" : "售完" %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getInventory() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><a href="${str}">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.jsp">详情>>></a>--%>
-    <%--</td>--%>
+    <%--<td style="vertical-align:middle;">1103</td>--%>
+    <%--<td style="vertical-align:middle;">程俊</td>--%>
+    <%--<td style="vertical-align:middle;">2015-09-09 12：12：12</td>--%>
+    <%--<td style="vertical-align:middle;">血液科</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="look.jsp">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a></td>--%>
     <%--</tr>--%>
-    <%--<%--%>
-    <%--}--%>
-    <%--}--%>
-    <%--%>--%>
-
     <%--<tr>--%>
     <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
-    <%--<td style="vertical-align:middle;">J1121</td>--%>
-    <%--<td style="vertical-align:middle;">感冒药</td>--%>
-    <%--<td style="vertical-align:middle;">处方</td>--%>
-    <%--<td style="vertical-align:middle;">用于普通感冒</td>--%>
-    <%--<td style="vertical-align:middle;">销售中</td>--%>
-    <%--<td style="vertical-align:middle;">1000袋</td>--%>
-    <%--<td style="vertical-align:middle;"><a href="/his/medicine/edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.jsp">详情>>></a>--%>
-    <%--</td>--%>
+    <%--<td style="vertical-align:middle;">1104</td>--%>
+    <%--<td style="vertical-align:middle;">王博</td>--%>
+    <%--<td style="vertical-align:middle;">2015-12-09 12：12：12</td>--%>
+    <%--<td style="vertical-align:middle;">骨科</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="look.jsp">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a></td>--%>
     <%--</tr>--%>
-
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td style="vertical-align:middle;">1105</td>--%>
+    <%--<td style="vertical-align:middle;">沈青川</td>--%>
+    <%--<td style="vertical-align:middle;">2015-02-04 15：11：12</td>--%>
+    <%--<td style="vertical-align:middle;">外科</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="look.jsp">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a></td>--%>
+    <%--</tr>--%>
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td style="vertical-align:middle;">1106</td>--%>
+    <%--<td style="vertical-align:middle;">欧阳雨露</td>--%>
+    <%--<td style="vertical-align:middle;">2014-09-05 12：12：12</td>--%>
+    <%--<td style="vertical-align:middle;">急诊科</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="look.jsp">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a></td>--%>
+    <%--</tr>--%>
+    <%--<tr>--%>
+    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
+    <%--<td style="vertical-align:middle;">1107</td>--%>
+    <%--<td style="vertical-align:middle;">艾小天</td>--%>
+    <%--<td style="vertical-align:middle;">2014-02-09 12：12：11</td>--%>
+    <%--<td style="vertical-align:middle;">妇科</td>--%>
+    <%--<td style="vertical-align:middle;"><a href="look.jsp">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a></td>--%>
+    <%--</tr>--%>
 </table>
 
 <table class="table table-bordered table-hover definewidth m10">
@@ -213,9 +183,8 @@
                 &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
             </div>
             <div>
-                <button type="button" class="btn btn-success" id="newNav">添加新药</button>
+                <button type="button" class="btn btn-success" id="newNav">添加新医生</button>
                 <button type="button" class="btn btn-success" id="delPro">导出Excel</button>
-                <button type="button" class="btn btn-success">导出txt</button>
             </div>
 
         </th>
