@@ -1,5 +1,3 @@
-<%@ page import="com.youma.vo.Doctor" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -155,10 +153,16 @@
     <tr>
         <th colspan="5">
             <div class="inline pull-right page">
-                <a href='#'>第一页</a> <a href='#'>上一页</a> <span class='current'>1</span><a href='#'>2</a><a
-                    href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下一页</a>
-                <a href='#'>最后一页</a>
-                &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
+                <c:set value="${page.pageNo>1?page.pageNo-1:1}" var="up" scope="page"/>
+                <c:set value="${page.pageNo<page.totalPage?page.pageNo+1:page.totalPage}" var="down" scope="page"/>
+
+                <a href='/his/registerFindAction?pageNo=1'>第一页</a> <a
+                    href='/his/registerFindAction?pageNo=${up}'>上一页</a>
+                <span class='current'>${page.pageNo}</span>
+                <a href='/his/registerFindAction?pageNo=${down}'>下一页</a>
+                <a href='/his/registerFindAction?pageNo=${page.totalPage}'>最后一页</a>
+                &nbsp;&nbsp;&nbsp;共<span class='current'>${page.totalCount}</span>条记录<span
+                    class='current'> ${page.pageNo}/${page.totalPage} </span>页
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">门诊挂号</button>&nbsp;&nbsp;&nbsp;

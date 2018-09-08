@@ -1,0 +1,54 @@
+/**
+ * Copyright (C),2015-2018
+ * FileNmae: DoctorServerImpl
+ * Author:   Administrator
+ * Date:     2018/9/519:00
+ * History:
+ * <author> <Time> <version> <desc>
+ * 陈泽群  时间    版本号  描述
+ */
+package com.youma.server.impl;
+
+import com.youma.dao.DoctorDao;
+import com.youma.dao.impl.DoctorDaoImpl;
+import com.youma.server.DoctorServer;
+import com.youma.vo.Doctor;
+
+import java.util.List;
+
+/**
+ * @author 陈泽群
+ */
+public class DoctorServerImpl implements DoctorServer {
+    DoctorDao doctorDao = new DoctorDaoImpl();
+
+    @Override
+    public int doctorAdd(Doctor doctor) {
+        return doctorDao.doctorAdd(doctor);
+    }
+
+    @Override
+    public int updateDoctor(Doctor doctor) {
+        return doctorDao.updateDoctor(doctor);
+    }
+
+    @Override
+    public int delDoctor(int id) {
+        return doctorDao.delDoctor(id);
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor() {
+        return doctorDao.findAllDoctor();
+    }
+
+    @Override
+    public Doctor findDoctor(int id) {
+        return doctorDao.findDoctor(id);
+    }
+
+    @Override
+    public List<Doctor> findDoctorByDep(int id) {
+        return doctorDao.findDoctorByDep(id);
+    }
+}

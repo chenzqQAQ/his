@@ -236,7 +236,9 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        finally {
+            closeAll();
+        }
         return doctor;
     }
 
@@ -260,7 +262,6 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setDoctorName(rs.getString("doctorName"));
                 list.add(doctor);
             }
-            System.out.println("医生全查结束");
         } catch (SQLException e) {
             e.printStackTrace();
         }

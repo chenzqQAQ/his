@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.RegisterDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Register;
 
 import java.sql.SQLException;
@@ -42,10 +43,10 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             ps.setObject(i++, register.getFlag());
             ps.setObject(i++, register.getRemark());
             col = ps.executeUpdate();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return col;
@@ -78,10 +79,10 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             ps.setObject(i++, register.getRemark());
             ps.setObject(i++, register.getMedicalNum());
             col = ps.executeUpdate();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -98,6 +99,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -149,6 +152,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
@@ -202,7 +207,68 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return register;
+    }
+
+    @Override
+    public List<Register> PageAllRegister(Page page) {
+        List<Register> list = new ArrayList<Register>();
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    medicalNum,\n" +
+                "    registerName,\n" +
+                "    identifierType,\n" +
+                "    identifierNum,\n" +
+                "    socialSecurityNum,\n" +
+                "    phoneNum,\n" +
+                "    expenseFlag,\n" +
+                "    sex,\n" +
+                "    age,\n" +
+                "    profession,\n" +
+                "    czFlag,\n" +
+                "    doctorID,\n" +
+                "    flag,\n" +
+                "    remark,\n" +
+                "    rtime\n" +
+                "FROM\n" +
+                "    register\n" +
+                "LIMIT ?,?";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            System.out.println("查询时的偏移量" + page.getOffset());
+            System.out.println("查询时的单页条数" + page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Register register = new Register();
+                register.setMedicalNum(rs.getInt("medicalNum"));
+                register.setRegisterName(rs.getString("registerName"));
+                register.setIdentifierType(rs.getInt("identifierType"));
+                register.setIdentifierNum(rs.getString("identifierNum"));
+                register.setSocialSecurityNum(rs.getString("socialSecurityNum"));
+                register.setPhoneNum(rs.getString("phoneNum"));
+                register.setExpenseFlag(rs.getInt("expenseFlag"));
+                register.setSex(rs.getInt("sex"));
+                register.setAge(rs.getInt("age"));
+                register.setProfession(rs.getString("profession"));
+                register.setCzFlag(rs.getString("czFlag"));
+                register.setDoctorID(rs.getInt("doctorID"));
+                register.setFlag(rs.getInt("flag"));
+                register.setRemark(rs.getString("remark"));
+                String str = sdf.format(rs.getTimestamp("rtime").getTime());
+                register.setRtime(str);
+                list.add(register);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            closeAll();
+        }
+        return list;
     }
 }

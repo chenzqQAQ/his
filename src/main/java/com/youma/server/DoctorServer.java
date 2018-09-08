@@ -1,4 +1,13 @@
-package com.youma.dao;
+/**
+ * Copyright (C),2015-2018
+ * FileNmae: DoctorServer
+ * Author:   Administrator
+ * Date:     2018/9/518:59
+ * History:
+ * <author> <Time> <version> <desc>
+ * 陈泽群  时间    版本号  描述
+ */
+package com.youma.server;
 
 import com.youma.vo.Doctor;
 
@@ -7,9 +16,10 @@ import java.util.List;
 /**
  * @author 陈泽群
  */
-public interface DoctorDao {
+public interface DoctorServer {
     /**
      * 添加医生信息
+     *
      * @param doctor
      * @return
      */
@@ -17,6 +27,7 @@ public interface DoctorDao {
 
     /**
      * 更新医生信息
+     *
      * @param doctor
      * @return
      */
@@ -24,6 +35,7 @@ public interface DoctorDao {
 
     /**
      * 删除医生信息
+     *
      * @param id 医生id
      * @return
      */
@@ -31,12 +43,14 @@ public interface DoctorDao {
 
     /**
      * 查询全部医生信息
+     *
      * @return
      */
     public List<Doctor> findAllDoctor();
 
     /**
      * 查询指定医生信息
+     *
      * @param id
      * @return
      */

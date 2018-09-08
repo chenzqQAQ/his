@@ -104,6 +104,8 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
