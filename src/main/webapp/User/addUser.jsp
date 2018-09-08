@@ -12,7 +12,8 @@
     <script type="text/javascript" src="../Js/bootstrap.js"></script>
     <script type="text/javascript" src="../Js/ckform.js"></script>
     <script type="text/javascript" src="../Js/common.js"></script>
-
+    <script type="text/javascript" src="../Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../Js/messages_zh.js"></script>
 
     <style type="text/css">
         body {
@@ -51,30 +52,87 @@
                     success: function (msg) {
                         console.log(msg);
                         if (msg == 1) {
-                            $('#userName').next("span").text("用户名已存在");
+                            $('#userName').siblings("span#k").text("用户名已存在");
                         } else if (msg == 0) {
-                            $('#userName').next("span").text("用户名可用");
+                            $('#userName').siblings("span#k").text("用户名可用");
                         }
                         else if (msg == 2) {
-                            $('#userName').next("span").text("用户名不能为空");
+                            $('#userName').siblings("span#k").text("用户名不能为空");
                         }
+                        // $("<p>结尾</p>").appendTo($('#userName').parent());
                         console.log("执行回调函数");
                     }
                 })
                 return false;
 
             })
+            $("#form1").validate(
+                {
+                    debug: true,
+                    rules: {
+                        userName: {
+                            required: true,
+                            minlength: 4
+                        },
+                        userPassword: {
+                            required: true,
+                            minlength: 6
+                        },
+                        realname: {
+                            required: true,
+                        },
+                        email: {
+                            required: true,
+                            email: true
+                        }
+                    },
+                    messages: {
+                        userName: {
+                            required: "请输入用户名",
+                            minlength: "用户名必需由4个字母组成"
+                        },
+                        userPassword: {
+                            required: "请输入密码",
+                            minlength: "密码长度不能小于 6 个字母"
+                        },
+                        realname: {
+                            required: "请输入真实姓名"
+                        },
+                        email: "请输入一个正确的邮箱",
+                    },
+                    errorPlacement: function (error, element) {
+                        error.appendTo(element.parent());
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
         });
     </script>
+    <style>
+        label.error {
+
+            padding-left: 16px;
+
+            padding-bottom: 2px;
+
+            font-weight: bold;
+
+            color: #FF0000;
+        }
+    </style>
 </head>
 <body>
-<form action="../UserAddAction" method="post" class="definewidth m20">
+<form id="form1" action="../UserAddAction" method="post" class="definewidth m20">
     <input type="hidden" name="id" value="{$user.id}"/>
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">登录名</td>
             <td><input type="text" name="userName" id="userName"/>
-                <span></span>
+                <span id="k"></span>
             </td>
         </tr>
         <tr>
@@ -99,7 +157,7 @@
         <tr>
             <td class="tableleft">角色</td>
             <td>
-                <select name="role">
+                <select id="role" name="role" required>
                     <option value="">--请选择--
                     <option value="0">管理员
                     <option value="1">院长

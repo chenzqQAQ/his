@@ -9,6 +9,8 @@
  */
 package com.youma.vo;
 
+import com.youma.util.Exclude;
+
 /**
  * 医生实体类
  *
@@ -16,7 +18,7 @@ package com.youma.vo;
  */
 public class Doctor {
     /**
-     * 姓名
+     * id
      */
     private int id;
     /**
@@ -26,48 +28,59 @@ public class Doctor {
     /**
      * 证件类型
      */
+    @Exclude
     private int identifierType;
     /**
      * 证件号
      */
+    @Exclude
     private String identifierNum;
     /**
      * 手机
      */
+    @Exclude
     private String phoneNum;
     /**
      * 座机
      */
+    @Exclude
     private String setaPhoneNum;
     /**
      * 性别
      */
+    @Exclude
     private int sex;
     /**
      * 年龄
      */
+    @Exclude
     private int age;
     /**
      * 出生日期
      */
+    @Exclude
     private String birthday;
     /**
      * 电子邮箱
      */
+    @Exclude
     private String email;
     /**
      * 科室id
      */
+    @Exclude
     private int depId;
 
     /**
      * 学历
      */
+    @Exclude
     private int degree;
 
     /**
      * 备注
      */
+    @Exclude
     private String remark;
 
     public int getId() {

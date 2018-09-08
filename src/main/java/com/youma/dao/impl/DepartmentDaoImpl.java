@@ -115,7 +115,7 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
                 "    department.depNum,\n" +
                 "    department.depName\n" +
                 "FROM his.department\n" +
-                "WHERE department.ID=?";
+                "WHERE ID=?";
         Department department = new Department();
         try {
             ps = conn.prepareStatement(sql);
@@ -125,6 +125,7 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
                 department.setId(rs.getInt("ID"));
                 department.setDepNum(rs.getString("depNum"));
                 department.setDepName(rs.getString("depName"));
+                System.out.println("有科室");
             }
         } catch (
                 SQLException e) {

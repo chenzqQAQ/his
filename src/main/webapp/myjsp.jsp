@@ -21,10 +21,11 @@
             lang: 'zh-cn',
             dateFmt: 'yyyy-MM-dd',
             minDate: '1949-10-1',
-            maxDate: new Date(),
+            maxDate: '#F{$dp.$D(\'end\')}' || new Date(),
             startDate: '1990-1-1',
             readOnly: true,
-            highLineWeekDay: true
+            highLineWeekDay: true,
+            isShowWeek: true
         };
         var datepicker2 = {
             lang: 'zh-cn',
@@ -33,28 +34,32 @@
             startDate: '#F{$dp.$D(\'start\')}',
             maxDate: new Date(),
             readOnly: true,
-            highLineWeekDay: true
+            highLineWeekDay: true,
+            isShowWeek: true
         };
         $(function () {
-
-
             // function a() {
             //     alert('bug');
             // }
-            //
-            $('#bu').click(function (event) {
-                // alert('bug');
-               a();
-                // event.stopPropagation();
-                // event.preventDefault();
+            $('#bu').click(function () {
+                $.ajax({
+                    url: "ajaxAction",
+                    data: {
+                        "action": "del",
+                        "userId": $('#name').val()
+                    },
+                    success: function (msg) {
+                        console.log("成功");
+                    },
+                    error: function () {
+                        console.log("失败");
+                    }
+
+                })
                 return false;
             });
-            console.log($('#name'));
             // console.log(document.getElementsByTagName('p'));
         });
-        function  a() {
-            console.log("这是个方法");
-        }
     </script>
 </head>
 <body>

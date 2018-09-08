@@ -24,7 +24,7 @@ public class Register {
      */
     private String registerName;
     /**
-     * 证件类型 1:身份证,2:驾驶证
+     * 证件类型 0:身份证,1:护照，2军人证
      */
     private int identifierType;
     /**
@@ -64,13 +64,25 @@ public class Register {
      */
     private int doctorID;
     /**
-     * 状态 0:挂号,1:就诊,2:完成
+     * 状态 0:初诊,1:复诊
      */
     private int flag;
     /**
      * 备注
      */
     private String remark;
+    /**
+     * 挂号时间
+     */
+    private String rtime;
+
+    public String getRtime() {
+        return rtime;
+    }
+
+    public void setRtime(String rtime) {
+        this.rtime = rtime;
+    }
 
     public int getMedicalNum() {
         return medicalNum;
@@ -200,6 +212,13 @@ public class Register {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Register(int medicalNum) {
+        this.medicalNum = medicalNum;
+    }
+
+    public Register() {
     }
 
     @Override

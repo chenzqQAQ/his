@@ -168,13 +168,19 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setSetaPhoneNum(rs.getString("seatPhoneNum"));
                 doctor.setSex(rs.getInt("sex"));
                 doctor.setAge(rs.getInt("age"));
-                doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                if (rs.getDate("birthday") == null) {
+                    doctor.setBirthday("null");
+                } else {
+
+                    doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                }
                 doctor.setEmail(rs.getString("email"));
                 doctor.setDepId(rs.getInt("depID"));
                 doctor.setDegree(rs.getInt("degree"));
                 doctor.setRemark(rs.getString("remark"));
                 list.add(doctor);
             }
+            System.out.println("医生全查结束");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -216,7 +222,12 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setSetaPhoneNum(rs.getString("seatPhoneNum"));
                 doctor.setSex(rs.getInt("sex"));
                 doctor.setAge(rs.getInt("age"));
-                doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                if (rs.getDate("birthday") == null) {
+                    doctor.setBirthday("null");
+                } else {
+
+                    doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                }
                 doctor.setEmail(rs.getString("email"));
                 doctor.setDepId(rs.getInt("depID"));
                 doctor.setDegree(rs.getInt("degree"));
@@ -227,5 +238,33 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
         }
 
         return doctor;
+    }
+
+    @Override
+    public List<Doctor> findDoctorByDep(int id) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    ID,\n" +
+                "    doctorName\n" +
+                "FROM \n" +
+                "    doctor where depID=?";
+        List<Doctor> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            System.out.println(id);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getInt("ID"));
+                doctor.setDoctorName(rs.getString("doctorName"));
+                list.add(doctor);
+            }
+            System.out.println("医生全查结束");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

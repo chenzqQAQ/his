@@ -35,10 +35,11 @@ public class AjaxAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
-        System.out.println("进入ajax");
+        System.out.println(req.getQueryString());
+        // System.out.println("进入ajax");
         String action = req.getParameter("action");
         String userName = req.getParameter("userName");
-        System.out.println("用户名为" + userName);
+        // System.out.println("用户名为" + userName);
         UsersServer usersServer = new UsersServerImpl();
         PrintWriter printWriter = resp.getWriter();
         if (null == userName || "".equals(userName)) {

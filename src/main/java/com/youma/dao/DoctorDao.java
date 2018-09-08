@@ -41,4 +41,11 @@ public interface DoctorDao {
      * @return
      */
     public Doctor findDoctor(int id);
+    /**
+     * 查询指定科室医生信息
+     * @param id
+     * @return
+     */
+    public List<Doctor> findDoctorByDep(int id);
+
 }

@@ -88,14 +88,14 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
 
     @Override
     public int delRegister(int id) {
-        conn=ConnectionDB.getConnection();
-        String sql="delete from register\n" +
+        conn = ConnectionDB.getConnection();
+        String sql = "delete from register\n" +
                 "where medicalNum=?";
-        int col=0;
+        int col = 0;
         try {
-            ps=conn.prepareStatement(sql);
-            ps.setObject(1,id);
-            col=ps.executeUpdate();
+            ps = conn.prepareStatement(sql);
+            ps.setObject(1, id);
+            col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -120,7 +120,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 "    czFlag,\n" +
                 "    doctorID,\n" +
                 "    flag,\n" +
-                "    remark\n" +
+                "    remark,\n" +
+                "    rtime\n" +
                 "FROM\n" +
                 "    register\n";
         try {
@@ -142,6 +143,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setDoctorID(rs.getInt("doctorID"));
                 register.setFlag(rs.getInt("flag"));
                 register.setRemark(rs.getString("remark"));
+                String str = sdf.format(rs.getTimestamp("rtime").getTime());
+                register.setRtime(str);
                 list.add(register);
             }
         } catch (SQLException e) {
@@ -168,7 +171,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 "    czFlag,\n" +
                 "    doctorID,\n" +
                 "    flag,\n" +
-                "    remark\n" +
+                "    remark,\n" +
+                "    rtime\n" +
                 "FROM\n" +
                 "    register\n" +
                 "WHERE\n" +
@@ -193,6 +197,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setDoctorID(rs.getInt("doctorID"));
                 register.setFlag(rs.getInt("flag"));
                 register.setRemark(rs.getString("remark"));
+                String str = sdf.format(rs.getTimestamp("rtime").getTime());
+                register.setRtime(str);
             }
         } catch (SQLException e) {
             e.printStackTrace();
