@@ -6,15 +6,15 @@
 <head>
     <title>添加药品---2015</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
-    <script type="text/javascript" src="../Js/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
+    <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <%--<script type="text/javascript" src="/his/Js/jquery.sorted.js"></script>--%>
+    <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="/his/Js/ckform.js"></script>
+    <script type="text/javascript" src="/his/Js/common.js"></script>
+    <script type="text/javascript" src="/his/Js/ckeditor/ckeditor.js"></script>
 
 
     <style type="text/css">

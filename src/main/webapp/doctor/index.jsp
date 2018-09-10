@@ -7,14 +7,14 @@
 <head>
     <title>门诊医生---2015</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
+    <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <%--<script type="text/javascript" src="/his/Js/jquery.sorted.js"></script>--%>
+    <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="/his/Js/ckform.js"></script>
+    <script type="text/javascript" src="/his/Js/common.js"></script>
 
     <style type="text/css">
         body {
@@ -37,9 +37,42 @@
 
     </style>
     <script type="text/javascript">
+        function totalPage() {
+            $("#pageNo").val(1);
+            $("#form1").attr("action", "/his/doctorFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+        function up() {
+            var k = parseInt($("#pageNo").val());
+            $("#pageNo").val(k > 1 ? k - 1 : 1);
+            $("#form1").attr("action", "/his/doctorFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+        function down() {
+            var k = parseInt($("#pageNo").val());
+            var k1 = parseInt($("#totalPage").val());
+            $("#pageNo").val(k < k1 ? k + 1 : k1);
+            $("#form1").attr("action", "/his/doctorFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+        function lastPage() {
+            $("#pageNo").val($("#totalPage").val());
+            $("#form1").attr("action", "/his/doctorFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "add.jsp";
+                window.location.href = "/his/doctor/add.jsp";
             });
         });
 
@@ -77,7 +110,7 @@
 </head>
 <body>
 
-<form action="index.jsp" method="post" class="definewidth m20">
+<form id="form1" action="/his/doctorFindAllAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">医生编号：</td>
@@ -87,13 +120,14 @@
             <td><input type="text" name="pname" value=""/></td>
 
             <td width="10%" class="tableleft">科室：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="depName" value="${depName}"/></td>
         </tr>
         <tr>
             <td colspan="6">
                 <center>
-                    <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="submit" class="btn btn-primary" type="button">清空</button>
+                    <button type="submit" class="btn btn-primary">查询</button>
+                    <button type="reset" class="btn btn-primary">清空</button>
+                    <a href="/his/doctorFindAllAction">全部</a>
                 </center>
             </td>
         </tr>
@@ -124,7 +158,8 @@
                 <c:out value="入院时间"/>
             </td>
             <td style="vertical-align:middle;">
-                <c:out value="${doctor.depId}"/>
+                <c:set value="${doctor.depId+0}" var="bb"/>
+                <c:out value="${dep[bb]}"/>
             </td>
             <td style="vertical-align:middle;"><a href="/his/doctorFindAction?id=${doctor.id}">详情>>></a>&nbsp;&nbsp;&nbsp;<a
                     href="/his/doctorFindAction?id=${doctor.id}">更改</a>
@@ -177,10 +212,14 @@
     <tr>
         <th colspan="5">
             <div class="inline pull-right page">
-                <a href='#'>第一页</a> <a href='#'>上一页</a> <span class='current'>1</span><a href='#'>2</a><a
-                    href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下一页</a>
-                <a href='#'>最后一页</a>
-                &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
+                <input type="hidden" form="form1" value="${page.pageNo}" id="pageNo" name="pageNo">
+                <input type="hidden" form="form1" value="${page.totalPage}" id="totalPage" name="totalPage">
+                <a href='#' onclick="totalPage();return false">第一页</a>
+                <a href='#' onclick="up();return false">上一页</a>
+                <span class='current'>${page.pageNo}</span>
+                <a href='#' onclick="down();return false">下一页</a>
+                <a href='#' onclick="lastPage();return false">最后一页</a>
+                ${page.totalCount} 条记录 ${page.pageNo} /${page.totalPage} 页
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">添加新医生</button>

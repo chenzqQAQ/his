@@ -11,6 +11,7 @@ package com.youma.server.impl;
 
 import com.youma.dao.UsersDao;
 import com.youma.dao.impl.UsersDaoImpl;
+import com.youma.util.Page;
 import com.youma.vo.Users;
 import com.youma.server.UsersServer;
 
@@ -40,6 +41,16 @@ public class UsersServerImpl implements UsersServer {
     @Override
     public List<Users> findAllUsers() {
         return usersDao.findAllUsers();
+    }
+
+    @Override
+    public int allUsersCount() {
+        return usersDao.allUsersCount();
+    }
+
+    @Override
+    public List<Users> findAllUsers(Page page) {
+        return usersDao.findAllUsers(page);
     }
 
     @Override

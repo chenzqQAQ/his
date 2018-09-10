@@ -11,6 +11,7 @@ package com.youma.action;
 
 import com.youma.server.UsersServer;
 import com.youma.server.impl.UsersServerImpl;
+import com.youma.util.Page;
 import com.youma.vo.Users;
 
 import javax.servlet.ServletException;
@@ -36,13 +37,28 @@ public class UsersFindAllAction extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UsersServer usersServer = new UsersServerImpl();
-        List<Users> list = usersServer.findAllUsers();
-        System.out.println("全查" + list.size());
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        UsersServer usersServer = new UsersServerImpl();
+        Page page = new Page();
+        int col = usersServer.allUsersCount();
+        page.setPageSize(5);
+        page.setTotalCount(col);
+        int pageNo = 1;
+        if (req.getParameter("pageNo") != null) {
+            pageNo = Integer.parseInt(req.getParameter("pageNo"));
+        }
+        page.setPageNo(pageNo);
+        List<Users> list = usersServer.findAllUsers(page);
+        System.out.println("全查" + list.size());
+        System.out.println("总页数"+page.getTotalPage());
+        System.out.println("总条数"+page.getTotalCount());
+        System.out.println("当前页"+page.getPageNo());
+        System.out.println("单页条数"+page.getPageSize());
+        System.out.println("偏移量"+page.getOffset());
         req.setAttribute("users", list);
+        req.setAttribute("page", page);
         req.getRequestDispatcher("/User/index.jsp").forward(req, resp);
     }
 }

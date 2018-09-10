@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.UsersDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Users;
 
 import java.sql.SQLException;
@@ -96,6 +97,49 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             col = rs.getMetaData().getColumnCount();
+            while (rs.next()) {
+
+                Users users = new Users(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+                users.setFlag(rs.getInt("flag"));
+                users.setRealName(rs.getString("realName"));
+                users.setEmail(rs.getString("email"));
+                list.add(users);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public int allUsersCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "select count(userID) from users";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
+
+    @Override
+    public List<Users> findAllUsers(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select userID,userName,userPassword,modifyTime,roleID,flag,realName,email from users\n" +
+                "limit ?,?";
+        List<Users> list = new ArrayList();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
             while (rs.next()) {
 
                 Users users = new Users(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));

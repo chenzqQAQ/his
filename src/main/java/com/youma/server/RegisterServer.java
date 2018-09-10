@@ -52,4 +52,20 @@ public interface RegisterServer {
      * @return List<Register> 挂号信息集合
      */
     public List<Register> PageAllRegister(Page page);
+    /**
+     * 查询指定医生/科室的挂号信息条数
+     *
+     * @param args 指定医生/科室
+     * @return int
+     */
+    public int findRegisterCount(String[] args);
+
+    /**
+     * 分页查询查询指定医生/科室的挂号信息
+     *
+     * @param page 分页信息
+     * @param args 指定医生/科室
+     * @return List<Register> 挂号信息集合
+     */
+    public List<Register> PageAllRegister(Page page, String[] args);
 }

@@ -34,6 +34,7 @@
                 padding-right: 5px;
             }
         }
+
         label.error {
 
             padding-left: 16px;
@@ -93,17 +94,19 @@
                 },
                 success: function (msg) {
                     console.log("ajax请求成功，开始执行成功后的回调函数");
+                    console.log("医生id" +${register.doctorID});
                     var docs = eval("(" + msg + ")");
                     $('#docName').empty();
                     $.each(docs, function (item, doc) {
                         console.log(doc['doctorName']);
                         var option = $("<option></option>");
                         option.val(doc['id']).text(doc['doctorName']).appendTo($('#docName'));
-                        if (i) {
-                            $('#docName').val(${register.doctorID});
-                            i=1;
-                        }
                     })
+                    console.log("状态"+i);
+                    if (i == 0) {
+                        $('#docName').val(${register.doctorID});
+                        i=1;
+                    }
                 }
 
             })
@@ -135,6 +138,21 @@
                 required: true,
                 number: true
 
+            },
+            expenseFlag: {
+                required: true
+            },
+            sex: {
+                required: true
+            },
+            czFlag: {
+                required: true
+            },
+            depName: {
+                required: true
+            },
+            docName: {
+                required: true
             }
 
         };
@@ -166,13 +184,28 @@
                 required: "请输入年龄",
                 number: "情输入数字"
 
+            },
+            expenseFlag: {
+                required: "请输入自费信息"
+            },
+            sex: {
+                required: "请输入性别"
+            },
+            czFlag: {
+                required: "请输入初复诊信息"
+            },
+            depName: {
+                required: "请选择科室"
+            },
+            docName: {
+                required: "请选择医生"
             }
         };
     </script>
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "index.html";
+                window.location.href = "index.jsp";
             });
             $('#depName').change(function () {
                 updateDocName();

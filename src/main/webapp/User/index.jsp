@@ -4,17 +4,20 @@
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
+<% String path = request.getContextPath();
+    System.out.println(path);
+%>
 <head>
     <title></title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=path%>/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=path%>/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=path%>/Css/style.css"/>
+    <script type="text/javascript" src="<%=path%>/Js/jquery.js"></script>
+    <%--<script type="text/javascript" src="<%=path%>/Js/jquery.sorted.js"></script>--%>
+    <script type="text/javascript" src="<%=path%>/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="<%=path%>/Js/ckform.js"></script>
+    <script type="text/javascript" src="<%=path%>/Js/common.js"></script>
 
 
     <style type="text/css">
@@ -37,13 +40,37 @@
 
 
     </style>
-    <script type="text/javascript">
-        $(function () {
-            $('#newNav').click(function () {
-                window.location.href = "addUser.jsp";
-            });
-        });
+    <script>
+        function totalPage() {
+            $("#pageNo").val(1);
+            $("#form1").attr("action", "/his/usersFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
 
+        function up() {
+            var k = parseInt($("#pageNo").val());
+            $("#pageNo").val(k > 1 ? k - 1 : 1);
+            $("#form1").attr("action", "/his/usersFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+        function down() {
+            var k = parseInt($("#pageNo").val());
+            var k1 = parseInt($("#totalPage").val());
+            $("#pageNo").val(k < k1 ? k + 1 : k1);
+            $("#form1").attr("action", "/his/usersFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
+
+        function lastPage() {
+            $("#pageNo").val($("#totalPage").val());
+            $("#form1").attr("action", "/his/usersFindAllAction");
+            $("#form1").submit();
+            return false;
+        }
 
         function checkall() {
             var alls = document.getElementsByName("check");
@@ -76,9 +103,16 @@
             }
         }
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#newNav').click(function () {
+                window.location.href = "/his/User/addUser.jsp";
+            });
+        });
+    </script>
 </head>
 <body>
-<form class="form-inline definewidth m20" action="index.jsp" method="get">
+<form id="form1" class="form-inline definewidth m20" action="index.jsp" method="post">
     用户名称：
     <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
     <button type="submit" class="btn btn-primary">查询</button>
@@ -130,9 +164,15 @@
     <tr>
         <th colspan="5">
             <div class="inline pull-right page">
-                10122 条记录 1/507 页 <a href='#'>下一页</a> <span class='current'>1</span><a href='#'>2</a><a
-                    href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下5页</a>
-                <a href='#'>最后一页</a></div>
+                <input type="hidden" form="form1" value="${page.pageNo}" id="pageNo" name="pageNo">
+                <input type="hidden" form="form1" value="${page.totalPage}" id="totalPage" name="totalPage">
+                <a href='#' onclick="totalPage();return false">第一页</a>
+                <a href='#' onclick="up();return false">上一页</a>
+                <span class='current'>${page.pageNo}</span>
+                <a href='#' onclick="down();return false">下一页</a>
+                <a href='#' onclick="lastPage();return false">最后一页</a>
+                ${page.totalCount} 条记录 ${page.pageNo} /${page.totalPage} 页
+            </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">添加用户</button>&nbsp;&nbsp;&nbsp;<button
                     type="button" class="btn btn-success" id="delPro" onClick="delAll();">删除选中

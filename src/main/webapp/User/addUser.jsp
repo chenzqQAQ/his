@@ -68,7 +68,7 @@
             })
             $("#form1").validate(
                 {
-                    debug: true,
+                    // debug: true,
                     rules: {
                         userName: {
                             required: true,

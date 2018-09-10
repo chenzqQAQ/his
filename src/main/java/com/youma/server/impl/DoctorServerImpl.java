@@ -12,6 +12,7 @@ package com.youma.server.impl;
 import com.youma.dao.DoctorDao;
 import com.youma.dao.impl.DoctorDaoImpl;
 import com.youma.server.DoctorServer;
+import com.youma.util.Page;
 import com.youma.vo.Doctor;
 
 import java.util.List;
@@ -50,5 +51,25 @@ public class DoctorServerImpl implements DoctorServer {
     @Override
     public List<Doctor> findDoctorByDep(int id) {
         return doctorDao.findDoctorByDep(id);
+    }
+
+    @Override
+    public int allDoctorCount() {
+        return doctorDao.allDoctorCount();
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(Page page) {
+        return doctorDao.findAllDoctor(page);
+    }
+
+    @Override
+    public int allDoctorCount(String depName) {
+        return doctorDao.allDoctorCount(depName);
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(String depName, Page page) {
+        return doctorDao.findAllDoctor(depName, page);
     }
 }

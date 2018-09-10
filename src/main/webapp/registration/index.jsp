@@ -74,7 +74,7 @@
         }
 
         $(function () {
-            var k = jQuery.parseJSON('${docs}');
+            <%--var k = jQuery.parseJSON('${docs}');--%>
         });
     </script>
 </head>
@@ -100,7 +100,7 @@
                 <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary" type="button">查询</button>
-                <button type="submit" class="btn btn-primary" type="button">清空</button>
+                <button type="reset" class="btn btn-primary" type="button">清空</button>
 
             </td>
         </tr>

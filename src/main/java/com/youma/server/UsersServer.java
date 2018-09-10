@@ -1,5 +1,6 @@
 package com.youma.server;
 
+import com.youma.util.Page;
 import com.youma.vo.Users;
 
 import java.util.List;
@@ -40,6 +41,19 @@ public interface UsersServer {
      * @return List<Users> 用户集合
      */
     public List<Users> findAllUsers();
+    /**
+     * 获取所有用户信息条数
+     *
+     * @return int
+     */
+    public int allUsersCount();
+    /**
+     * 获取所有用户信息
+     *
+     * @return List<Users> 用户集合
+     */
+    public List<Users> findAllUsers(Page page);
+
 
     /**
      * 查询指定用户信息

@@ -1,7 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>录入住院信息--中软高科-2015</title>
+    <title>修改住院信息--中软高科-2015</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
@@ -36,17 +37,17 @@
     <script type="text/javascript">
     $(function () {       
 		$('#backid').click(function(){
-				window.location.href="index.html";
+				window.location.href="index.jsp";
 		 });
     });
     </script>
 </head>
 <body>
-<form action="index.html" method="post" class="definewidth m20">
+<form action="index.jsp" method="post" class="definewidth m20">
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
         <td width="10%" class="tableleft">病历号</td>
-        <td><input type="text" name="pname" value="输入病历号回车自动带出挂号人信息"/></td>
+        <td>1101</td>
     </tr>
     <tr>
         <td width="10%" class="tableleft">姓名</td>
@@ -94,23 +95,23 @@
     </tr>
 	<tr>
         <td width="10%" class="tableleft">备注</td>
-        <td>暂无  以上信息为输入病历号自动带出来的</td>
+        <td>暂无 </td>
 	</tr>
     <tr>
         <td width="10%" class="tableleft">护理</td>
-        <td><input type="text" name="pname" value=""/></td>
+        <td><input type="text" name="pname" value="王小丫"/></td>
     </tr>
     <tr>
         <td width="10%" class="tableleft">床位号</td>
-        <td><input type="text" name="pname" value=""/></td>
+        <td><input type="text" name="pname" value="468"/></td>
     </tr>
     <tr>
         <td width="10%" class="tableleft">缴费押金</td>
-        <td><input type="text" name="pname" value=""/></td>
+        <td><input type="text" name="pname" value="2000"/></td>
     </tr>
     <tr>
         <td width="10%" class="tableleft">病情</td>
-        <td><textarea></textarea></td>
+        <td><textarea>心律不齐，先天营养不良</textarea></td>
     </tr>
     <tr>
         <td colspan="2">

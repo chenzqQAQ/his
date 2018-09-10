@@ -111,6 +111,21 @@
                 required: true,
                 number: true
 
+            },
+            expenseFlag: {
+                required: true
+            },
+            sex: {
+                required: true
+            },
+            czFlag: {
+                required: true
+            },
+            depName: {
+                required: true
+            },
+            docName: {
+                required: true
             }
 
         };
@@ -142,6 +157,21 @@
                 required: "请输入年龄",
                 number: "情输入数字"
 
+            },
+            expenseFlag: {
+                required: "请输入自费信息"
+            },
+            sex: {
+                required: "请输入性别"
+            },
+            czFlag: {
+                required: "请输入初复诊信息"
+            },
+            depName: {
+                required: "请选择科室"
+            },
+            docName: {
+                required: "请选择医生"
             }
         };
     </script>

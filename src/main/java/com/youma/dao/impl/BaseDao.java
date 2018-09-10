@@ -9,6 +9,8 @@
  */
 package com.youma.dao.impl;
 
+import com.youma.util.ConnectionDB;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,6 +67,56 @@ public class BaseDao {
             }
 
         }
+    }
+
+    /**
+     * 表修改方法(update,insert,del)
+     */
+    public int a(String sql, Object[] args) {
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i + 1, args[i]);
+            }
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return 0;
+    }
+
+    /**
+     * 表查询方法
+     */
+    public <T> T find(String sql, Object[] args) {
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i + 1, args[i]);
+            }
+            rs = ps.executeQuery();
+            T t = null;
+            if (rs.next()) {
+                // t=rs.
+            }
+            return t;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return null;
+    }
+
+    /**
+     * 分页查询方法
+     */
+    public void c(String sql) {
+
     }
 
 }

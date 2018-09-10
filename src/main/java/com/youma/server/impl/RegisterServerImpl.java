@@ -52,4 +52,14 @@ public class RegisterServerImpl implements RegisterServer {
     public List<Register> PageAllRegister(Page page) {
         return registerDao.PageAllRegister(page);
     }
+
+    @Override
+    public int findRegisterCount(String[] args) {
+        return registerDao.findRegisterCount(args);
+    }
+
+    @Override
+    public List<Register> PageAllRegister(Page page, String[] args) {
+        return registerDao.PageAllRegister(page, args);
+    }
 }

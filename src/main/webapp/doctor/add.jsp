@@ -5,15 +5,17 @@
 <head>
     <title>添加医生---2015</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
-    <script type="text/javascript" src="../Js/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="../Js/My97DatePicker/WdatePicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
+    <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <%--<script type="text/javascript" src="/his/Js/jquery.sorted.js"></script>--%>
+    <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="/his/Js/ckform.js"></script>
+    <script type="text/javascript" src="/his/Js/common.js"></script>
+
+    <script type="text/javascript" src="/his//Js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/his//Js/My97DatePicker/WdatePicker.js"></script>
 
 
     <style type="text/css">
@@ -37,7 +39,28 @@
 
     </style>
     <script type="text/javascript">
-        var datepicker= {
+        function findAllDep() {
+            $.ajax({
+                url: "/his/departmentAction",
+                data: {
+                    action: "findAll"
+                },
+                success: function (msg) {
+                    console.log("ajax请求成功，开始执行成功后的回调函数");
+                    var deps = eval("(" + msg + ")");
+                    $('#depName').empty();
+                    $.each(deps, function (item, dep) {
+                        console.log(dep['id']);
+                        console.log(dep['depName']);
+                        var option = $("<option></option>");
+                        option.val(dep['id']).text(dep['depName']).appendTo($('#depName'));
+                    })
+                }
+
+            });
+        }
+
+        var datepicker = {
             lang: 'zh-cn',
             dateFmt: 'yyyy-MM-dd',
             minDate: '1949-10-1',
@@ -63,6 +86,7 @@
                         .val(age)
                 }
             })
+            findAllDep();
         })
     </script>
 </head>
@@ -120,7 +144,7 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">所属科室</td>
-            <td><select name="depId">
+            <td><select name="depId" id="depName">
                 <option value="0">急诊科</option>
                 <option value="1">骨科</option>
                 <option value="2">血液科</option>

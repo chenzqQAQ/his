@@ -56,15 +56,31 @@ public class RegisterFindAction extends HttpServlet {
         RegisterServer registerServer = new RegisterServerImpl();
         String pNo = req.getParameter("pageNo");
         String id = req.getParameter("medicalNum");
+        String docName = req.getParameter("docName");
+        String depName = req.getParameter("depName");
+        /**
+         * 保留上次id,docName,depName在session,从中取出
+         */
         if (id == null) {
-            if (httpSession.getAttribute("medicalNum") != null && !httpSession.getAttribute("medicalNum").equals("")) {
+            if (httpSession.getAttribute("medicalNum") != null && !"".equals(httpSession.getAttribute("medicalNum"))) {
                 id = (String) httpSession.getAttribute("medicalNum");
             }
         }
-        String docName = req.getParameter("docName");
-        String depName = req.getParameter("depName");
+        if (docName == null) {
+            if (httpSession.getAttribute("docName") != null && !"".equals(httpSession.getAttribute("docName"))) {
+                docName = (String) httpSession.getAttribute("docName");
+            }
+        }
+        if (depName == null) {
+            if (httpSession.getAttribute("depName") != null && !"".equals(httpSession.getAttribute("depName"))) {
+                depName = (String) httpSession.getAttribute("depName");
+            }
+        }
         System.out.println("传来的页号为" + pNo);
         List<Register> list = new ArrayList<>();
+        /**
+         * 当传来的页码没有时，说明准备分页
+         */
         if (pNo == null || ("").equals(pNo)) {
             list = registerServer.findAllRegister();
             page.setTotalCount(list.size());
@@ -77,7 +93,8 @@ public class RegisterFindAction extends HttpServlet {
         System.out.println("传来的医生名为" + docName);
         System.out.println("传来的科室号为" + depName);
         List<Register> myList = new ArrayList<>();
-        if (id != null && !("").equals(id)) {
+        boolean b = (null != docName && !("").equals(docName)) || (null != depName && !("").equals(depName));
+        if (null != id && !("").equals(id)) {
             list = new ArrayList<>();
             httpSession.setAttribute("medicalNum", id);
             Register register = registerServer.findRegister(Integer.parseInt(id));
@@ -91,8 +108,35 @@ public class RegisterFindAction extends HttpServlet {
                 page.setTotalCount(0);
                 page.setPageNo(1);
             }
+        } else if (b) {
+            /**
+             * 当医生名字or科室名字有(包括在会话session中时),进行模糊查询
+             */
+            String[] args = new String[2];
+            if (null != docName && !("").equals(docName)) {
+                args[0] = docName;
+                httpSession.setAttribute("docName", docName);
+            } else {
+                args[0] = null;
+                httpSession.removeAttribute("docName");
+            }
+            if (null != depName && !("").equals(depName)) {
+                args[1] = depName;
+                httpSession.setAttribute("depName", depName);
+            } else {
+                args[1] = null;
+                httpSession.removeAttribute("depName");
+            }
+            System.out.println(String.format("医生名%s", docName));
+            System.out.println(String.format("科室名%s", depName));
+            int col = registerServer.findRegisterCount(args);
+            page.setTotalCount(col);
+            System.out.println(String.format("条数为%d", col));
+            list = registerServer.PageAllRegister(page, args);
         } else {
             httpSession.removeAttribute("medicalNum");
+            httpSession.removeAttribute("depName");
+            httpSession.removeAttribute("docName");
             System.out.println("进入全查");
             System.out.println("全查总数" + page.getTotalCount());
             System.out.println("当前页面" + page.getPageNo());

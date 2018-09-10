@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.DoctorDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Doctor;
 
 import java.sql.SQLException;
@@ -71,6 +72,8 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -114,6 +117,8 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -130,6 +135,8 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return col;
@@ -180,11 +187,11 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setRemark(rs.getString("remark"));
                 list.add(doctor);
             }
-            System.out.println("医生全查结束");
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
-
         return list;
     }
 
@@ -223,7 +230,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setSex(rs.getInt("sex"));
                 doctor.setAge(rs.getInt("age"));
                 if (rs.getDate("birthday") == null) {
-                    doctor.setBirthday("null");
+                    doctor.setBirthday("未知");
                 } else {
 
                     doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
@@ -235,8 +242,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             closeAll();
         }
         return doctor;
@@ -264,8 +270,161 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public int allDoctorCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT count(ID)\n" +
+                "FROM\n" +
+                "    doctor;";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
+        return col;
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    ID,\n" +
+                "    doctorName,\n" +
+                "    identifierType,\n" +
+                "    identifierNum,\n" +
+                "    phoneNum,\n" +
+                "    seatPhoneNum,\n" +
+                "    sex,\n" +
+                "    age,\n" +
+                "    birthday,\n" +
+                "    email,\n" +
+                "    depID,\n" +
+                "    degree,\n" +
+                "    remark\n" +
+                "FROM\n" +
+                "    doctor\n" +
+                "limit ?,?";
+        List<Doctor> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getInt("ID"));
+                doctor.setDoctorName(rs.getString("doctorName"));
+                doctor.setIdentifierType(rs.getInt("identifierType"));
+                doctor.setIdentifierNum(rs.getString("identifierNum"));
+                doctor.setPhoneNum(rs.getString("phoneNum"));
+                doctor.setSetaPhoneNum(rs.getString("seatPhoneNum"));
+                doctor.setSex(rs.getInt("sex"));
+                doctor.setAge(rs.getInt("age"));
+                if (rs.getDate("birthday") == null) {
+                    doctor.setBirthday("未知");
+                } else {
+                    doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                }
+                doctor.setEmail(rs.getString("email"));
+                doctor.setDepId(rs.getInt("depID"));
+                doctor.setDegree(rs.getInt("degree"));
+                doctor.setRemark(rs.getString("remark"));
+                list.add(doctor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public int allDoctorCount(String depName) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select count(doctor.ID) from  doctor join department\n" +
+                "on doctor.depID=department.ID where department.depName=?";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, depName);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(String depName, Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    doctor.ID,\n" +
+                "    doctorName,\n" +
+                "    identifierType,\n" +
+                "    identifierNum,\n" +
+                "    phoneNum,\n" +
+                "    seatPhoneNum,\n" +
+                "    sex,\n" +
+                "    age,\n" +
+                "    birthday,\n" +
+                "    email,\n" +
+                "    depID,\n" +
+                "    degree,\n" +
+                "    remark\n" +
+                "FROM\n" +
+                "    doctor join department on doctor.depID=department.ID where department.depName=?\n" +
+                "limit ?,?";
+        List<Doctor> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, depName);
+            ps.setInt(2, page.getOffset());
+            ps.setInt(3, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getInt("doctor.ID"));
+                doctor.setDoctorName(rs.getString("doctorName"));
+                doctor.setIdentifierType(rs.getInt("identifierType"));
+                doctor.setIdentifierNum(rs.getString("identifierNum"));
+                doctor.setPhoneNum(rs.getString("phoneNum"));
+                doctor.setSetaPhoneNum(rs.getString("seatPhoneNum"));
+                doctor.setSex(rs.getInt("sex"));
+                doctor.setAge(rs.getInt("age"));
+                if (rs.getDate("birthday") == null) {
+                    doctor.setBirthday("未知");
+                } else {
+                    doctor.setBirthday(sdf1.format(rs.getDate("birthday")));
+                }
+                doctor.setEmail(rs.getString("email"));
+                doctor.setDepId(rs.getInt("depID"));
+                doctor.setDegree(rs.getInt("degree"));
+                doctor.setRemark(rs.getString("remark"));
+                list.add(doctor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
         return list;
     }
 }

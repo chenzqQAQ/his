@@ -9,6 +9,7 @@
  */
 package com.youma.server;
 
+import com.youma.util.Page;
 import com.youma.vo.Doctor;
 
 import java.util.List;
@@ -61,4 +62,32 @@ public interface DoctorServer {
      * @return
      */
     public List<Doctor> findDoctorByDep(int id);
+    /**
+     * 查询全部医生条数
+     *
+     * @return
+     */
+    public int allDoctorCount();
+
+    /**
+     * 分页查询全部医生信息
+     *
+     * @return
+     */
+    public List<Doctor> findAllDoctor(Page page);
+    /**
+     * 查询某科室医生条数
+     *
+     * @param depName 科室名字
+     * @return
+     */
+    public int allDoctorCount(String depName);
+
+    /**
+     * 分页查询某科室全部医生信息
+     *
+     * @param depName 科室名字
+     * @return
+     */
+    public List<Doctor> findAllDoctor(String depName,Page page);
 }
