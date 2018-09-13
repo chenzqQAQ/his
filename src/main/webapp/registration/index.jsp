@@ -40,6 +40,48 @@
             $('#newNav').click(function () {
                 window.location.href = "/his/registration/add.jsp";
             });
+            $('#exlOutAll').click(function () {
+                $.ajax({
+                    url: "/his/exlOut",
+                    type: "GET",
+                    success: function (msg) {
+                        var k = msg;
+                        console.log(k);
+                        if (parseInt(k) === 1) {
+                            alert("Excel导出成功");
+                        }
+                        else {
+                            alert("Excel导出失败");
+                        }
+                    }
+                });
+                return false;
+            })
+            $('#exlOut').click(function () {
+                var alls = document.getElementsByName("check");
+                var str = "/his/exlOut?all=All";
+                for (var i = 0; i < alls.length; i++) {
+                    if (alls[i].checked) {
+                        str = str + "&medicalNum=" + alls[i].value;
+                    }
+                }
+                console.log(str);
+                $.ajax({
+                    url: str,
+                    type: "POST",
+                    success: function (msg) {
+                        var k = msg;
+                        console.log(k);
+                        if (parseInt(k) === 1) {
+                            alert("Excel导出成功");
+                        }
+                        else {
+                            alert("Excel导出失败");
+                        }
+                    }
+                });
+                return false;
+            })
         });
 
         function checkall() {
@@ -59,18 +101,28 @@
         function delAll() {
             var alls = document.getElementsByName("check");
             var ids = new Array();
+            var str = "/his/registerAction?action=delAll";
             for (var i = 0; i < alls.length; i++) {
                 if (alls[i].checked) {
                     ids.push(alls[i].value);
+                    str = str + "&medicalNum=" + alls[i].value;
                 }
             }
             if (ids.length > 0) {
-                if (confirm("确认操作?")) {
-                    alert("成功!");
+                console.log(str);
+                if (confirm("确认退号?")) {
+                    window.location.href = str;
+                    alert("退号成功!");
                 }
             } else {
-                alert("请选中要操作的项");
+                alert("请选中要删除的项");
             }
+        }
+
+        function clearA() {
+            $("input[name='medicalNum']").val("");
+            $("input[name='docName']").val("");
+            $("input[name='depName']").val("");
         }
 
         $(function () {
@@ -84,13 +136,13 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病历号：</td>
-            <td><input type="text" name="medicalNum" value=""/></td>
+            <td><input type="text" name="medicalNum" value="${sessionScope.medicalNum}"/></td>
 
             <td width="10%" class="tableleft">主治医生：</td>
-            <td><input type="text" name="docName" value=""/></td>
+            <td><input type="text" name="docName" value="${sessionScope.docName}"/></td>
 
             <td width="10%" class="tableleft">科室：</td>
-            <td><input type="text" name="depName" value=""/></td>
+            <td><input type="text" name="depName" value="${sessionScope.depName}"/></td>
         </tr>
         <tr>
 
@@ -100,7 +152,7 @@
                 <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary" type="button">查询</button>
-                <button type="reset" class="btn btn-primary" type="button">清空</button>
+                <button class="btn btn-primary" type="button" onclick="clearA();return false">清空</button>
 
             </td>
         </tr>
@@ -112,6 +164,7 @@
     <tr>
         <th><input type="checkbox" id="checkall" onChange="checkall();"></th>
         <th>门诊编号</th>
+        <th>病人姓名</th>
         <th>主治医生</th>
         <th>挂号时间</th>
         <th>挂号科室</th>
@@ -126,8 +179,10 @@
     </thead>
     <c:forEach items="${registers}" var="register" varStatus="id">
         <tr>
-            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
+            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${register.medicalNum}"></td>
             <td style="vertical-align:middle;">${register.medicalNum}
+            </td>
+            <td style="vertical-align:middle;">${register.registerName}
             </td>
             <td style="vertical-align:middle;">
                 <c:set value="${register.doctorID+0}" var="aa"/>
@@ -140,11 +195,14 @@
             </td>
             <td style="vertical-align:middle;">${p[register.flag]}
             </td>
-            <td style="vertical-align:middle;"><a
-                    href="/his/registerAction?action=find&medicalNum=${register.medicalNum}">详情>>>
-            </a>&nbsp;&nbsp;&nbsp;
-                <a href="/his/registerAction?action=edit&medicalNum=${register.medicalNum}">更改</a>&nbsp;&nbsp;&nbsp;
-                <a href="/his/registerAction?action=del&medicalNum=${register.medicalNum}">退号</a></td>
+            <td style="vertical-align:middle;">
+                <a href="/his/registerAction?action=find&medicalNum=${register.medicalNum}">详情>>>
+                </a>&nbsp;&nbsp;&nbsp;
+                <c:if test="${register.flag!=3}">
+                    <a href="/his/registerAction?action=edit&medicalNum=${register.medicalNum}">更改</a>&nbsp;&nbsp;&nbsp;
+                    <a href="/his/registerAction?action=del&medicalNum=${register.medicalNum}">退号</a>
+                </c:if>
+            </td>
         </tr>
     </c:forEach>
 </table>
@@ -167,7 +225,8 @@
             <div>
                 <button type="button" class="btn btn-success" id="newNav">门诊挂号</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-success" id="delPro" onClick="delAll();">退号</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" id="delPro1">导出Excel</button>
+                <button type="button" class="btn btn-success" id="exlOutAll">全部导出Excel</button>
+                <button type="button" class="btn btn-success" id="exlOut">选中部分导出Excel</button>
                 <button type="button" class="btn btn-success" id="delPro2">打印</button>
 
             </div>

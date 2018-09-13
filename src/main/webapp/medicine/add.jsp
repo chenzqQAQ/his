@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
     <script type="text/javascript" src="/his/Js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
 
 
     <style type="text/css">
@@ -37,10 +38,44 @@
 
     </style>
     <script type="text/javascript">
+        var datepicker1 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '2000-1-1',
+            maxDate: '#F{$dp.$D(\'overdueDate\')||\'%y-%M-%d\'}',
+            startDate: '2000-1-1',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
+        var datepicker2 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '#F{$dp.$D(\'productionDate\')||\'%y-%M-%d\'}',
+            startDate: new Date() || '#F{$dp.$D(\'productionDate\')}',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
+    </script>
+    <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
                 window.location.href = "/his/medicine/index.jsp";
             });
+            $('input[name="qualityLife"]').mouseover(function () {
+                var date1=$('#productionDate').val();
+                var date2=$('#overdueDate').val();
+                if(date1!==''&&date2!=='')
+                {
+                    console.log(date1);
+                    console.log(date2);
+                    var long=new Date(date2).getTime()-new Date(date1).getTime();
+                    var day=Math.floor(long/(1000*60*60*24*30));
+                    console.log(day);
+                    $('input[name="qualityLife"]').val(day);
+                }
+            })
         });
     </script>
 </head>
@@ -81,15 +116,19 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">生产日期</td>
-            <td><input type="text" name="productionDate" value=""/></td>
+            <td>
+                <input type="text" id="productionDate" name="productionDate" class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker1)"/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">过期日期</td>
-            <td><input type="text" name="overdueDate" value=""/></td>
+            <td>
+                <input type="text" id="overdueDate" name="overdueDate" class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker2)"/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">保质期</td>
-            <td><input type="text" name="qualityLife" value="30"/>天</td>
+            <td><input type="text" name="qualityLife" value=""/>月</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">详细描述</td>

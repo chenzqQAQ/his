@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,54 +64,64 @@ public class DoctorFindAllAction extends HttpServlet {
         String action = req.getParameter("action");
         System.out.println(req.getQueryString());
         DoctorServer doctorServer = new DoctorServerImpl();
+        int flag = 0;
+        String docId = req.getParameter("docId");
+        String docName = req.getParameter("docName");
         String depName = req.getParameter("depName");
-        if (null != depName && !("").equals(depName)) {
-            int col = doctorServer.allDoctorCount(depName);
-            System.out.println(String.format("%s科室有%d人", depName, col));
-            Page page = new Page();
-            page.setTotalCount(col);
-            if (null != req.getParameter("pageNo")) {
-                page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
+        String[] str = new String[3];
+        if (FINDALL.equals(action)) {
+            System.out.println("开始医生全查");
+            List<Doctor> list;
+            if (req.getParameter("depId") != null) {
+                int id = Integer.parseInt(req.getParameter("depId"));
+                System.out.println(id);
+                list = doctorServer.findDoctorByDep(id);
             } else {
-                page.setPageNo(1);
+                list = doctorServer.findAllDoctor();
             }
-            List<Doctor> list = doctorServer.findAllDoctor(depName, page);
-            req.setAttribute("depName", depName);
-            req.setAttribute("doctors", list);
-            req.setAttribute("page", page);
-        } else {
-            if (FINDALL.equals(action)) {
-                System.out.println("开始医生全查");
-                List<Doctor> list;
-                if (req.getParameter("depId") != null) {
-                    int id = Integer.parseInt(req.getParameter("depId"));
-                    System.out.println(id);
-                    list = doctorServer.findDoctorByDep(id);
-                } else {
-                    list = doctorServer.findAllDoctor();
-                }
-                String json = gson.toJson(list);
-                System.out.println(json);
-                PrintWriter out = resp.getWriter();
-                out.write(json);
-                out.flush();
-                return;
-            } else {
-                Page page = new Page();
-                String pageNo = req.getParameter("pageNo");
-                int col = doctorServer.allDoctorCount();
-                page.setTotalCount(col);
-                if (null != pageNo && !("").equals(pageNo)) {
-                    page.setPageNo(Integer.parseInt(pageNo));
-                } else {
-                    page.setPageNo(1);
-                }
-                List<Doctor> list = new ArrayList<>();
-                list = doctorServer.findAllDoctor(page);
-                req.setAttribute("doctors", list);
-                req.setAttribute("page", page);
-            }
+            String json = gson.toJson(list);
+            System.out.println(json);
+            PrintWriter out = resp.getWriter();
+            out.write(json);
+            out.flush();
+            return;
         }
+        if (docId != null) {
+            str[0] = docId;
+            req.setAttribute("docId", docId);
+        } else {
+            str[0] = null;
+            req.removeAttribute("depName");
+        }
+        if (docName != null) {
+            str[1] = docName;
+            req.setAttribute("docName", docName);
+        } else {
+            str[1] = null;
+            req.removeAttribute("docName");
+        }
+        if (depName != null) {
+            str[2] = depName;
+            req.setAttribute("depName", depName);
+        } else {
+            str[2] = null;
+            req.removeAttribute("depName");
+        }
+        System.out.println(str[0]);
+        System.out.println(str[1]);
+        System.out.println(str[2]);
+        int col = doctorServer.allDoctorCount(str);
+        System.out.println(String.format("id%s医生姓名%s科室%s有%d人", str[0], str[1], str[2], col));
+        Page page = new Page();
+        page.setTotalCount(col);
+        if (null != req.getParameter("pageNo") && !req.getParameter("pageNo").equals("")) {
+            page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
+        } else {
+            page.setPageNo(1);
+        }
+        List<Doctor> list = doctorServer.findAllDoctor(str, page);
+        req.setAttribute("doctors", list);
+        req.setAttribute("page", page);
         List<Department> list1 = new DepServerImpl().findAllDepartment();
         Map<Long, String> map = new HashMap<>();
         for (int i = 0; i < list1.size(); i++) {
@@ -121,6 +130,5 @@ public class DoctorFindAllAction extends HttpServlet {
         }
         req.setAttribute("dep", map);
         req.getRequestDispatcher("/doctor/index.jsp").forward(req, resp);
-
     }
 }

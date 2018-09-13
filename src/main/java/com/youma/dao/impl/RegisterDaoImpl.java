@@ -90,8 +90,10 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
     @Override
     public int delRegister(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "delete from register\n" +
-                "where medicalNum=?";
+        // String sql = "delete from register\n" +
+        //         "where medicalNum=?";
+        //将状态改为已退号状态
+        String sql = "update register set flag = 3 where medicalNum=?";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -142,7 +144,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setSex(rs.getInt("sex"));
                 register.setAge(rs.getInt("age"));
                 register.setProfession(rs.getString("profession"));
-                register.setCzFlag(rs.getString("czFlag"));
+                register.setCzFlag(rs.getInt("czFlag"));
                 register.setDoctorID(rs.getInt("doctorID"));
                 register.setFlag(rs.getInt("flag"));
                 register.setRemark(rs.getString("remark"));
@@ -198,7 +200,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setSex(rs.getInt("sex"));
                 register.setAge(rs.getInt("age"));
                 register.setProfession(rs.getString("profession"));
-                register.setCzFlag(rs.getString("czFlag"));
+                register.setCzFlag(rs.getInt("czFlag"));
                 register.setDoctorID(rs.getInt("doctorID"));
                 register.setFlag(rs.getInt("flag"));
                 register.setRemark(rs.getString("remark"));
@@ -255,7 +257,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setSex(rs.getInt("sex"));
                 register.setAge(rs.getInt("age"));
                 register.setProfession(rs.getString("profession"));
-                register.setCzFlag(rs.getString("czFlag"));
+                register.setCzFlag(rs.getInt("czFlag"));
                 register.setDoctorID(rs.getInt("doctorID"));
                 register.setFlag(rs.getInt("flag"));
                 register.setRemark(rs.getString("remark"));
@@ -321,7 +323,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
         conn = ConnectionDB.getConnection();
         List<Register> list = new ArrayList<Register>();
         String sql = "SELECT \n" +
-                "    medicalNum,register.doctorID,rtime,flag\n" +
+                "    medicalNum,register.doctorID,rtime,flag,registerName\n" +
                 "FROM\n" +
                 "    register\n" +
                 "        JOIN\n" +
@@ -358,10 +360,95 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 register.setDoctorID(rs.getInt(2));
                 register.setRtime(sdf.format(rs.getTimestamp("rtime").getTime()));
                 register.setFlag(rs.getInt("flag"));
+                register.setRegisterName(rs.getString("registerName"));
                 list.add(register);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public int delAllRegister(int[] args) {
+        conn = ConnectionDB.getConnection();
+        // String sql = "delete from register where register.medicalNum in ( ?";
+        String sql = "update  register set flag = 3 where medicalNum in ( ?";
+        //将状态改为已退号状态
+        for (int i = 1; i < args.length; i++) {
+            sql += ", ?";
+        }
+        sql += ")";
+        int col = 0;
+        System.out.println(sql);
+        try {
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                ps.setInt(i + 1, args[i]);
+            }
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
+
+    @Override
+    public List<Register> findAllRegister(int[] args) {
+        List<Register> list = new ArrayList<Register>();
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    medicalNum,\n" +
+                "    registerName,\n" +
+                "    identifierType,\n" +
+                "    identifierNum,\n" +
+                "    socialSecurityNum,\n" +
+                "    phoneNum,\n" +
+                "    expenseFlag,\n" +
+                "    sex,\n" +
+                "    age,\n" +
+                "    profession,\n" +
+                "    czFlag,\n" +
+                "    doctorID,\n" +
+                "    flag,\n" +
+                "    remark,\n" +
+                "    rtime\n" +
+                "FROM\n" +
+                "    register where medicalNum in ( ?";
+        for (int i = 1; i < args.length; i++) {
+            sql += ", ?";
+        }
+        sql += ")";
+        try {
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                ps.setInt(i + 1, args[i]);
+            }
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Register register = new Register();
+                register.setMedicalNum(rs.getInt("medicalNum"));
+                register.setRegisterName(rs.getString("registerName"));
+                register.setIdentifierType(rs.getInt("identifierType"));
+                register.setIdentifierNum(rs.getString("identifierNum"));
+                register.setSocialSecurityNum(rs.getString("socialSecurityNum"));
+                register.setPhoneNum(rs.getString("phoneNum"));
+                register.setExpenseFlag(rs.getInt("expenseFlag"));
+                register.setSex(rs.getInt("sex"));
+                register.setAge(rs.getInt("age"));
+                register.setProfession(rs.getString("profession"));
+                register.setCzFlag(rs.getInt("czFlag"));
+                register.setDoctorID(rs.getInt("doctorID"));
+                register.setFlag(rs.getInt("flag"));
+                register.setRemark(rs.getString("remark"));
+                String str = sdf.format(rs.getTimestamp("rtime").getTime());
+                register.setRtime(str);
+                list.add(register);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }

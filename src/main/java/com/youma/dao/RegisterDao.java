@@ -82,4 +82,18 @@ public interface RegisterDao {
      * @return List<Register> 挂号信息集合
      */
     public List<Register> PageAllRegister(Page page, String[] args);
+
+    /**
+     * 删除选中的挂号信息
+     *
+     * @param args
+     * @return
+     */
+    public int delAllRegister(int[] args);
+    /**
+     * 查询选中的挂号信息
+     * @param args
+     * @return
+     */
+    public List<Register> findAllRegister(int[] args);
 }

@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.ResourcesDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Resources;
 
 import java.sql.SQLException;
@@ -24,11 +25,11 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
     @Override
     public int resourcesAdd(Resources resources) {
         conn = ConnectionDB.getConnection();
-        String sql = "    INSERT INTO resources\n" +
-                "(resID,\n" +
+        String sql = "    INSERT INTO resources(\n" +
                 "resName,\n" +
                 "resUrl,\n" +
-                "resParentID)\n" +
+                "resParentID,\n" +
+                "status)" +
                 "VALUES\n" +
                 "(?,\n" +
                 "?,\n" +
@@ -37,13 +38,15 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, resources.getResID());
-            ps.setObject(2, resources.getResName());
-            ps.setObject(3, resources.getResUrl());
-            ps.setObject(4, resources.getResParentId());
+            ps.setString(1, resources.getResName());
+            ps.setString(2, resources.getResUrl());
+            ps.setInt(3, resources.getResParentId());
+            ps.setInt(4, resources.getStatus());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -57,19 +60,23 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
                 "resID = ?,\n" +
                 "resName = ?,\n" +
                 "resUrl = ?,\n" +
-                "resParentID = ?\n" +
+                "resParentID = ?," +
+                "status=?\n" +
                 "WHERE resID = ?";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, resources.getResID());
-            ps.setObject(2, resources.getResName());
-            ps.setObject(3, resources.getResUrl());
-            ps.setObject(4, resources.getResParentId());
-            ps.setObject(5, resources.getResID());
+            ps.setInt(1, resources.getResID());
+            ps.setString(2, resources.getResName());
+            ps.setString(3, resources.getResUrl());
+            ps.setInt(4, resources.getResParentId());
+            ps.setInt(5, resources.getStatus());
+            ps.setInt(6, resources.getResID());
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -86,6 +93,8 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -96,7 +105,8 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
         String sql = "SELECT resID,\n" +
                 "    resName,\n" +
                 "    resUrl,\n" +
-                "    resParentID\n" +
+                "    resParentID,\n" +
+                "status \n" +
                 "FROM resources";
         List<Resources> list = new ArrayList<Resources>();
         try {
@@ -108,10 +118,13 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
                 resources.setResName(rs.getString("resName"));
                 resources.setResUrl(rs.getString("resUrl"));
                 resources.setResParentId(rs.getInt("resParentId"));
+                resources.setStatus(rs.getInt("status"));
                 list.add(resources);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
@@ -122,23 +135,76 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
         String sql = "SELECT resID,\n" +
                 "    resName,\n" +
                 "    resUrl,\n" +
-                "    resParentID\n" +
+                "    resParentID,status\n" +
                 "FROM resources\n" +
                 "WHERE resId = ?";
         Resources resources = new Resources();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, id);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
                 resources.setResID(rs.getInt("resID"));
                 resources.setResName(rs.getString("resName"));
                 resources.setResUrl(rs.getString("resUrl"));
                 resources.setResParentId(rs.getInt("resParentId"));
+                resources.setStatus(rs.getInt("status"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return resources;
+    }
+
+    @Override
+    public int allResourcesCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "select  count(resid) as a from resources";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt("a");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return resources;
+        return col;
+    }
+
+    @Override
+    public List<Resources> findAllResources(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT resID,\n" +
+                "    resName,\n" +
+                "    resUrl,\n" +
+                "    resParentID,\n" +
+                "status \n" +
+                "FROM resources";
+        sql += " limit ?,?";
+        List<Resources> list = new ArrayList<Resources>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Resources resources = new Resources();
+                resources.setResID(rs.getInt("resID"));
+                resources.setResName(rs.getString("resName"));
+                resources.setResUrl(rs.getString("resUrl"));
+                resources.setResParentId(rs.getInt("resParentId"));
+                resources.setStatus(rs.getInt("status"));
+                list.add(resources);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
     }
 }

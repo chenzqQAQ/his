@@ -1,17 +1,22 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.youma.vo.Inpatient" %>
+<%@ page import="java.lang.reflect.Field" %>
+<%@ page import="com.youma.util.Czq" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>入院办理--中软高科-2015</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
-    <script type="text/javascript" src="../Js/jquery.js"></script>
-    <script type="text/javascript" src="../Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="../Js/bootstrap.js"></script>
-    <script type="text/javascript" src="../Js/ckform.js"></script>
-    <script type="text/javascript" src="../Js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
+    <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <%--<script type="text/javascript" src="/his/Js/jquery.sorted.js"></script>--%>
+    <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="/his/Js/ckform.js"></script>
+    <script type="text/javascript" src="/his/Js/common.js"></script>
 
     <style type="text/css">
         body {
@@ -31,8 +36,51 @@
             }
         }
 
+        <% Field field=null;
+        try {
+            field = Inpatient.class.getDeclaredField("flag");
+        }
+            catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        if(field.getDeclaredAnnotation(Czq.class)!=null)
+            {
+        String []flag=field.getDeclaredAnnotation(Czq.class).value();
+        request.setAttribute("flag",flag);
+            }
 
+        %>
     </style>
+    <script type="text/javascript">
+        function totalPage() {
+            $("#pageNo").val(1);
+            $("#form1").attr("action", "/his/inpFindAction").submit();
+            return false;
+        }
+
+        function up() {
+            var p = $("#pageNo");
+            var k = parseInt(p.val());
+            p.val(k > 1 ? k - 1 : 1);
+            $("#form1").attr("action", "/his/inpFindAction").submit();
+            return false;
+        }
+
+        function down() {
+            var p = $("#pageNo");
+            var k = parseInt(p.val());
+            var k1 = parseInt($("#totalPage").val());
+            p.val(k < k1 ? k + 1 : k1);
+            $("#form1").attr("action", "/his/inpFindAction").submit();
+            return false;
+        }
+
+        function lastPage() {
+            $("#pageNo").val($("#totalPage").val());
+            $("#form1").attr("action", "/his/inpFindAction").submit();
+            return false;
+        }
+    </script>
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
@@ -74,11 +122,12 @@
 </head>
 <body>
 
-<form action="index.jsp" method="post" class="definewidth m20">
+<form id="form1" action="index.jsp" method="post" class="definewidth m20">
+    <input type="hidden" value="findAll" name="action"/>
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病例号：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="medicalNum" value=""/></td>
 
             <td width="10%" class="tableleft">主治医生：</td>
             <td><input type="text" name="pname" value=""/></td>
@@ -117,83 +166,45 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;">1103</td>
-        <td style="vertical-align:middle;">黄飞鸿</td>
-        <td style="vertical-align:middle;">4343</td>
-        <td style="vertical-align:middle;">13127653423</td>
-        <td style="vertical-align:middle;">2000元</td>
-        <td style="vertical-align:middle;">程俊</td>
-        <td style="vertical-align:middle;">2015-01-05 12:33:56</td>
-        <td style="vertical-align:middle;">血液科</td>
-        <td style="vertical-align:middle;">已住院</td>
-        <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
-                href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('出院成功！');">出院</a>
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;">1103</td>
-        <td style="vertical-align:middle;">黄飞鸿</td>
-        <td style="vertical-align:middle;">4343</td>
-        <td style="vertical-align:middle;">13127653423</td>
-        <td style="vertical-align:middle;">2000元</td>
-        <td style="vertical-align:middle;">程俊</td>
-        <td style="vertical-align:middle;">2015-01-05 12:33:56</td>
-        <td style="vertical-align:middle;">血液科</td>
-        <td style="vertical-align:middle;">已退院</td>
-        <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
-                href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('出院成功！');">出院</a>
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;">1103</td>
-        <td style="vertical-align:middle;">黄飞鸿</td>
-        <td style="vertical-align:middle;">4343</td>
-        <td style="vertical-align:middle;">13127653423</td>
-        <td style="vertical-align:middle;">2000元</td>
-        <td style="vertical-align:middle;">程俊</td>
-        <td style="vertical-align:middle;">2015-01-05 12:33:56</td>
-        <td style="vertical-align:middle;">血液科</td>
-        <td style="vertical-align:middle;">已结算</td>
-        <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
-                href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('出院成功！');">出院</a>
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>
-        <td style="vertical-align:middle;">1103</td>
-        <td style="vertical-align:middle;">黄飞鸿</td>
-        <td style="vertical-align:middle;">4343</td>
-        <td style="vertical-align:middle;">13127653423</td>
-        <td style="vertical-align:middle;">2000元</td>
-        <td style="vertical-align:middle;">程俊</td>
-        <td style="vertical-align:middle;">2015-01-05 12:33:56</td>
-        <td style="vertical-align:middle;">血液科</td>
-        <td style="vertical-align:middle;">已出院</td>
-        <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
-                href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('出院成功！');">出院</a>
-        </td>
-    </tr>
+    <c:forEach items="${inps}" var="inp">
+        <tr>
+            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${inp.medicalNum}"></td>
+            <td style="vertical-align:middle;">${inp.medicalNum}</td>
+            <td style="vertical-align:middle;">${inp.name}</td>
+            <td style="vertical-align:middle;">${inp.bedNum}</td>
+            <td style="vertical-align:middle;">${inp.phone}</td>
+            <td style="vertical-align:middle;">${inp.deposit}元</td>
+            <td style="vertical-align:middle;">${inp.doctor}</td>
+            <td style="vertical-align:middle;">${inp.inpTime}</td>
+            <td style="vertical-align:middle;">${inp.depName}</td>
+            <td style="vertical-align:middle;">${flag[inp.flag]}</td>
+            <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
+                    href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a
+                    href="javascript:alert('出院成功！');">出院</a>
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
         <th colspan="5">
             <div class="inline pull-right page">
-                <a href='#'>第一页</a> <a href='#'>上一页</a> <span class='current'>1</span><a href='#'>2</a><a
-                    href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下一页</a>
-                <a href='#'>最后一页</a>
-                &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
+                <input type="hidden" form="form1" value="${page.pageNo}" id="pageNo" name="pageNo">
+                <input type="hidden" form="form1" value="${page.totalPage}" id="totalPage" name="totalPage">
+                <a href='#' onclick="totalPage();return false">第一页</a>
+                <a href='#' onclick="up();return false">上一页</a>
+                <span class='current'>${page.pageNo}</span>
+                <a href='#' onclick="down();return false">下一页</a>
+                <a href='#' onclick="lastPage();return false">最后一页</a>
+                ${page.totalCount} 条记录 ${page.pageNo} /${page.totalPage} 页
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">录入住院信息</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-success" id="delPro" onClick="delAll();">出院</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" id="delPro" onClick="delAll();">退院</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" id="delPro">导出Excel</button>
-                <button type="button" class="btn btn-success" id="delPro">打印</button>
+                <button type="button" class="btn btn-success" id="delPro1" onClick="delAll();">退院</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-success" id="delPro13">导出Excel</button>
+                <button type="button" class="btn btn-success" id="delPro2">打印</button>
 
             </div>
 

@@ -38,7 +38,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 " email ,\n" +
                 " depID ,\n" +
                 " degree ,\n" +
-                " remark )\n" +
+                " remark,docDate)\n" +
                 "VALUES\n" +
                 "(" +
                 "?,\n" +
@@ -52,7 +52,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "?,\n" +
                 "?,\n" +
                 "?,\n" +
-                "?);";
+                "?,?);";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -69,6 +69,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             ps.setObject(10, doctor.getDepId());
             ps.setObject(11, doctor.getDegree());
             ps.setObject(12, doctor.getRemark());
+            ps.setDate(13, new java.sql.Date(new java.util.Date().getTime()));
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -312,7 +313,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    email,\n" +
                 "    depID,\n" +
                 "    degree,\n" +
-                "    remark\n" +
+                "    remark,docDate\n" +
                 "FROM\n" +
                 "    doctor\n" +
                 "limit ?,?";
@@ -341,6 +342,12 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setDepId(rs.getInt("depID"));
                 doctor.setDegree(rs.getInt("degree"));
                 doctor.setRemark(rs.getString("remark"));
+                if (rs.getDate("docDate") == null) {
+                    doctor.setDocDate("未知");
+                } else {
+
+                    doctor.setDocDate(sdf1.format(rs.getDate("docDate")));
+                }
                 list.add(doctor);
             }
         } catch (SQLException e) {
@@ -388,7 +395,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    email,\n" +
                 "    depID,\n" +
                 "    degree,\n" +
-                "    remark\n" +
+                "    remark,docDate\n" +
                 "FROM\n" +
                 "    doctor join department on doctor.depID=department.ID where department.depName=?\n" +
                 "limit ?,?";
@@ -418,6 +425,126 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setDepId(rs.getInt("depID"));
                 doctor.setDegree(rs.getInt("degree"));
                 doctor.setRemark(rs.getString("remark"));
+                if (rs.getDate("docDate") == null) {
+                    doctor.setDocDate("未知");
+                } else {
+
+                    doctor.setDocDate(sdf1.format(rs.getDate("docDate")));
+                }
+                list.add(doctor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public int findDocName(String name) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select doctor.ID from doctor where doctorName=?";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            rs.last();
+            col = rs.getRow();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
+
+    @Override
+    public int allDoctorCount(String[] args) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select count(doctor.ID) from  doctor join department\n" +
+                "on doctor.depID=department.ID where 1=1\n";
+        int col = 0;
+        if (args[0] != null && !("").equals(args[0])) {
+            sql += "and doctor.ID=?\n";
+        }
+        if (args[1] != null && !("").equals(args[1])) {
+            sql += "and doctorName=?\n";
+        }
+        if (args[2] != null && !("").equals(args[2])) {
+            sql += "and depName=?\n";
+        }
+        System.out.println(sql);
+        try {
+            int index = 1;
+            ps = conn.prepareStatement(sql);
+            if (args[0] != null && !("").equals(args[0])) {
+                ps.setInt(index++, Integer.parseInt(args[0]));
+            }
+            if (args[1] != null && !("").equals(args[1])) {
+                ps.setString(index++, args[1]);
+            }
+            if (args[2] != null && !("").equals(args[2])) {
+                ps.setString(index++, args[2]);
+            }
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(String[] args, Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT \n" +
+                "    doctor.ID,\n" +
+                "    doctorName,\n" +
+                "    depID,\n" +
+                "docDate\n" +
+                "FROM\n" +
+                "    doctor join department on doctor.depID=department.ID where 1=1 \n";
+        if (args[0] != null && !("").equals(args[0])) {
+            sql += " and doctor.ID=?\n";
+        }
+        if (args[1] != null && !("").equals(args[1])) {
+            sql += " and doctorName=?\n";
+        }
+        if (args[2] != null && !("").equals(args[2])) {
+            sql += " and depName=?\n";
+        }
+        sql += " limit ?,?";
+        System.out.println(sql);
+        List<Doctor> list = new ArrayList<>();
+        try {
+            int index = 1;
+            ps = conn.prepareStatement(sql);
+            if (args[0] != null && !("").equals(args[0])) {
+                ps.setInt(index++, Integer.parseInt(args[0]));
+            }
+            if (args[1] != null && !("").equals(args[1])) {
+                ps.setString(index++, args[1]);
+            }
+            if (args[2] != null && !("").equals(args[2])) {
+                ps.setString(index++, args[2]);
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getInt(1));
+                doctor.setDoctorName(rs.getString(2));
+                doctor.setDepId(rs.getInt(3));
+                if (rs.getDate(4) != null) {
+                    doctor.setDocDate(sdf1.format(rs.getDate(4)));
+                } else {
+                    doctor.setDocDate("未知");
+                }
                 list.add(doctor);
             }
         } catch (SQLException e) {

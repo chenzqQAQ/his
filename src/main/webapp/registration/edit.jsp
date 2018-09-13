@@ -236,11 +236,13 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">姓名</td>
-            <td><input type="text" name="registerName" value="${register.registerName}"/></td>
+            <td><input type="hidden" name="registerName" value="${register.registerName}"/>
+                <input type="text" name="registerName" value="${register.registerName}" disabled/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件类型</td>
-            <td><select name="identifierType" id="identifierType">
+            <td><input type="hidden" name="identifierType" value="${register.identifierType}"/>
+                <select name="identifierType" id="identifierType" disabled>
                 <option value="0">身份证</option>
                 <option value="1">护照</option>
                 <option value="2">军人证</option>
@@ -249,11 +251,13 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件号</td>
-            <td><input type="text" name="identifierNum" value="${register.identifierNum}"/></td>
+            <td><input type="hidden" name="identifierNum" value="${register.identifierNum}"/>
+                <input type="text" name="identifierNum" value="${register.identifierNum}" disabled/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">社保号</td>
-            <td><input type="text" name="socialSecurityNum" value="${register.socialSecurityNum}"/></td>
+            <td><input type="hidden" name="socialSecurityNum" value="${register.socialSecurityNum}"/>
+                <input type="text" name="socialSecurityNum" value="${register.socialSecurityNum}" disabled/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">挂号费</td>

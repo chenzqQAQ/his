@@ -106,6 +106,12 @@
                 alert("请选中要操作的项");
             }
         }
+
+        function clearA() {
+            $("input[name='docId']").val("");
+            $("input[name='docName']").val("");
+            $("input[name='depName']").val("");
+        }
     </script>
 </head>
 <body>
@@ -114,20 +120,19 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">医生编号：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="docId" value="${requestScope.docId}"/></td>
 
             <td width="10%" class="tableleft">医生姓名：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="docName" value="${requestScope.docName}"/></td>
 
             <td width="10%" class="tableleft">科室：</td>
-            <td><input type="text" name="depName" value="${depName}"/></td>
+            <td><input type="text" name="depName" value="${requestScope.depName}"/></td>
         </tr>
         <tr>
             <td colspan="6">
                 <center>
                     <button type="submit" class="btn btn-primary">查询</button>
-                    <button type="reset" class="btn btn-primary">清空</button>
-                    <a href="/his/doctorFindAllAction">全部</a>
+                    <button type="reset" class="btn btn-primary" onclick="clearA();return false">清空</button>
                 </center>
             </td>
         </tr>
@@ -155,7 +160,7 @@
                 <c:out value="${doctor.doctorName}"/>
             </td>
             <td style="vertical-align:middle;">
-                <c:out value="入院时间"/>
+                <c:out value="${doctor.docDate}"/>
             </td>
             <td style="vertical-align:middle;">
                 <c:set value="${doctor.depId+0}" var="bb"/>

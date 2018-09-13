@@ -188,6 +188,9 @@
             $("#form1").validate(
                 {
                     // "debug": true,
+                    onfocusout:function (element) {
+                        $(element).valid();
+                    },
                     "rules": rules,
                     "messages": messages,
                     errorPlacement: function (error, element) {

@@ -53,51 +53,78 @@
             '0': "初诊",
             '1': "复诊"
         };
+
+        function pp() {
+            $("#registerName").next().empty();
+            $("#identifierType").next().empty();
+            $("#identifierNum").next().empty();
+            $("#socialSecurityNum").next().empty();
+            $("#phoneNum").next().empty();
+            $("#expenseFlag").next().empty();
+            $("#sex").next().empty();
+            $("#age").next().empty();
+            $("#czFlag").next().empty();
+            $("#remark").next().empty();
+            $("#docName").next().empty();
+            $("#depName").next().empty();
+            $("#profession").next().empty();
+        };
         $(function () {
             $('#backid').click(function () {
                 window.location.href = "index.jsp";
             });
-            $('input[name="medicalNum"]').change(function () {
+            $('input[name="medicalNum"]').blur(function () {
+                var k = $('input[name=medicalNum]').val();
+                var pattern = new RegExp("[`~!@#$^&*=|{}':;',\\[\\]<>《》/?~！@#￥……&*|{}【】‘；：”“'。，、？' ']");
+                var reg = /^([0-9]+)$/;//全部为数字
+                if (pattern.test(k)) {
+                    $('input[name="medicalNum"]').next("span").text("病历号不能为特殊字符");
+                    return false;
+                } else if (k.indexOf(" ") != -1) {
+                    $('input[name="medicalNum"]').next("span").text("病历号不能为空格");
+                    return false;
+                }
                 $.ajax({
                     url: "/his/registerAjaxAction",
                     method: "POST",
                     data: {
-                        "medicalNum": $('input[name=medicalNum]').val()
+                        "medicalNum": k
                     },
                     success: function (msg) {
                         var k = eval("(" + msg + ")");
-                        console.log(k);
-                        if (parseInt(k['medicalNum']) == 0) {
+                        // console.log(k);
+                        if (parseInt(k['medicalNum']) === 0) {
                             $('input[name="medicalNum"]').next("span").text("病历号不存在，请输入正确病历号");
-                            $("#registerName").next().empty();
-                            $("#identifierType").next().empty();
-                            $("#identifierNum").next().empty();
-                            $("#socialSecurityNum").next().empty();
-                            $("#phoneNum").next().empty();
-                            $("#expenseFlag").next().empty();
-                            $("#sex").next().empty();
-                            $("#age").next().empty();
-                            $("#czFlag").next().empty();
-                            $("#remark").next().empty();
-                            $("#docName").next().empty();
-                            $("#depName").next().empty();
-                            $("#profession").next().empty();
+                            pp();
                         }
                         else {
-                            $('input[name="medicalNum"]').next("span").text("病历号存在,自动录入相关信息");
-                            $("#registerName").next().text(k['registerName']);
-                            $("#identifierType").next().text(p1[k['identifierType']]);
-                            $("#identifierNum").next().text(k['identifierNum']);
-                            $("#socialSecurityNum").next().text(k['socialSecurityNum']);
-                            $("#phoneNum").next().text(k['phoneNum']);
-                            $("#expenseFlag").next().text(p2[k['expenseFlag']]);
-                            $("#sex").next().text(p3[k['sex']]);
-                            $("#age").next().text(k['age']);
-                            $("#czFlag").next().text(p4[k['czFlag']]);
-                            $("#remark").next().text(k['remark']);
-                            $("#docName").next().text(k['docName']);
-                            $("#depName").next().text(k['depName']);
-                            $("#profession").next().text(k['profession']);
+                            // console.log("状态" + parseInt(k['flag']));
+                            if (parseInt(k['flag']) === 3) {
+                                $('input[name="medicalNum"]').next("span").text("病历号信息失效(已退号)，不能住院");
+                                pp();
+                            }
+                            else {
+                                if (parseInt(k['noFind']) === 1) {
+                                    $('input[name="medicalNum"]').next("span").text("病历号已住院");
+                                    pp();
+                                } else {
+
+                                    $('input[name="medicalNum"]').next("span").text("病历号存在,自动录入相关信息");
+                                    $("#registerName").next().text(k['registerName']);
+                                    $("#identifierType").next().text(p1[k['identifierType']]);
+                                    $("#identifierNum").next().text(k['identifierNum']);
+                                    $("#socialSecurityNum").next().text(k['socialSecurityNum']);
+                                    $("#phoneNum").next().text(k['phoneNum']);
+                                    $("#expenseFlag").next().text(p2[k['expenseFlag']]);
+                                    $("#sex").next().text(p3[k['sex']]);
+                                    $("#age").next().text(k['age']);
+                                    $("#czFlag").next().text(p4[k['czFlag']]);
+                                    $("#remark").next().text(k['remark']);
+                                    $("#docName").next().text(k['docName']);
+                                    $("#depName").next().text(k['depName']);
+                                    $("#profession").next().text(k['profession']);
+                                }
+                            }
                         }
                     }
                 })
@@ -107,9 +134,10 @@
     </script>
 </head>
 <body>
-<form action="index.jsp" method="post" class="definewidth m20">
+<form action="/his/inpatientAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
+            <input type="hidden" name="action" value="add">
             <td width="10%" class="tableleft">病历号</td>
             <td><input type="text" name="medicalNum" value="" placeholder="输入病历号回车自动带出挂号人信息"/>
                 <span>输入病历号回车自动带出挂号人信息</span>
@@ -173,19 +201,19 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">护理</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="nurse" value=""/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">床位号</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="bedNum" value=""/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">缴费押金</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="deposit" value=""/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">病情</td>
-            <td><textarea></textarea></td>
+            <td><textarea name="illness"></textarea></td>
         </tr>
         <tr>
             <td colspan="2">

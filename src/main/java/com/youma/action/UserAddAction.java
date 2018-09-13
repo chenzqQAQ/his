@@ -67,7 +67,7 @@ public class UserAddAction extends HttpServlet {
             if (0 != us.userAdd(users)) {
                 System.out.println("添加成功");
                 flag = "success";
-                req.getRequestDispatcher("/usersFindAllAction").forward(req, resp);
+                resp.sendRedirect("/his/usersFindAllAction");
             }
         } else {
             System.out.println("传值有空");

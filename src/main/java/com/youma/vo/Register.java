@@ -9,6 +9,8 @@
  */
 package com.youma.vo;
 
+import com.youma.util.Czq;
+
 /**
  * 挂号信息实体类
  *
@@ -18,62 +20,77 @@ public class Register {
     /**
      * 病历号
      */
+   @Czq(name = "病历号")
     private int medicalNum;
     /**
      * 挂号姓名
      */
+    @Czq(name = "挂号姓名")
     private String registerName;
     /**
      * 证件类型 0:身份证,1:护照，2军人证
      */
+    @Czq(name = "证件类型 0:身份证,1:护照，2:军人证", value = {"身份证", "护照", "军人证"})
     private int identifierType;
     /**
      * 证件号
      */
+    @Czq(name = "证件号")
     private String identifierNum;
     /**
      * 社保号
      */
+    @Czq(name = "社保号")
     private String socialSecurityNum;
     /**
      * 联系电话
      */
+    @Czq(name = "联系电话")
     private String phoneNum;
     /**
      * 是否自费 0:否,1:是
      */
+    @Czq(name = "是否自费 0:否,1:是", value = {"否", "是"})
     private int expenseFlag;
     /**
      * 性别 0:女,1:男
      */
+    @Czq(name = "性别 0:女,1:男", value = {"女", "男"})
     private int sex;
     /**
      * 年龄
      */
+    @Czq(name = "年龄")
     private int age;
     /**
      * 职业
      */
+    @Czq(name = "职业")
     private String profession;
     /**
      * 初复诊
      */
-    private String czFlag;
+    @Czq(name = "初复诊", value = {"初诊", "复诊"})
+    private int czFlag;
     /**
      * 医生id
      */
+    @Czq(name = "医生id")
     private int doctorID;
     /**
-     * 状态 0:初诊,1:复诊
+     * 状态
      */
+    @Czq(name = "状态", value = {"已挂号", "已就诊", "已取药", "已退号"})
     private int flag;
     /**
      * 备注
      */
+    @Czq(name = "备注")
     private String remark;
     /**
      * 挂号时间
      */
+    @Czq(name = "挂号时间")
     private String rtime;
 
     public String getRtime() {
@@ -146,11 +163,11 @@ public class Register {
         this.expenseFlag = expenseFlag;
     }
 
-    public String getCzFlag() {
+    public int getCzFlag() {
         return czFlag;
     }
 
-    public void setCzFlag(String czFlag) {
+    public void setCzFlag(int czFlag) {
         this.czFlag = czFlag;
     }
 

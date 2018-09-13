@@ -15,8 +15,9 @@
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
     <script type="text/javascript" src="/his/Js/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="/his//Js/My97DatePicker/WdatePicker.js"></script>
-
+    <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/his/Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/his/Js/messages_zh.js"></script>
 
     <style type="text/css">
         body {
@@ -38,6 +39,82 @@
 
 
     </style>
+    <script type="text/javascript">
+        $.validator.addMethod("isBlank", function (value, element) {
+            var pattern = new RegExp("[`~!@#$^&*=|{}':;',\\[\\]<>《》/?~！@#￥……&*|{}【】‘；：”“'。，、？' ']");
+            var reg = /^([0-9]+)$/;//全部为数字
+
+            if (pattern.test(value)) {
+                return false;
+            } else if (value.indexOf(" ") != -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }, '不能包含特殊字符');
+        var rule = {
+            doctorName: {
+                required: true,
+                minlength: 2,
+                isBlank: true
+            },
+            identifierType: {
+                required: true
+            }, identifierNum: {
+                required: true,
+                minlength: 10,
+                digits: true
+            }, phoneNum: {
+                required: true,
+                rangelength: [11, 11],
+                digits: true
+            }, sex: {
+                required: true
+            }, birthday: {
+                required: true
+            }, age: {
+                required: true
+            }, email: {
+                required: true,
+                email: true
+            }, depId: {
+                required: true
+            }, degree: {
+                required: true,
+            }
+        };
+        var message = {
+            doctorName: {
+                required: "请输入医生姓名",
+                minlength: "名字必须二个字符以上"
+            },
+            identifierType: {
+                required: "请选择证件类型"
+            }, identifierNum: {
+                required: "请输入证件号",
+                minlength: "证件号必须8位及以上",
+                digits: "证件号必须是整数"
+
+            }, phoneNum: {
+                required: "请输入手机号",
+                rangelength: "手机号必须11位",
+                digits: "手机号号必须是整数"
+            }, sex: {
+                required: "请选择性别"
+            }, birthday: {
+                required: "请选择出生日期"
+            }, age: {
+                required: "请输入年龄"
+            }, email: {
+                required: "请输入电子邮箱",
+                email: "请输入正确的电子邮箱地址"
+            }, depId: {
+                required: "请选择科室"
+            }, degree: {
+                required: "请选择学历",
+            }
+        };
+    </script>
     <script type="text/javascript">
         var datepicker = {
             lang: 'zh-cn',
@@ -73,7 +150,7 @@
 
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "/his/doctor/index.jsp";
+                window.location.href = "/his/doctorFindAllAction";
             });
             findAllDep();
             $("input[name='sex'][value=${doctor.sex}]").prop("checked", "true");
@@ -89,28 +166,46 @@
                         .val(age)
                 }
             });
+            $('#form1').validate({
+                rules: rule,
+                messages: message,
+                onfocusout: function (element) {
+                    $(element).valid();
+                },
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.parent());
+                }
+            });
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
         });
     </script>
 </head>
 <body>
-<form action="/his/doctorUpdateAction" method="post" class="definewidth m20">
+<form id="form1" action="/his/doctorUpdateAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <input type="hidden" name="id" value="${doctor.id}">
             <td width="10%" class="tableleft">姓名</td>
-            <td><input type="text" name="doctorName" value="${doctor.doctorName}"/></td>
+            <td><input type="hidden" name="doctorName" value="${doctor.doctorName}"/>
+                <input type="text" name="doctorName" value="${doctor.doctorName}" disabled/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件类型</td>
-            <td><select name="identifierType" id="identifierType">
-                <option value="0">身份证</option>
-                <option value="1">护照</option>
-                <option value="2">军人证</option>
-            </select></td>
+            <td><input type="hidden" name="identifierType" value="${doctor.identifierType}"/>
+                <select name="identifierType" id="identifierType" disabled>
+                    <option value="0">身份证</option>
+                    <option value="1">护照</option>
+                    <option value="2">军人证</option>
+                </select></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件号</td>
-            <td><input type="text" name="identifierNum" value="${doctor.identifierNum}"/></td>
+            <td><input type="hidden" name="identifierNum" value="${doctor.identifierNum}"/>
+                <input type="text" name="identifierNum" value="${doctor.identifierNum}" disabled/></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">手机</td>

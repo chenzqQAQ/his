@@ -44,7 +44,7 @@ public class RegisterAction extends HttpServlet {
         System.out.println("请求参数为" + req.getQueryString());
         String action = req.getParameter("action");
         System.out.println(action);
-        if (action.equals("add")) {
+        if ("add".equals(action)) {
             System.out.println("这是添加事件");
             Register register = new Register();
             // System.out.println("姓名" + req.getParameter("registerName"));
@@ -69,7 +69,7 @@ public class RegisterAction extends HttpServlet {
             register.setSex(Integer.parseInt(req.getParameter("sex")));
             register.setAge(Integer.parseInt(req.getParameter("age")));
             register.setProfession(req.getParameter("profession"));
-            register.setCzFlag(req.getParameter("czFlag"));
+            register.setCzFlag(Integer.parseInt(req.getParameter("czFlag")));
             register.setDoctorID(Integer.parseInt(req.getParameter("docName")));
             register.setRemark(req.getParameter("remark"));
             if (0 != registerServer.registerAdd(register)) {
@@ -78,7 +78,7 @@ public class RegisterAction extends HttpServlet {
             } else {
                 System.out.println("添加失败");
             }
-        } else if (action.equals("find")) {
+        } else if ("find".equals(action)) {
             String[] p1 = {"身份证", "护照", "军人证"};
             String[] p2 = {"否", "是"};
             String[] p3 = {"女", "男"};
@@ -99,7 +99,7 @@ public class RegisterAction extends HttpServlet {
             req.setAttribute("docName", doctor.getDoctorName());
             req.setAttribute("depName", department.getDepName());
             req.getRequestDispatcher("/registration/look.jsp").forward(req, resp);
-        } else if (action.equals("del")) {
+        } else if ("del".equals(action)) {
             System.out.println("这是删除");
             int id = Integer.parseInt(req.getParameter("medicalNum"));
             if (0 != registerServer.delRegister(id)) {
@@ -109,7 +109,17 @@ public class RegisterAction extends HttpServlet {
                 System.out.println("删除失败");
             }
 
-        } else if (action.equals("edit")) {
+        } else if ("delAll".equals(action)) {
+            System.out.println("删除选中的挂号信息");
+            String[] a = req.getParameterValues("medicalNum");
+            int[] id = new int[a.length];
+            for (int i = 0; i < a.length; i++) {
+                id[i] = Integer.parseInt(a[i]);
+            }
+            if (0 != registerServer.delAllRegister(id)) {
+                resp.sendRedirect("/his/registerFindAction");
+            }
+        } else if ("edit".equals(action)) {
             String[] p1 = {"身份证", "护照", "军人证"};
             String[] p2 = {"否", "是"};
             String[] p3 = {"女", "男"};
@@ -129,7 +139,7 @@ public class RegisterAction extends HttpServlet {
             req.setAttribute("register", register);
             req.setAttribute("depId", department.getId());
             req.getRequestDispatcher("/registration/edit.jsp").forward(req, resp);
-        } else if (action.equals("update")) {
+        } else if ("update".equals(action)) {
             System.out.println("这是修改事件");
             int id = Integer.parseInt(req.getParameter("medicalNum"));
             Register register = new Register(id);
@@ -156,7 +166,7 @@ public class RegisterAction extends HttpServlet {
             register.setSex(Integer.parseInt(req.getParameter("sex")));
             register.setAge(Integer.parseInt(req.getParameter("age")));
             register.setProfession(req.getParameter("profession"));
-            register.setCzFlag(req.getParameter("czFlag"));
+            register.setCzFlag(Integer.parseInt(req.getParameter("czFlag")));
             register.setDoctorID(Integer.parseInt(req.getParameter("docName")));
             register.setRemark(req.getParameter("remark"));
             if (0 != registerServer.updateRegister(register)) {

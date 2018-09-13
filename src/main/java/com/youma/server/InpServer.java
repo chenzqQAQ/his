@@ -1,4 +1,4 @@
-package com.youma.dao;
+package com.youma.server;
 
 import com.youma.util.Page;
 import com.youma.vo.Inpatient;
@@ -6,11 +6,9 @@ import com.youma.vo.Inpatient;
 import java.util.List;
 
 /**
- * 住院信息管理
- *
  * @author 陈泽群
  */
-public interface InpatientDao {
+public interface InpServer {
     /**
      * 添加住院信息
      *
@@ -49,7 +47,6 @@ public interface InpatientDao {
      * @return 住院信息实体类
      */
     public Inpatient findInpatient(int id);
-
     /**
      * 全部住院信息条数
      * @return 全部住院信息条数

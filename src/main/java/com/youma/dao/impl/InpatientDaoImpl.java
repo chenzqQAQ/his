@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.InpatientDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Inpatient;
 
 import java.sql.SQLException;
@@ -47,6 +48,8 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -74,6 +77,8 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -90,6 +95,8 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -101,8 +108,9 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
                 "    inpatient.nurse,\n" +
                 "    inpatient.bedNum,\n" +
                 "    inpatient.deposit,\n" +
-                "    inpatient.illness\n" +
-                "FROM his.inpatient;\n";
+                "    inpatient.illness,inpatient.flag,inptime,registerName,register.phoneNum as 'a',doctorName,depName\n" +
+                "FROM his.inpatient join register on inpatient.medicalNum=register.medicalNum\n" +
+                "join doctor on doctorID=ID join department on doctor.depID=department.ID";
         List<Inpatient> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
@@ -114,10 +122,18 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
                 inpatient.setBedNum(rs.getString("bedNum"));
                 inpatient.setDeposit(rs.getDouble("deposit"));
                 inpatient.setIllness(rs.getString("illness"));
+                inpatient.setFlag(rs.getInt("flag"));
+                inpatient.setInpTime(sdf.format(rs.getTimestamp("inptime")));
+                inpatient.setName(rs.getString("registerName"));
+                inpatient.setPhone(rs.getString("a"));
+                inpatient.setDoctor(rs.getString("doctorName"));
+                inpatient.setDepName(rs.getString("depName"));
                 list.add(inpatient);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
@@ -146,7 +162,69 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return inpatient;
+    }
+
+    @Override
+    public int inpCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT count(inpatient.medicalNum)\n" +
+                "FROM his.inpatient\n";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public List<Inpatient> findInp(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT inpatient.medicalNum,\n" +
+                "    inpatient.nurse,\n" +
+                "    inpatient.bedNum,\n" +
+                "    inpatient.deposit,\n" +
+                "    inpatient.illness,inpatient.flag,inptime,registerName,register.phoneNum as 'a',doctorName,depName\n" +
+                "FROM his.inpatient join register on inpatient.medicalNum=register.medicalNum\n" +
+                "join doctor on doctorID=ID join department on doctor.depID=department.ID";
+        sql += " limit ?,?";
+        List<Inpatient> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Inpatient inpatient = new Inpatient();
+                inpatient.setMedicalNum(rs.getInt("medicalNum"));
+                inpatient.setNurse(rs.getString("nurse"));
+                inpatient.setBedNum(rs.getString("bedNum"));
+                inpatient.setDeposit(rs.getDouble("deposit"));
+                inpatient.setIllness(rs.getString("illness"));
+                inpatient.setFlag(rs.getInt("flag"));
+                inpatient.setInpTime(sdf.format(rs.getTimestamp("inptime")));
+                inpatient.setName(rs.getString("registerName"));
+                inpatient.setPhone(rs.getString("a"));
+                inpatient.setDoctor(rs.getString("doctorName"));
+                inpatient.setDepName(rs.getString("depName"));
+                list.add(inpatient);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
     }
 }

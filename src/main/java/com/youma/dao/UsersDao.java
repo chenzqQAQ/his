@@ -42,12 +42,14 @@ public interface UsersDao {
      * @return List<Users> 用户集合
      */
     public List<Users> findAllUsers();
+
     /**
      * 获取所有用户信息条数
      *
      * @return int
      */
     public int allUsersCount();
+
     /**
      * 获取所有用户信息
      *
@@ -70,5 +72,13 @@ public interface UsersDao {
      * @return 用户实体类
      */
     public int findUsers(String userName);
+
+    /**
+     * 删除选中的用户信息
+     *
+     * @param args
+     * @return
+     */
+    public int delUsers(int[] args);
 
 }

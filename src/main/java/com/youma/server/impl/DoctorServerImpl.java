@@ -72,4 +72,19 @@ public class DoctorServerImpl implements DoctorServer {
     public List<Doctor> findAllDoctor(String depName, Page page) {
         return doctorDao.findAllDoctor(depName, page);
     }
+
+    @Override
+    public int findDocName(String name) {
+        return doctorDao.findDocName(name);
+    }
+
+    @Override
+    public int allDoctorCount(String[] args) {
+        return doctorDao.allDoctorCount(args);
+    }
+
+    @Override
+    public List<Doctor> findAllDoctor(String[] args, Page page) {
+        return doctorDao.findAllDoctor(args, page);
+    }
 }

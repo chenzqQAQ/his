@@ -197,4 +197,26 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
         }
         return col;
     }
+
+    @Override
+    public int delUsers(int[] args) {
+        conn = ConnectionDB.getConnection();
+        String sql = "delete from users where userID in ( ?";
+        for (int i = 1; i < args.length; i++) {
+            sql += ", ?";
+        }
+        sql += ")";
+        int col = 0;
+        System.out.println(sql);
+        try {
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                ps.setInt(i + 1, args[i]);
+            }
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
 }

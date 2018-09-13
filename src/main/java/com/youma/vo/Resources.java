@@ -19,7 +19,7 @@ public class Resources {
      */
     private int resID;
     /**
-     * 资源名臣
+     * 资源名称
      */
     private String resName;
     /**
@@ -30,6 +30,18 @@ public class Resources {
      * 父资源id
      */
     private int resParentId;
+    /**
+     * 状态, 0:无效,1:有效
+     */
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getResID() {
         return resID;

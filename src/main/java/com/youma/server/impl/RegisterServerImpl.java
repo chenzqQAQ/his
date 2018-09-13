@@ -62,4 +62,14 @@ public class RegisterServerImpl implements RegisterServer {
     public List<Register> PageAllRegister(Page page, String[] args) {
         return registerDao.PageAllRegister(page, args);
     }
+
+    @Override
+    public int delAllRegister(int[] args) {
+        return registerDao.delAllRegister(args);
+    }
+
+    @Override
+    public List<Register> findAllRegister(int[] args) {
+        return registerDao.findAllRegister(args);
+    }
 }

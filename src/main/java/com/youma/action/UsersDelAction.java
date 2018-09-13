@@ -35,9 +35,21 @@ public class UsersDelAction extends HttpServlet {
         resp.setCharacterEncoding("utf-8");
         resp.setContentType("text/html; charset=UTF-8");
         UsersServer us = new UsersServerImpl();
-        int id = Integer.parseInt(req.getParameter("drugid"));
-        if (0 != us.delUsers(id)) {
-            resp.sendRedirect("/his/usersFindAllAction");
+        String action = req.getParameter("action");
+        if (null != action) {
+            String[] a = req.getParameterValues("drugid");
+            int[] id = new int[a.length];
+            for (int i = 0; i < a.length; i++) {
+                id[i] = Integer.parseInt(a[i]);
+            }
+            if (0 != us.delUsers(id)) {
+                resp.sendRedirect("/his/usersFindAllAction");
+            }
+        } else {
+            int id = Integer.parseInt(req.getParameter("drugid"));
+            if (0 != us.delUsers(id)) {
+                resp.sendRedirect("/his/usersFindAllAction");
+            }
         }
     }
 }

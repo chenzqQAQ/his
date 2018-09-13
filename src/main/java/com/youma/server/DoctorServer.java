@@ -90,4 +90,25 @@ public interface DoctorServer {
      * @return
      */
     public List<Doctor> findAllDoctor(String depName,Page page);
+    /**
+     * 查看医生是否存在
+     * @param name
+     * @return
+     */
+    public int findDocName(String name);
+    /**
+     * 根据医生编号,医生姓名,科室名查询医生信息条数
+     *
+     * @param args
+     * @return
+     */
+    public int allDoctorCount(String[] args);
+
+    /**
+     * 根据医生编号,医生姓名,科室名分页查询医生信息
+     * @param args
+     * @param page
+     * @return
+     */
+    public List<Doctor> findAllDoctor(String[] args, Page page);
 }

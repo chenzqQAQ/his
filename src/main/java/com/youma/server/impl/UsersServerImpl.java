@@ -21,7 +21,7 @@ import java.util.List;
  * @author 陈泽群
  */
 public class UsersServerImpl implements UsersServer {
-    UsersDao usersDao = new UsersDaoImpl();
+    private UsersDao usersDao = new UsersDaoImpl();
 
     @Override
     public int userAdd(Users user) {
@@ -61,5 +61,10 @@ public class UsersServerImpl implements UsersServer {
     @Override
     public int findUsers(String userName) {
         return usersDao.findUsers(userName);
+    }
+
+    @Override
+    public int delUsers(int[] args) {
+        return usersDao.delUsers(args);
     }
 }

@@ -82,6 +82,19 @@ public class Doctor {
      */
     @Exclude
     private String remark;
+    /**
+     * 入院日期
+     */
+    @Exclude
+    private String docDate;
+
+    public String getDocDate() {
+        return docDate;
+    }
+
+    public void setDocDate(String docDate) {
+        this.docDate = docDate;
+    }
 
     public int getId() {
         return id;

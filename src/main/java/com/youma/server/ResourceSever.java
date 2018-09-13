@@ -1,4 +1,4 @@
-package com.youma.dao;
+package com.youma.server;
 
 import com.youma.util.Page;
 import com.youma.vo.Resources;
@@ -6,11 +6,9 @@ import com.youma.vo.Resources;
 import java.util.List;
 
 /**
- * 权限资源表操作接口
- *
- * @author Administrator
+ * @author 陈泽群
  */
-public interface ResourcesDao {
+public interface ResourceSever {
     /**
      * 添加权限资源信息
      *
@@ -49,7 +47,6 @@ public interface ResourcesDao {
      * @return 权限资源类
      */
     public Resources findResources(int id);
-
     /**
      * 全部资源条数
      * @return
@@ -62,5 +59,4 @@ public interface ResourcesDao {
      * @return
      */
     public List<Resources> findAllResources(Page page);
-
 }
