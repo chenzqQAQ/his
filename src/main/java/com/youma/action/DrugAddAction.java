@@ -11,6 +11,7 @@ package com.youma.action;
 
 import com.youma.server.DrugServer;
 import com.youma.server.impl.DrugServerImpl;
+import com.youma.util.Upload;
 import com.youma.vo.Drug;
 
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author 陈泽群
@@ -56,22 +58,40 @@ public class DrugAddAction extends HttpServlet {
         // System.out.println(req.getParameter("totalVolume"));
         // System.out.println(req.getParameter("inventory"));
         // System.out.println(req.getParameter("remark"));
-        drug.setDrugID(req.getParameter("drugID"));
-        drug.setDrugUrl(req.getParameter("drugUrl"));
-        drug.setPurchasePrice(Double.parseDouble(req.getParameter("purchasePrice")));
-        drug.setSellingPrice(Double.parseDouble(req.getParameter("sellingPrice")));
-        drug.setDrugName(req.getParameter("drugName"));
-        drug.setDrugType(Integer.parseInt(req.getParameter("drugType")));
-        drug.setDescription(req.getParameter("description"));
-        drug.setProductionDate(req.getParameter("productionDate"));
-        drug.setOverdueDate(req.getParameter("overdueDate"));
-        drug.setQualityLife(Integer.parseInt(req.getParameter("qualityLife")));
-        drug.setDetailedDes(req.getParameter("detailedDes"));
-        drug.setManufacturer(req.getParameter("manufacturer"));
-        drug.setTakingDes(req.getParameter("takingDes"));
-        drug.setTotalVolume(Integer.parseInt(req.getParameter("totalVolume")));
-        drug.setInventory(Integer.parseInt(req.getParameter("inventory")));
-        drug.setRemark(req.getParameter("remark"));
+        String savePath = this.getServletContext().getRealPath("/uploadFile");
+        String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
+        // String url="D:\\his\\target\\his\\uploadFile\\1\\14\\2fd15e45-7f8f-44c5-a8e1-d66ec87ae221_10.jpg";
+        // String s=req.getContextPath().substring(1);
+        // int i=url.lastIndexOf(s);
+        // System.out.println(url);
+        // System.out.println(url.substring(i-1));
+        // System.out.println(req.getContextPath());
+        // System.out.println(savePath);
+        // System.out.println(tempPath);
+        Upload upload = new Upload(savePath, tempPath);
+        Map<String, String> map = upload.up(req);
+        if (map.get("url") != null) {
+            drug.setDrugUrl(map.get("url"));
+            System.out.println(map.get("message"));
+        } else {
+            System.out.println(map.get("message"));
+        }
+        drug.setDrugID(map.get("drugID"));
+        System.out.println("药品编号" + drug.getDrugID());
+        drug.setPurchasePrice(Double.parseDouble(map.get("purchasePrice")));
+        drug.setSellingPrice(Double.parseDouble(map.get("sellingPrice")));
+        drug.setDrugName(map.get("drugName"));
+        drug.setDrugType(Integer.parseInt(map.get("drugType")));
+        drug.setDescription(map.get("description"));
+        drug.setProductionDate(map.get("productionDate"));
+        drug.setOverdueDate(map.get("overdueDate"));
+        drug.setQualityLife(Integer.parseInt(map.get("qualityLife")));
+        drug.setDetailedDes(map.get("detailedDes"));
+        drug.setManufacturer(map.get("manufacturer"));
+        drug.setTakingDes(map.get("takingDes"));
+        drug.setTotalVolume(Integer.parseInt(map.get("totalVolume")));
+        drug.setInventory(Integer.parseInt(map.get("inventory")));
+        drug.setRemark(map.get("remark"));
         if (0 != drugServer.drugAdd(drug)) {
             System.out.println("添加成功");
             resp.sendRedirect("/his/drugFindAllAction");

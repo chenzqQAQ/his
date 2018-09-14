@@ -80,7 +80,7 @@ public class Register {
     /**
      * 状态
      */
-    @Czq(name = "状态", value = {"已挂号", "已就诊", "已取药", "已退号"})
+    @Czq(name = "状态", value = {"已挂号", "已就诊", "已询医", "已退号"})
     private int flag;
     /**
      * 备注

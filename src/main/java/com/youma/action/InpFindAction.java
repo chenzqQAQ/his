@@ -52,8 +52,8 @@ public class InpFindAction extends HttpServlet {
             }
             List<Inpatient> list = inpServer.findInp(page);
             req.setAttribute("inps", list);
-            System.out.println("当前页"+page.getPageNo());
-            System.out.println("最后页"+page.getTotalPage());
+            // System.out.println("当前页"+page.getPageNo());
+            // System.out.println("最后页"+page.getTotalPage());
             req.setAttribute("page", page);
             req.getRequestDispatcher("/hospital/index.jsp").forward(req, resp);
         }

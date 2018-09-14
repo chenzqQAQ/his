@@ -54,9 +54,9 @@ public class Inpatient {
      */
     private String illness;
     /**
-     * 住院状态 0:已住院,1:已退院,2:已出院
+     * 住院状态 0:已住院,1:未结算,2:已结算,3:已退院,4:已出院
      */
-    @Czq(name = "住院状态", value = {"已住院", "已退院", "已出院"})
+    @Czq(name = "住院状态", value = {"已住院","未结算","已结算","已退院", "已出院"})
     private int flag;
     /**
      * 入院时间

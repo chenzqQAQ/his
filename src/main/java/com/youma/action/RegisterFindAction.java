@@ -89,9 +89,9 @@ public class RegisterFindAction extends HttpServlet {
         } else {
             page.setPageNo(Integer.parseInt(pNo));
         }
-        System.out.println("传来的病历号为" + id);
-        System.out.println("传来的医生名为" + docName);
-        System.out.println("传来的科室号为" + depName);
+        // System.out.println("传来的病历号为" + id);
+        // System.out.println("传来的医生名为" + docName);
+        // System.out.println("传来的科室号为" + depName);
         List<Register> myList = new ArrayList<>();
         boolean b = (null != docName && !("").equals(docName)) || (null != depName && !("").equals(depName));
         if (null != id && !("").equals(id)) {
@@ -99,12 +99,12 @@ public class RegisterFindAction extends HttpServlet {
             httpSession.setAttribute("medicalNum", id);
             Register register = registerServer.findRegister(Integer.parseInt(id));
             if (register.getMedicalNum() != 0) {
-                System.out.println("找到了");
+                // System.out.println("找到了");
                 list.add(register);
                 page.setTotalCount(list.size());
                 page.setPageNo(1);
             } else {
-                System.out.println("没找到");
+                // System.out.println("没找到");
                 page.setTotalCount(0);
                 page.setPageNo(1);
             }
@@ -127,22 +127,22 @@ public class RegisterFindAction extends HttpServlet {
                 args[1] = null;
                 httpSession.removeAttribute("depName");
             }
-            System.out.println(String.format("医生名%s", docName));
-            System.out.println(String.format("科室名%s", depName));
+            // System.out.println(String.format("医生名%s", docName));
+            // System.out.println(String.format("科室名%s", depName));
             int col = registerServer.findRegisterCount(args);
             page.setTotalCount(col);
-            System.out.println(String.format("条数为%d", col));
+            // System.out.println(String.format("条数为%d", col));
             list = registerServer.PageAllRegister(page, args);
         } else {
             httpSession.removeAttribute("medicalNum");
             httpSession.removeAttribute("depName");
             httpSession.removeAttribute("docName");
-            System.out.println("进入全查");
-            System.out.println("全查总数" + page.getTotalCount());
-            System.out.println("当前页面" + page.getPageNo());
-            System.out.println("总页面数" + page.getTotalPage());
-            System.out.println("单页条数" + page.getPageSize());
-            System.out.println("查询的偏移量" + page.getOffset());
+            // System.out.println("进入全查");
+            // System.out.println("全查总数" + page.getTotalCount());
+            // System.out.println("当前页面" + page.getPageNo());
+            // System.out.println("总页面数" + page.getTotalPage());
+            // System.out.println("单页条数" + page.getPageSize());
+            // System.out.println("查询的偏移量" + page.getOffset());
             myList = registerServer.PageAllRegister(page);
         }
         List<Doctor> list1 = new DoctorServerImpl().findAllDoctor();

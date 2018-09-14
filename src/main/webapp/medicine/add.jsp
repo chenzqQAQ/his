@@ -80,7 +80,7 @@
     </script>
 </head>
 <body>
-<form action="../drugAddAction" method="post" class="definewidth m20">
+<form action="../drugAddAction" method="post" class="definewidth m20" enctype="multipart/form-data">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品编号</td>

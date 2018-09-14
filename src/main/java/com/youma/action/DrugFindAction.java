@@ -39,6 +39,11 @@ public class DrugFindAction extends HttpServlet {
         String id = req.getParameter("drugid");
         Drug drug = drugServer.findDrug(id);
         // System.out.println("全查" + list.size());
+        String str=drug.getDrugUrl();
+        //去掉项目的斜杠
+        String ss=req.getContextPath().substring(1);
+        int i=str.lastIndexOf(ss);
+        drug.setDrugUrl(str.substring(i-1));
         req.setAttribute("drug", drug);
         req.getRequestDispatcher("/medicine/edit.jsp").forward(req, resp);
     }

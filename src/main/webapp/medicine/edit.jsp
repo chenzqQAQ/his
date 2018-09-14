@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
 <%@page isELIgnored="false" %>
@@ -34,9 +35,14 @@
                 padding-right: 5px;
             }
         }
+        img{
+            width: 500px;
+            height: 200px;
+        }
 
 
     </style>
+
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
@@ -56,7 +62,10 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">图片</td>
-            <td><input type="file" name="drugUrl" value="${drug.drugUrl}"/></td>
+
+            <td><img src="${drug.drugUrl}" title="图片找不到"/>
+                <%--<input type="file" name="drugUrl" value="${drug.drugUrl}"/>--%>
+            </td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">进价</td>
