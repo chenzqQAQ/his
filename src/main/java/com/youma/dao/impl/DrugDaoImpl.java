@@ -58,6 +58,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -111,6 +113,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return col;
@@ -127,6 +131,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -167,6 +173,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return list;
@@ -207,6 +215,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return drug;
@@ -251,6 +261,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return list;
@@ -293,6 +305,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return list;
@@ -300,11 +314,93 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
 
     @Override
     public int drugCount(Drug drug) {
-        return 0;
+        conn = ConnectionDB.getConnection();
+        String sql = "select count(drug.drugID) from drug where 1=1";
+        if (drug.getDrugName() != null && !"".equals(drug.getDrugName())) {
+            sql += " and drugName=?";
+        }
+        if (drug.getDrugType() != 99) {
+            sql += " and drugType=?";
+        }
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            int index = 1;
+            if (drug.getDrugName() != null && !"".equals(drug.getDrugName())) {
+                ps.setString(index++, drug.getDrugName());
+            }
+            if (drug.getDrugType() != 99) {
+                ps.setInt(index++, drug.getDrugType());
+            }
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
     }
 
     @Override
-    public List<Drug> allDrug(Drug drug, Page page) {
-        return null;
+    public List<Drug> allDrug(Drug drug1, Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT drug.drugID , drugUrl , purchasePrice , sellingPrice , drugName , \n" +
+                "drugType , description , productionDate , overdueDate , qualityLife , \n" +
+                "detailedDes , manufacturer , takingDes , totalVolume , inventory , \n" +
+                "flag , remark \n" +
+                "FROM drug\n" +
+                "WHERE 1=1";
+        if (drug1.getDrugName() != null && !"".equals(drug1.getDrugName())) {
+            sql += " and drugName=?";
+        }
+        if (drug1.getDrugType() != 99) {
+            sql += " and drugType=?";
+        }
+        sql += " limit ?,?";
+        List<Drug> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            int index = 1;
+            if (drug1.getDrugName() != null && !"".equals(drug1.getDrugName())) {
+                ps.setString(index++, drug1.getDrugName());
+            }
+            if (drug1.getDrugType() != 99) {
+                ps.setInt(index++, drug1.getDrugType());
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Drug drug = new Drug();
+                int i = 1;
+                drug.setDrugID(rs.getString(i++));
+                drug.setDrugUrl(rs.getString(i++));
+                drug.setPurchasePrice(rs.getDouble(i++));
+                drug.setSellingPrice(rs.getDouble(i++));
+                drug.setDrugName(rs.getString(i++));
+                drug.setDrugType(rs.getInt(i++));
+                drug.setDescription(rs.getString(i++));
+                drug.setProductionDate(sdf1.format(rs.getDate(i++)));
+                drug.setOverdueDate(sdf1.format(rs.getDate(i++)));
+                drug.setQualityLife(rs.getInt(i++));
+                drug.setDetailedDes(rs.getString(i++));
+                drug.setManufacturer(rs.getString(i++));
+                drug.setTakingDes(rs.getString(i++));
+                drug.setTotalVolume(rs.getInt(i++));
+                drug.setInventory(rs.getInt(i++));
+                drug.setFlag(rs.getInt(i++));
+                drug.setRemark(rs.getString(i++));
+                list.add(drug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+
+        return list;
     }
 }

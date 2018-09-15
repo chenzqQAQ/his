@@ -12,6 +12,7 @@ package com.youma.server.impl;
 import com.youma.dao.DrugDao;
 import com.youma.dao.impl.DrugDaoImpl;
 import com.youma.server.DrugServer;
+import com.youma.util.Page;
 import com.youma.vo.Drug;
 
 import java.util.List;
@@ -56,6 +57,16 @@ public class DrugServerImpl implements DrugServer {
         }
         // System.out.println(drug.getDrugType());
         return drugDao.findTypeDrug(drug.getDrugType());
+    }
+
+    @Override
+    public int drugCount(Drug drug) {
+        return drugDao.drugCount(drug);
+    }
+
+    @Override
+    public List<Drug> allDrug(Drug drug, Page page) {
+        return drugDao.allDrug(drug, page);
     }
 
 }

@@ -61,7 +61,7 @@
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "/his/medicine/index.jsp";
+                window.location.href = "/his/drugFindNameAction";
             });
             $('input[name="qualityLife"]').mouseover(function () {
                 var date1=$('#productionDate').val();

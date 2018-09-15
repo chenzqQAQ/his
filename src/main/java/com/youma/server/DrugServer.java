@@ -1,5 +1,6 @@
 package com.youma.server;
 
+import com.youma.util.Page;
 import com.youma.vo.Drug;
 
 import java.util.List;
@@ -52,4 +53,20 @@ public interface DrugServer {
      * @return List<Drug> 药品信息集合
      */
     public List<Drug> findTypeDrug(Drug drug);
+    /**
+     * 模糊查询药品条数(药品名称,药品类型)
+     *
+     * @param drug
+     * @return
+     */
+    public int drugCount(Drug drug);
+
+    /**
+     * 模糊查询药品信息分页显示(药品名称,药品类型)
+     *
+     * @param drug
+     * @param page
+     * @return
+     */
+    public List<Drug> allDrug(Drug drug, Page page);
 }

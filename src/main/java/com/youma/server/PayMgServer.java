@@ -1,4 +1,4 @@
-package com.youma.dao;
+package com.youma.server;
 
 import com.youma.util.Page;
 import com.youma.vo.PayManager;
@@ -6,25 +6,27 @@ import com.youma.vo.PayManager;
 import java.util.List;
 
 /**
+ * PayMgServer
+ * TODO(描述类的作用)
+ *
  * @author 陈泽群
+ * @date 2018/9/14 10:54
  */
-public interface PayManagerDao {
+public interface PayMgServer {
     /**
-     * 添加收费管理列表到数据库
-     *
+     * 添加收费项目列表到数据库
      * @param list
      * @return
      */
     public int addPay(List<PayManager> list);
 
     /**
-     * 分页查询收费管理列表
+     * 分页查询收费项目列表
      *
      * @param page
      * @return
      */
     public List<PayManager> findAll(Page page);
-
     /**
      * 查询收费管理列表条数
      * @return
@@ -37,7 +39,6 @@ public interface PayManagerDao {
      * @return
      */
     public List<PayManager> findAll(int id);
-
     /**
      * 模糊查询收费列表信息条数
      * @param payManager

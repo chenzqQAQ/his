@@ -11,6 +11,7 @@ package com.youma.action;
 
 import com.youma.server.DrugServer;
 import com.youma.server.impl.DrugServerImpl;
+import com.youma.util.Page;
 import com.youma.vo.Drug;
 
 import javax.servlet.ServletException;
@@ -39,13 +40,28 @@ public class DrugFindNameAction extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         Drug drug = new Drug();
         String name = req.getParameter("drugName");
-        int type = Integer.parseInt(req.getParameter("drugType"));
+        int type;
+
+        if (req.getParameter("drugType") == null || "".equals(req.getParameter("drugType"))) {
+            type = 99;
+        } else {
+            type = Integer.parseInt(req.getParameter("drugType"));
+
+        }
         DrugServer drugServer = new DrugServerImpl();
         drug.setDrugName(name);
         drug.setDrugType(type);
-        List<Drug> list = drugServer.findTypeDrug(drug);
+        Page page = new Page();
+        page.setTotalCount(drugServer.drugCount(drug));
+        if (req.getParameter("pageNo") != null && !"".equals(req.getParameter("pageNo"))) {
+            page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
+        } else {
+            page.setPageNo(1);
+        }
+        List<Drug> list = drugServer.allDrug(drug, page);
         req.setAttribute("drugs", list);
-        req.setAttribute("drugType", type);
+        req.setAttribute("drug", drug);
+        req.setAttribute("page", page);
         req.getRequestDispatcher("/medicine/index.jsp").forward(req, resp);
     }
 }

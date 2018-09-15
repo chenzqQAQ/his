@@ -74,6 +74,27 @@
             $('#newNav').click(function () {
                 window.location.href = "/his/doctor/add.jsp";
             });
+            $('#exlOutAll').click(function () {
+                //全部数据导出
+                $.ajax({
+                    url: "/his/docExlOut",
+                    type: "GET",
+                    success: function (msg) {
+                        var k = eval("(" + msg + ")");
+                        console.log(k['message']);
+                        if (parseInt(k['message']) === 1) {
+                            alert("Excel导出成功");
+                            var form = $('#form2');
+                            $('input[name=url]').val(k['url']);
+                            form.submit();
+                        }
+                        else {
+                            alert("Excel导出失败");
+                        }
+                    }
+                });
+                return false;
+            })
         });
 
         function checkall() {
@@ -115,7 +136,9 @@
     </script>
 </head>
 <body>
-
+<form id="form2" action="/his/down" method="post" hidden>
+    <input type="hidden" name="url" value="">
+</form>
 <form id="form1" action="/his/doctorFindAllAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
@@ -228,7 +251,7 @@
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">添加新医生</button>
-                <button type="button" class="btn btn-success" id="delPro">导出Excel</button>
+                <button type="button" class="btn btn-success" id="exlOutAll">导出Excel</button>
             </div>
 
         </th>

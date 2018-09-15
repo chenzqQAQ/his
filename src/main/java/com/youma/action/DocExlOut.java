@@ -1,18 +1,18 @@
 /**
  * Copyright (C),2015-2018
- * FileNmae: ExlOut
+ * FileNmae: DocExlOut
  * Author:   Administrator
- * Date:     2018/9/1215:05
+ * Date:     2018/9/15 11:30
  * History:
  * <author> <Time> <version> <desc>
  * 陈泽群  时间    版本号  描述
  */
 package com.youma.action;
 
-import com.youma.server.RegisterServer;
-import com.youma.server.impl.RegisterServerImpl;
+import com.youma.server.DoctorServer;
+import com.youma.server.impl.DoctorServerImpl;
 import com.youma.util.Exl;
-import com.youma.vo.Register;
+import com.youma.vo.Doctor;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,12 +24,14 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * 将挂号信息导入到exl文件中
- *@date 2018/9/10 14:30
+ * DocExlOut
+ * TODO(描述类的作用)
+ *
  * @author 陈泽群
+ * @date 2018/9/15 11:30
  */
-@WebServlet("/exlOut")
-public class ExlOut extends HttpServlet {
+@WebServlet("/docExlOut")
+public class DocExlOut extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -42,21 +44,19 @@ public class ExlOut extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         String all = req.getParameter("all");
         //全部挂号信息表文件
-        String allRegister = "D://registerAll.xlsx";
+        String allDoc = "D://docAll.xlsx";
         //选中挂号部分信息表文件
-        String partRegister = "D://registerPart.xlsx";
+        String partDoc = "D://docPart.xlsx";
         String str;
+        DoctorServer doctorServer = new DoctorServerImpl();
         if (all == null) {
-            RegisterServer registerServer = new RegisterServerImpl();
-            List<Register> list = registerServer.findAllRegister();
-
-            Exl exl = new Exl("挂号信息表");
+            List<Doctor> list = doctorServer.findAllDoctor();
+            Exl exl = new Exl("医生信息表");
             //exl保存路径
-            String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");
-            int i = exl.createExl(Register.class, allRegister, list);
+            int i = exl.createExl(Doctor.class, allDoc, list);
             PrintWriter out = resp.getWriter();
             if (1 == i) {
-                str = "{\"message\":1,\"url\":\"" + allRegister + "\"}";
+                str = "{\"message\":1,\"url\":\"" + allDoc + "\"}";
                 out.write(str);
             } else {
                 out.write("{message:2}");
@@ -69,11 +69,11 @@ public class ExlOut extends HttpServlet {
             for (int i = 0; i < id.length; i++) {
                 ids[i] = Integer.parseInt(id[i]);
             }
-            List<Register> list = new RegisterServerImpl().findAllRegister(ids);
-            Exl exl = new Exl("部分挂号信息表");
+            List<Doctor> list = doctorServer.findAllDoctor();
+            Exl exl = new Exl("部分医生信息表");
             PrintWriter out = resp.getWriter();
-            if (1 == exl.createExl(Register.class, partRegister, list)) {
-                str = "{\"message\":1,\"url\":\"" + partRegister + "\"}";
+            if (1 == exl.createExl(Doctor.class, partDoc, list)) {
+                str = "{\"message\":1,\"url\":\"" + partDoc + "\"}";
                 out.write(str);
             } else {
                 out.write("2");

@@ -108,19 +108,34 @@
             $('#backid').click(function () {
                 window.location.href = "dispensing.html";
             });
+            $("input[name='name']").change(function () {
+                $("#pageNo").val("")
+            });
+            $("input[name='medicalNum']").change(function () {
+                $("#pageNo").val("")
+            });
         });
+
+        //清空输入框
+        function clearA() {
+            $("input[name='name']").val("");
+            $("input[name='medicalNum']").val("");
+        }
     </script>
 </head>
 <body>
 
-<form id="form1" action="charge.jsp" method="post" class="definewidth m20">
+<form id="form1" action="/his/pJFindAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病历号：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td>
+                <c:set value="${payManager.medicalNum==0?'':payManager.medicalNum}" var="a" scope="page"/>
+                <input type="text" name="medicalNum" value="${a}"/>
+            </td>
 
             <td width="10%" class="tableleft">姓名：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="name" value="${payManager.name}"/></td>
         </tr>
         <tr>
 
@@ -128,7 +143,7 @@
             <td colspan="4">
                 <center>
                     <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="submit" class="btn btn-primary" type="button">清空</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearA();return false">清空</button>
                 </center>
             </td>
         </tr>

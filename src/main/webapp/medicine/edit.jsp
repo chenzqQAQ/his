@@ -35,7 +35,8 @@
                 padding-right: 5px;
             }
         }
-        img{
+
+        img {
             width: 500px;
             height: 200px;
         }
@@ -46,7 +47,7 @@
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "/his/medicine/index.jsp";
+                window.location.href = "/his/drugFindNameAction";
             });
         });
     </script>
@@ -63,7 +64,7 @@
         <tr>
             <td width="10%" class="tableleft">图片</td>
 
-            <td><img src="${drug.drugUrl}" title="图片找不到"/>
+            <td><img src="${drug.drugUrl}" title="药品图片" alt="图片找不到"/>
                 <%--<input type="file" name="drugUrl" value="${drug.drugUrl}"/>--%>
             </td>
         </tr>
@@ -87,7 +88,7 @@
                 <input id="type3" type="radio" name="drugType" value="3"/>非处方药
             </td>
             <script>
-                document.getElementById('type'+${drug.drugType}).setAttribute("checked",'true');
+                document.getElementById('type' +${drug.drugType}).setAttribute("checked", 'true');
             </script>
         </tr>
         <tr>

@@ -99,4 +99,17 @@ public class PayManager {
     public void setPayName(String payName) {
         this.payName = payName;
     }
+
+    @Override
+    public String toString() {
+        return "PayManager{" +
+                "id=" + id +
+                ", medicalNum=" + medicalNum +
+                ", name='" + name + '\'' +
+                ", payId=" + payId +
+                ", payName='" + payName + '\'' +
+                ", chargeAmount=" + chargeAmount +
+                ", payDate='" + payDate + '\'' +
+                '}';
+    }
 }

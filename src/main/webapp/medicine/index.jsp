@@ -41,6 +41,43 @@
 
     </style>
     <script type="text/javascript">
+        //分页函数声明
+        function totalPage() {
+            $("#pageNo").val(1);
+            $("#form1").attr("action", "/his/drugFindNameAction").submit();
+            return false;
+        }
+
+        function up() {
+            var p = $("#pageNo");
+            var k = parseInt(p.val());
+            p.val(k > 1 ? k - 1 : 1);
+            $("#form1").attr("action", "/his/drugFindNameAction").submit();
+            return false;
+        }
+
+        function down() {
+            var p = $("#pageNo");
+            var k = parseInt(p.val());
+            var k1 = parseInt($("#totalPage").val());
+            p.val(k < k1 ? k + 1 : k1);
+            $("#form1").attr("action", "/his/drugFindNameAction").submit();
+            return false;
+        }
+
+        function lastPage() {
+            $("#pageNo").val($("#totalPage").val());
+            $("#form1").attr("action", "/his/drugFindNameAction").submit();
+            return false;
+        }
+
+        //清空输入框
+        function clearA() {
+            $("input[name='drugName']").val("");
+            $("#select").val(99);
+        }
+    </script>
+    <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
                 window.location.href = "/his/medicine/add.jsp";
@@ -82,14 +119,15 @@
 </head>
 <body>
 
-<form action="/his/drugFindNameAction" method="post" class="definewidth m20">
+<form id="form1" action="/his/drugFindNameAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品名称：</td>
-            <td><input type="text" name="drugName" value=""/></td>
+            <td><input type="text" name="drugName" value="${drug.drugName}"/></td>
 
             <td width="10%" class="tableleft">药品类型：</td>
             <td><select name="drugType" id="select">
+                <option value="99">全部</option>
                 <option value="0">处方</option>
                 <option value="1">中药</option>
                 <option value="2">西药</option>
@@ -102,8 +140,8 @@
                 %>
             </select>
                 <script>
-                    document.getElementById('select').value =${drugType};
-                    console.log(${drugType});
+                    document.getElementById('select').value =${drug.drugType};
+                    console.log(${drug.drugType});
                 </script>
             </td>
         </tr>
@@ -113,8 +151,7 @@
             <td colspan="4">
                 <center>
                     <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="reset" class="btn btn-primary" type="button">清空</button>
-                    <a href="/his/drugFindAllAction">全部</a>
+                    <button type="reset" class="btn btn-primary" onclick="clearA();return false">清空</button>
                 </center>
             </td>
         </tr>
@@ -209,10 +246,14 @@
     <tr>
         <th colspan="5">
             <div class="inline pull-right page">
-                <a href='#'>第一页</a> <a href='#'>上一页</a> <span class='current'>1</span><a href='#'>2</a><a
-                    href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下一页</a>
-                <a href='#'>最后一页</a>
-                &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
+                <input type="hidden" form="form1" value="${page.pageNo}" id="pageNo" name="pageNo">
+                <input type="hidden" form="form1" value="${page.totalPage}" id="totalPage" name="totalPage">
+                <a href='#' onclick="totalPage();return false">第一页</a>
+                <a href='#' onclick="up();return false">上一页</a>
+                <span class='current'>${page.pageNo}</span>
+                <a href='#' onclick="down();return false">下一页</a>
+                <a href='#' onclick="lastPage();return false">最后一页</a>
+                ${page.totalCount} 条记录 ${page.pageNo} /${page.totalPage} 页
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">添加新药</button>
