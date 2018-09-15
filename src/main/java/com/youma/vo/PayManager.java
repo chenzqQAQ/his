@@ -11,6 +11,7 @@ package com.youma.vo;
 
 /**
  * 收费管理实体类
+ *
  * @author Administrator
  */
 public class PayManager {
@@ -19,19 +20,27 @@ public class PayManager {
      */
     private int id;
     /**
-     *病历号
+     * 病历号
      */
     private int medicalNum;
     /**
-     *收费项目id
+     * 病患名字
+     */
+    private String name;
+    /**
+     * 收费项目id
      */
     private int payId;
     /**
-     *收费金额
+     * 收费项目名字
+     */
+    private String payName;
+    /**
+     * 收费金额
      */
     private double chargeAmount;
     /**
-     *收费日期
+     * 收费日期
      */
     private String payDate;
 
@@ -73,5 +82,21 @@ public class PayManager {
 
     public void setPayDate(String payDate) {
         this.payDate = payDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPayName() {
+        return payName;
+    }
+
+    public void setPayName(String payName) {
+        this.payName = payName;
     }
 }

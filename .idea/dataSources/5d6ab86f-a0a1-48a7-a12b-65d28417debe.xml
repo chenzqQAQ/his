@@ -1275,10 +1275,11 @@
       <ColNames>medicalNum</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="313" parent="241" name="ID">
+    <column id="313" parent="241" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="314" parent="241" name="medicalNum">
@@ -1303,7 +1304,7 @@
     </column>
     <key id="318" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ID</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
     <column id="319" parent="242" name="ID">

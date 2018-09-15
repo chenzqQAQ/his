@@ -41,14 +41,18 @@
                 window.location.href = "/his/registration/add.jsp";
             });
             $('#exlOutAll').click(function () {
+                //全部数据导出
                 $.ajax({
                     url: "/his/exlOut",
                     type: "GET",
                     success: function (msg) {
-                        var k = msg;
-                        console.log(k);
-                        if (parseInt(k) === 1) {
+                        var k = eval("("+msg+")");
+                        console.log(k['message']);
+                        if (parseInt(k['message']) === 1) {
                             alert("Excel导出成功");
+                            var form=$('#form2');
+                            $('input[name=url]').val(k['url']);
+                            form.submit();
                         }
                         else {
                             alert("Excel导出失败");
@@ -70,10 +74,13 @@
                     url: str,
                     type: "POST",
                     success: function (msg) {
-                        var k = msg;
+                        var k = eval("("+msg+")");
                         console.log(k);
-                        if (parseInt(k) === 1) {
+                        if (parseInt(k['message']) === 1) {
                             alert("Excel导出成功");
+                            var form=$('#form2');
+                            $('input[name=url]').val(k['url']);
+                            form.submit();
                         }
                         else {
                             alert("Excel导出失败");
@@ -131,7 +138,9 @@
     </script>
 </head>
 <body>
-
+<form id="form2" action="/his/down" method="post" hidden>
+    <input type="hidden" name="url" value="">
+</form>
 <form action="/his/registerFindAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>

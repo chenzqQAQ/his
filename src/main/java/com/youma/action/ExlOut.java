@@ -41,16 +41,25 @@ public class ExlOut extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         String all = req.getParameter("all");
+        //全部挂号信息表文件
+        String allRegister = "D://registerAll.xlsx";
+        //选中挂号部分信息表文件
+        String partRegister = "D://registerPart.xlsx";
+        String str;
         if (all == null) {
             RegisterServer registerServer = new RegisterServerImpl();
             List<Register> list = registerServer.findAllRegister();
-            Exl exl = new Exl("挂号信息表");
-            PrintWriter out = resp.getWriter();
-            if (1 == exl.createExl(Register.class, "D:/registerAll.xlsx", list)) {
 
-                out.write("1");
+            Exl exl = new Exl("挂号信息表");
+            //exl保存路径
+            String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");
+            int i = exl.createExl(Register.class, allRegister, list);
+            PrintWriter out = resp.getWriter();
+            if (1 == i) {
+                str = "{\"message\":1,\"url\":\"" + allRegister + "\"}";
+                out.write(str);
             } else {
-                out.write("2");
+                out.write("{message:2}");
             }
             out.flush();
             return;
@@ -63,8 +72,9 @@ public class ExlOut extends HttpServlet {
             List<Register> list = new RegisterServerImpl().findAllRegister(ids);
             Exl exl = new Exl("部分挂号信息表");
             PrintWriter out = resp.getWriter();
-            if (1 == exl.createExl(Register.class, "D:/registerPart.xlsx", list)) {
-                out.write("1");
+            if (1 == exl.createExl(Register.class, partRegister, list)) {
+                str = "{\"message\":1,\"url\":\"" + partRegister + "\"}";
+                out.write(str);
             } else {
                 out.write("2");
             }

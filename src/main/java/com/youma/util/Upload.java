@@ -15,9 +15,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +36,9 @@ public class Upload {
      * 上传文件的临时文件目录
      */
     private String tempPath;
+
+    public Upload() {
+    }
 
     public Upload(String savePath, String tempPath) {
         this.savePath = savePath;
@@ -70,6 +73,30 @@ public class Upload {
         File file = new File(dir);
         if (!file.exists()) {
             file.mkdirs();
+        }
+        return dir;
+    }
+
+    /**
+     * 根据文件名和存储文件的根目录计算下载文件的所在路径
+     *
+     * @param filename
+     * @param savePath
+     * @return
+     */
+    private String findPath(String filename, String savePath) {
+        int hashcode = filename.hashCode();
+        //0--15
+        int dir1 = hashcode & 0xf;
+        //0--15
+        int dir2 = (hashcode & 0xf0) >> 4;
+        // upload\2\3
+        String dir = savePath + "\\" + dir1 + "\\" + dir2;
+        File file = new File(dir);
+        if (!file.exists()) {
+            //文件路径不存在
+            return null;
+            // file.mkdirs();
         }
         return dir;
     }
@@ -129,16 +156,16 @@ public class Upload {
                     if (name == null || name.trim().equals("")) {
                         continue;
                     }
-                    System.out.println("文件名："+name);
+                    System.out.println("文件名：" + name);
                     //获取文件名部分
                     name = name.substring(name.lastIndexOf("\\") + 1);
-                    System.out.println("文件："+name);
+                    System.out.println("文件：" + name);
                     //获取文件的扩展名
                     String fileExtName = name.substring(name.lastIndexOf(".") + 1);
                     InputStream in = fileItem.getInputStream();
                     String saveFilename = makeFileName(name);
                     String realSavePath = makePath(saveFilename, savePath);
-                    String realUrl=realSavePath + "\\" +saveFilename;
+                    String realUrl = realSavePath + "\\" + saveFilename;
                     FileOutputStream fileOutputStream = new FileOutputStream(realUrl);
                     map.put("url", realUrl);
                     byte buffer[] = new byte[1024];
@@ -154,7 +181,7 @@ public class Upload {
                     String name = fileItem.getFieldName();
                     String value = fileItem.getString("UTF-8");
                     // System.out.println(name+":"+value);
-                    map.put(name,value);
+                    map.put(name, value);
                 }
             }
             //文件上传成功
@@ -180,5 +207,50 @@ public class Upload {
             return map;
         }
         return map;
+    }
+
+    /**
+     * @param str  文件所在的绝对路径
+     * @param resp 响应
+     * @return
+     */
+    public int down(String str, HttpServletResponse resp) {
+        File file = new File(str);
+        if (!file.exists()) {
+            //文件不存在
+            return 1;
+        }
+        int ll = str.lastIndexOf("—");
+        String filename;
+        if (ll != -1) {
+            filename = str.substring(ll + 1);
+        } else {
+            filename = str.substring(str.lastIndexOf("/") + 1);
+        }
+        try {
+            resp.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
+            FileInputStream in = new FileInputStream(str);
+            OutputStream out = resp.getOutputStream();
+            byte[] b = new byte[1024];
+            int len = 0;
+            while ((len = in.read(b)) != -1) {
+                out.write(b, 0, len);
+            }
+            in.close();
+            out.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            System.out.println("解析出错");
+            return 1;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("文件找不到");
+            return 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("文件读入出错");
+            return 1;
+        }
+        return 0;
     }
 }

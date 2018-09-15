@@ -14,9 +14,11 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class Exl {
 
     /**
      * 获取一个实体类(POJO)中带有指定注释类的属性数组
+     *
      * @param class1
      * @param class2
      * @param <T>
@@ -74,8 +77,9 @@ public class Exl {
 
     /**
      * 生成exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值一起导出。
-     * @param c 要导出的数据类
-     * @param str exl文件的名字(包含路径new File(str))
+     *
+     * @param c    要导出的数据类
+     * @param str  exl文件的名字(包含路径new File(str))
      * @param list exl数据的列表,要与类对应
      * @param <T>
      * @return 状态1：exl导出成功,2:导出失败
@@ -83,10 +87,9 @@ public class Exl {
     public <T> int createExl(Class<T> c, String str, List<T> list) {
         row = sheet.createRow(0);
         //获取该类中带有Czq注释的全部属性
-        Field[] fields=this.getFiled(c,Czq.class);
+        Field[] fields = this.getFiled(c, Czq.class);
         // Field[] fields = Register.class.getDeclaredFields();
-        if(fields==null)
-        {
+        if (fields == null) {
             //返回的属性为空，没有属性可以导出到Exl
             System.out.println("没有可导出的属性");
             return 2;
@@ -139,6 +142,84 @@ public class Exl {
         try {
             //将工作表输出到对应文件中
             out = new FileOutputStream(new File(str));
+            workbook.write(out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Exl文件生成出错");
+            return 2;
+        }
+        System.out.println("Exl生成成功");
+        return 1;
+    }
+
+    /**
+     * 下载exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值一起导出。
+     *
+     * @param c    要导出的数据类
+     * @param resp  响应
+     * @param list exl数据的列表,要与类对应
+     * @param <T>
+     * @return 状态1：exl导出成功,2:导出失败
+     */
+    public <T> int createExl(Class<T> c, HttpServletResponse resp, List<T> list) {
+        row = sheet.createRow(0);
+        //获取该类中带有Czq注释的全部属性
+        Field[] fields = this.getFiled(c, Czq.class);
+        // Field[] fields = Register.class.getDeclaredFields();
+        if (fields == null) {
+            //返回的属性为空，没有属性可以导出到Exl
+            System.out.println("没有可导出的属性");
+            return 2;
+        }
+        //遍历属性,修改属性权限，提取注释中的中文注解作为表的第一行
+        for (int i = 0; i < fields.length; i++) {
+            if (!fields[i].isAccessible()) {
+                //修改属性权限,方便反射取值
+                fields[i].setAccessible(true);
+            }
+            Cell cell = row.createCell(i);
+            Czq czq = fields[i].getDeclaredAnnotation(Czq.class);
+            //有Czq注释,就输入注释的中文注解
+            if (czq != null) {
+                cell.setCellValue(czq.name());
+            } //没Czq注释,就输入属性名
+            else {
+                cell.setCellValue(fields[i].getName());
+            }
+        }
+        int max = list.size();
+        for (int i = 0; i < max; i++) {
+            T t = list.get(i);
+            row = sheet.createRow(i + 1);
+            for (int j = 0; j < fields.length; j++) {
+                Cell cell = row.createCell(j);
+                Czq czq = fields[j].getDeclaredAnnotation(Czq.class);
+                try {
+                    String string;
+                    //如果有数组的注释，表示是int型,将值转为对应字符串
+                    if (czq.value().length != 1) {
+                        String[] strs = czq.value();
+                        int index = fields[j].getInt(t);
+                        string = strs[index];
+                    } else {
+                        string = String.valueOf(fields[j].get(t));
+                    }
+                    cell.setCellValue(string);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    return 2;
+                }
+            }
+        }
+        //列宽自适应
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
+            sheet.autoSizeColumn(i, true);
+        }
+        OutputStream out = null;
+        try {
+            //将工作表输出到对应文件中
+            out = resp.getOutputStream();
             workbook.write(out);
             out.close();
         } catch (IOException e) {

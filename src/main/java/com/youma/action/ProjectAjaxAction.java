@@ -10,8 +10,11 @@
 package com.youma.action;
 
 import com.google.gson.Gson;
+import com.youma.server.PayMgServer;
 import com.youma.server.PayPjServer;
+import com.youma.server.impl.PayMgServerImpl;
 import com.youma.server.impl.PayPjServerImpl;
+import com.youma.vo.PayManager;
 import com.youma.vo.PayProject;
 
 import javax.servlet.ServletException;
@@ -42,12 +45,24 @@ public class ProjectAjaxAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
-        Gson gson=new Gson();
-        PayPjServer payPjServer=new PayPjServerImpl();
+        Gson gson = new Gson();
+        PayPjServer payPjServer = new PayPjServerImpl();
+        PayMgServer payMgServer = new PayMgServerImpl();
+        if (null != req.getParameter("action")) {
+            System.out.println("开始某用户的收费项目全查");
+            int id = Integer.parseInt(req.getParameter("id"));
+            List<PayManager> list = payMgServer.findAll(id);
+            String json = gson.toJson(list);
+            System.out.println("收费项目的JSON" + json);
+            PrintWriter out = resp.getWriter();
+            out.write(json);
+            out.flush();
+            return;
+        }
         System.out.println("开始收费项目全查");
         List<PayProject> list = payPjServer.findAllPayProject();
         String json = gson.toJson(list);
-        System.out.println("收费项目的JSON"+json);
+        System.out.println("收费项目的JSON" + json);
         PrintWriter out = resp.getWriter();
         out.write(json);
         out.flush();

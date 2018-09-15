@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.DrugDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.Drug;
 
 import java.sql.SQLException;
@@ -295,5 +296,15 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
         }
 
         return list;
+    }
+
+    @Override
+    public int drugCount(Drug drug) {
+        return 0;
+    }
+
+    @Override
+    public List<Drug> allDrug(Drug drug, Page page) {
+        return null;
     }
 }
