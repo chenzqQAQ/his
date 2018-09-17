@@ -106,7 +106,7 @@
 
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "dispensing.html";
+                window.location.href = "dispensing.jsp";
             });
             $("input[name='name']").change(function () {
                 $("#pageNo").val("")
@@ -167,7 +167,7 @@
             <td style="vertical-align:middle;">${pj.payName}</td>
             <td style="vertical-align:middle;">${pj.chargeAmount}</td>
             <td style="vertical-align:middle;">${pj.payDate}</td>
-            <td style="vertical-align:middle;"><a href="charge-new.jsp">添加收费项目</a></td>
+            <td style="vertical-align:middle;"><a href="/his/hospital/charge-new.jsp?medicalNum=${pj.medicalNum}&name=${pj.name}">添加收费项目</a></td>
         </tr>
     </c:forEach>
 

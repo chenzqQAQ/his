@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,8 +48,8 @@
                 url: "/his/projectAjaxAction",
                 success: function (msg) {
                     var k = eval("(" + msg + ")");
-                    console.log("找到全部收费项目");
-                    console.log(k);
+                    // console.log("找到全部收费项目");
+                    // console.log(k);
                     $.each(k, function (index, i) {
                         var o = $("<option></option>");
                         o.val(i['id']).text(i['projectName']).attr("amount", i['amount'])
@@ -155,12 +156,12 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病历号</td>
-            <td><input name="medicalNum"><span></span>
+            <td><input name="medicalNum" value="${param.medicalNum}"><span></span>
             </td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">姓名</td>
-            <td><input name="registerName" disabled></td>
+            <td><input name="registerName" value="${param.name}" disabled></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">收费项目</td>

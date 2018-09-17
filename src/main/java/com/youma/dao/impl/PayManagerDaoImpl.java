@@ -181,8 +181,7 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
         if (payManager1.getMedicalNum() != 0) {
             sql += " and paymanager.medicalNum=?";
         }
-        sql += " order by 'p' asc limit ?,?";
-        System.out.println(sql);
+        sql += " order by paymanager.medicalNum asc,payID asc limit ?,?";
         try {
             ps = conn.prepareStatement(sql);
             int index = 1;
@@ -194,8 +193,6 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
             }
             ps.setInt(index++, page.getOffset());
             ps.setInt(index++, page.getPageSize());
-            System.out.println(page.getOffset());
-            System.out.println(page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 PayManager payManager = new PayManager();
@@ -208,6 +205,7 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
                 } else {
                     payManager.setPayDate(sdf.format(rs.getTimestamp("payDate")));
                 }
+                // System.out.println(payManager.toString());
                 list.add(payManager);
             }
         } catch (SQLException e) {

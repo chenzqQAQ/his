@@ -76,7 +76,7 @@ public class RegisterFindAction extends HttpServlet {
                 depName = (String) httpSession.getAttribute("depName");
             }
         }
-        System.out.println("传来的页号为" + pNo);
+        // System.out.println("传来的页号为" + pNo);
         List<Register> list = new ArrayList<>();
         /**
          * 当传来的页码没有时，说明准备分页

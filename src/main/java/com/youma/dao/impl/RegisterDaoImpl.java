@@ -242,8 +242,6 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, page.getOffset());
             ps.setInt(2, page.getPageSize());
-            System.out.println("查询时的偏移量" + page.getOffset());
-            System.out.println("查询时的单页条数" + page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 Register register = new Register();
@@ -344,11 +342,9 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             ps = conn.prepareStatement(sql);
             if (null != args[0]) {
                 ps.setString(index++, args[0]);
-                System.out.println("医生名" + args[0]);
             }
             if (null != args[1]) {
                 ps.setString(index++, args[1]);
-                System.out.println("科室名" + args[1]);
             }
             ps.setInt(index++, page.getOffset());
             ps.setInt(index++, page.getPageSize());

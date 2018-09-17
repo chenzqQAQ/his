@@ -9,6 +9,7 @@
  */
 package com.youma.action;
 
+import com.google.gson.Gson;
 import com.youma.server.DrugServer;
 import com.youma.server.impl.DrugServerImpl;
 import com.youma.vo.Drug;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -39,9 +41,21 @@ public class DrugFindAllAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        DrugServer drugServer = new DrugServerImpl();
-        List<Drug> list = drugServer.findAllDrug();
-        req.setAttribute("drugs", list);
-        req.getRequestDispatcher("/medicine/index.jsp").forward(req, resp);
+        if (!"".equals(req.getParameter("action")) || req.getParameter("action") != null) {
+            DrugServer drugServer = new DrugServerImpl();
+            List<Drug> list = drugServer.findAllDrug();
+            Gson gson = new Gson();
+            String drugs = gson.toJson(list);
+            PrintWriter out = resp.getWriter();
+            System.out.println(out);
+            out.write(drugs);
+            out.flush();
+            return;
+        } else {
+            DrugServer drugServer = new DrugServerImpl();
+            List<Drug> list = drugServer.findAllDrug();
+            req.setAttribute("drugs", list);
+            req.getRequestDispatcher("/medicine/index.jsp").forward(req, resp);
+        }
     }
 }

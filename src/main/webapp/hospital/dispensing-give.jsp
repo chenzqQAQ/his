@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,13 +37,13 @@
     <script type="text/javascript">
     $(function () {       
 		$('#backid').click(function(){
-				window.location.href="dispensing.html";
+				window.location.href="dispensing.jsp";
 		 });
     });
     </script>
 </head>
 <body>
-<form action="dispensing.html" method="post" class="definewidth m20">
+<form action="dispensing.jsp" method="post" class="definewidth m20">
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
         <td width="10%" class="tableleft">病历号</td>

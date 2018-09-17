@@ -15,13 +15,25 @@ package com.youma.vo;
  */
 public class DispensedDrug {
     /**
+     * 主键id
+     */
+    private int id;
+    /**
      * 病历号
      */
     private int medicalNum;
     /**
      * 药品id
      */
-    private int drugId;
+    private String drugId;
+    /**
+     * 病患姓名
+     */
+    private  String rName;
+    /**
+     * 负责人名字
+     */
+    private  String docName;
     /**
      * 发药数量
      */
@@ -39,6 +51,30 @@ public class DispensedDrug {
      */
     private String dispensedTime;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getrName() {
+        return rName;
+    }
+
+    public void setrName(String rName) {
+        this.rName = rName;
+    }
+
+    public String getDocName() {
+        return docName;
+    }
+
+    public void setDocName(String docName) {
+        this.docName = docName;
+    }
+
     public int getMedicalNum() {
         return medicalNum;
     }
@@ -47,11 +83,11 @@ public class DispensedDrug {
         this.medicalNum = medicalNum;
     }
 
-    public int getDrugId() {
+    public String getDrugId() {
         return drugId;
     }
 
-    public void setDrugId(int drugId) {
+    public void setDrugId(String drugId) {
         this.drugId = drugId;
     }
 

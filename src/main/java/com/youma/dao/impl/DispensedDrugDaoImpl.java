@@ -11,6 +11,7 @@ package com.youma.dao.impl;
 
 import com.youma.dao.DispensedDrugDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.DispensedDrug;
 
 import java.sql.SQLException;
@@ -28,29 +29,22 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
         String sql = "INSERT INTO his.dispenseddrug\n" +
                 "(medicalNum,\n" +
                 "drugID,\n" +
-                "totalQuantity,\n" +
-                "dispensedQuantity,\n" +
-                "undispensedQuantity,\n" +
-                "dispensedTime)\n" +
+                "totalQuantity)\n" +
                 "VALUES\n" +
                 "(?,\n" +
-                "?,\n" +
-                "?,\n" +
-                "?,\n" +
                 "?,\n" +
                 "?)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, dispensedDrug.getMedicalNum());
-            ps.setInt(2, dispensedDrug.getDrugId());
+            ps.setString(2, dispensedDrug.getDrugId());
             ps.setInt(3, dispensedDrug.getTotalQuantity());
-            ps.setInt(4, dispensedDrug.getDispensedQuantity());
-            ps.setInt(5, dispensedDrug.getUndispensedQuantity());
-            ps.setTimestamp(6, Timestamp.valueOf(dispensedDrug.getDispensedTime()));
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -71,7 +65,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, dispensedDrug.getMedicalNum());
-            ps.setInt(2, dispensedDrug.getDrugId());
+            ps.setString(2, dispensedDrug.getDrugId());
             ps.setInt(3, dispensedDrug.getTotalQuantity());
             ps.setInt(4, dispensedDrug.getDispensedQuantity());
             ps.setInt(5, dispensedDrug.getUndispensedQuantity());
@@ -80,6 +74,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -96,6 +92,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -117,7 +115,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             while (rs.next()) {
                 DispensedDrug dispensedDrug = new DispensedDrug();
                 dispensedDrug.setMedicalNum(rs.getInt("medicalNum"));
-                dispensedDrug.setDrugId(rs.getInt("drugID"));
+                dispensedDrug.setDrugId(rs.getString("drugID"));
                 dispensedDrug.setTotalQuantity(rs.getInt("totalQuantity"));
                 dispensedDrug.setDispensedQuantity(rs.getInt("dispensedQuantity"));
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
@@ -126,6 +124,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
@@ -148,7 +148,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             rs = ps.executeQuery();
             if (rs.next()) {
                 dispensedDrug.setMedicalNum(rs.getInt("medicalNum"));
-                dispensedDrug.setDrugId(rs.getInt("drugID"));
+                dispensedDrug.setDrugId(rs.getString("drugID"));
                 dispensedDrug.setTotalQuantity(rs.getInt("totalQuantity"));
                 dispensedDrug.setDispensedQuantity(rs.getInt("dispensedQuantity"));
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
@@ -156,7 +156,93 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return dispensedDrug;
+    }
+
+    @Override
+    public int dispensedDrugAdd(int[] id, DispensedDrug d) {
+        conn = ConnectionDB.getConnection();
+        String sql = "INSERT INTO his.dispenseddrug\n" +
+                "(medicalNum,\n" +
+                "drugID,\n" +
+                "totalQuantity,undispensedQuantity)\n" +
+                "VALUES\n" +
+                "(?,\n" +
+                "?,\n" +
+                "?,?)";
+        for (int i = 1; i < id.length; i++) {
+            sql += " ,(?,?,?,?) ";
+        }
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            int index = 1;
+            for (int i = 0; i < id.length; i++) {
+                ps.setInt(index++, id[i]);
+                ps.setString(index++, d.getDrugId());
+                ps.setInt(index++, d.getTotalQuantity());
+                ps.setInt(index++, d.getTotalQuantity());
+            }
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public int disCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "select count(distinct medicalNum) from dispenseddrug";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public List<DispensedDrug> findAllDispensedDrug(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT dispenseddrug.id," +
+                "dispenseddrug.medicalNum,\n" +
+                "    doctorName,registerName\n" +
+                "FROM his.dispenseddrug join register on dispenseddrug.medicalNum=register.medicalNum " +
+                "join doctor on doctorID=register.doctorID group by medicalNum";
+        sql += " limit ?,?";
+        System.out.println(sql);
+        List<DispensedDrug> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                DispensedDrug dispensedDrug = new DispensedDrug();
+                dispensedDrug.setId(rs.getInt("id"));
+                dispensedDrug.setMedicalNum(rs.getInt("medicalNum"));
+                dispensedDrug.setDocName(rs.getString("doctorName"));
+                dispensedDrug.setrName(rs.getString("registerName"));
+                list.add(dispensedDrug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
     }
 }

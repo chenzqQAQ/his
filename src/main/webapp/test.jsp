@@ -13,12 +13,11 @@
     <title>Title</title>
 </head>
 <body>
-<%
-    for (int i = 0; i < 10; i++) {
-        int j = i;
-        request.setAttribute("j", j);
-%>
-<h1>${j}</h1>
-<% } %>
+<script>
+    var url=location.search;
+    console.log(url);
+</script>
+<a href="test.jsp?id=11111">测试</a>
+<input name="id" value="${id}"/>id
 </body>
 </html>
