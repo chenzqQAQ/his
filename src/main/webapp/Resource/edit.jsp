@@ -77,7 +77,7 @@
 <script>
     $(function () {
         $('#backid').click(function () {
-            window.location.href = "index.html";
+            window.location.href = "index.jsp";
         });
     });
 </script>

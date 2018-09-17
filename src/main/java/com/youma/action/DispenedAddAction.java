@@ -41,6 +41,7 @@ public class DispenedAddAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         String medicalNum = req.getParameter("medicalNum");
         String drugId = req.getParameter("drugId");
+        System.out.println("药品id"+drugId);
         int TotalQuantity = Integer.parseInt(req.getParameter("TotalQuantity"));
         DispensedDrug dispensedDrug = new DispensedDrug();
         dispensedDrug.setDrugId(drugId);
@@ -59,6 +60,7 @@ public class DispenedAddAction extends HttpServlet {
         DisServer disServer = new DisServerImpl();
         if (a.length == disServer.dispensedDrugAdd(a, dispensedDrug)) {
             System.out.println("添加成功");
+            resp.sendRedirect("/his/dispenedFindAction");
         }
     }
 }

@@ -219,4 +219,28 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
         }
         return col;
     }
+
+    @Override
+    public Users findUsers(Users user) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select roleID,realName from users where userName=? and userPassword=?";
+        Users users = new Users();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getUserName());
+            ps.setString(2, user.getUserPassword());
+            rs=ps.executeQuery();
+            if (rs.next()) {
+                users.setRoleID(rs.getInt("roleID"));
+                users.setRealName(rs.getString("realName"));
+            } else {
+                users = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return users;
+    }
 }

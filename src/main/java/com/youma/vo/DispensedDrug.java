@@ -27,6 +27,19 @@ public class DispensedDrug {
      */
     private String drugId;
     /**
+     * 药品名称
+     */
+    private String drugName;
+
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
+    }
+
+    /**
      * 病患姓名
      */
     private  String rName;
@@ -37,7 +50,7 @@ public class DispensedDrug {
     /**
      * 发药数量
      */
-    private int TotalQuantity;
+    private int totalQuantity;
     /**
      * 已分发药数量
      */
@@ -45,7 +58,7 @@ public class DispensedDrug {
     /**
      *未分配药数量
      */
-    private int UndispensedQuantity;
+    private int undispensedQuantity;
     /**
      * 发药时间
      */
@@ -92,11 +105,11 @@ public class DispensedDrug {
     }
 
     public int getTotalQuantity() {
-        return TotalQuantity;
+        return totalQuantity;
     }
 
     public void setTotalQuantity(int totalQuantity) {
-        TotalQuantity = totalQuantity;
+        this.totalQuantity = totalQuantity;
     }
 
     public int getDispensedQuantity() {
@@ -108,11 +121,11 @@ public class DispensedDrug {
     }
 
     public int getUndispensedQuantity() {
-        return UndispensedQuantity;
+        return undispensedQuantity;
     }
 
     public void setUndispensedQuantity(int undispensedQuantity) {
-        UndispensedQuantity = undispensedQuantity;
+        this.undispensedQuantity = undispensedQuantity;
     }
 
     public String getDispensedTime() {

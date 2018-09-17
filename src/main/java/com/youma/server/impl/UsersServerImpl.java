@@ -67,4 +67,9 @@ public class UsersServerImpl implements UsersServer {
     public int delUsers(int[] args) {
         return usersDao.delUsers(args);
     }
+
+    @Override
+    public Users findUsers(Users user) {
+        return usersDao.findUsers(user);
+    }
 }

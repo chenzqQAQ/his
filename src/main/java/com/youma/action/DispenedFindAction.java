@@ -42,19 +42,29 @@ public class DispenedFindAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         DisServer disServer = new DisServerImpl();
-        Page page = new Page();
-        page.setTotalCount(disServer.disCount());
-        String pageNo = req.getParameter("pageNo");
-        if (!"".equals(pageNo) && pageNo != null) {
-            page.setPageNo(Integer.parseInt(pageNo));
+        String action = req.getParameter("action");
+        if (!"".equals(action) && action != null) {
+            int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
+            List<DispensedDrug> list = disServer.findDispensedDrug(medicalNum);
+            req.setAttribute("drugs", list);
+            req.getRequestDispatcher("/hospital/dispensing-look.jsp").forward(req, resp);
+            return;
         } else {
-            page.setPageNo(1);
+
+            Page page = new Page();
+            page.setTotalCount(disServer.disCount());
+            String pageNo = req.getParameter("pageNo");
+            if (!"".equals(pageNo) && pageNo != null) {
+                page.setPageNo(Integer.parseInt(pageNo));
+            } else {
+                page.setPageNo(1);
+            }
+            List<DispensedDrug> list = disServer.findAllDispensedDrug(page);
+            System.out.println("总条数" + page.getTotalCount());
+            System.out.println("集合个数" + list.size());
+            req.setAttribute("dis", list);
+            req.setAttribute("page", page);
+            req.getRequestDispatcher("/hospital/dispensing.jsp").forward(req, resp);
         }
-        List<DispensedDrug> list = disServer.findAllDispensedDrug(page);
-        System.out.println("总条数"+page.getTotalCount());
-        System.out.println("集合个数"+list.size());
-        req.setAttribute("dis", list);
-        req.setAttribute("page", page);
-        req.getRequestDispatcher("/hospital/dispensing.jsp").forward(req, resp);
     }
 }

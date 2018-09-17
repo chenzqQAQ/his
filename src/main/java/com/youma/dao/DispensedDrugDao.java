@@ -43,12 +43,12 @@ public interface DispensedDrugDao {
     public List<DispensedDrug> findAllDispensedDrug();
 
     /**
-     * 查询指定发药信息
+     * 查询指定病历号的发药信息
      *
      * @param id 发药id
-     * @return 发药实体类
+     * @return 集合
      */
-    public DispensedDrug findDispensedDrug(int id);
+    public List<DispensedDrug> findDispensedDrug(int id);
 
     /**
      * 给一群病患发药

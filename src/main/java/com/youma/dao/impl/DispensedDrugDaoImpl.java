@@ -131,35 +131,38 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
     }
 
     @Override
-    public DispensedDrug findDispensedDrug(int id) {
+    public List<DispensedDrug> findDispensedDrug(int id) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT dispenseddrug.medicalNum,\n" +
-                "    dispenseddrug.drugID,\n" +
+                "    drug.drugName,\n" +
                 "    dispenseddrug.totalQuantity,\n" +
                 "    dispenseddrug.dispensedQuantity,\n" +
                 "    dispenseddrug.undispensedQuantity,\n" +
-                "    dispenseddrug.dispensedTime\n" +
-                "FROM his.dispenseddrug\n" +
-                "WHERE medicalNum=?";
-        DispensedDrug dispensedDrug = new DispensedDrug();
+                "registerName\n" +
+                "FROM his.dispenseddrug join drug on drug.drugID=dispenseddrug.drugID " +
+                "join register on register.medicalNum=dispenseddrug.medicalNum\n" +
+                "WHERE dispenseddrug.medicalNum=?";
+        List<DispensedDrug> list=new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
+                DispensedDrug dispensedDrug = new DispensedDrug();
                 dispensedDrug.setMedicalNum(rs.getInt("medicalNum"));
-                dispensedDrug.setDrugId(rs.getString("drugID"));
+                dispensedDrug.setDrugName(rs.getString("drugName"));
+                dispensedDrug.setrName(rs.getString("registerName"));
                 dispensedDrug.setTotalQuantity(rs.getInt("totalQuantity"));
                 dispensedDrug.setDispensedQuantity(rs.getInt("dispensedQuantity"));
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
-                dispensedDrug.setDispensedTime(sdf.format(rs.getTimestamp("dispensedTime")));
+                list.add(dispensedDrug);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeAll();
         }
-        return dispensedDrug;
+        return list;
     }
 
     @Override

@@ -80,5 +80,12 @@ public interface UsersServer {
      * @return
      */
     public int delUsers(int[] args);
+    /**
+     * 查询用户名密码是否正确
+     *
+     * @param user 用户名字
+     * @return 用户实体类
+     */
+    public Users findUsers(Users user);
 
 }

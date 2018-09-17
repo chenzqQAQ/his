@@ -41,7 +41,7 @@ public class DrugFindAllAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        if (!"".equals(req.getParameter("action")) || req.getParameter("action") != null) {
+        if (!"".equals(req.getParameter("action"))&&req.getParameter("action") != null) {
             DrugServer drugServer = new DrugServerImpl();
             List<Drug> list = drugServer.findAllDrug();
             Gson gson = new Gson();

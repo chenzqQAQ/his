@@ -35,4 +35,11 @@ public interface DisServer {
      * @return
      */
     public List<DispensedDrug> findAllDispensedDrug(Page page);
+    /**
+     * 查询指定病历号的发药信息
+     *
+     * @param id 发药id
+     * @return 集合
+     */
+    public List<DispensedDrug> findDispensedDrug(int id);
 }
