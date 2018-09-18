@@ -36,6 +36,10 @@ public class Users {
      */
     private int roleID;
     /**
+     * 角色名字
+     */
+    private String roleName;
+    /**
      * 状态1启用,0禁用
      */
     private int flag;
@@ -139,5 +143,13 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

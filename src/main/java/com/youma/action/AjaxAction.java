@@ -26,8 +26,8 @@ import java.io.PrintWriter;
 @WebServlet("/ajaxAction")
 public class AjaxAction extends HttpServlet {
 
-    public static final String ACTION = "action";
-    public static final String USER_NAME = "userName";
+    private static final String ACTION = "action";
+    private static final String USER_NAME = "userName";
     private static final long serialVersionUID = 2420676865157698130L;
 
     @Override

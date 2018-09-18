@@ -72,4 +72,11 @@ public interface DispensedDrugDao {
      * @return
      */
     public List<DispensedDrug> findAllDispensedDrug(Page page);
+
+    /**
+     * 给用户发药
+     * @param dispensedDrug
+     * @return
+     */
+    public int disDrug(DispensedDrug dispensedDrug);
 }

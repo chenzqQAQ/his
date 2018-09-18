@@ -80,8 +80,10 @@ public class Doctor {
      * 科室id
      */
     @Exclude
-    @Czq(name = "科室id")
     private int depId;
+    @Exclude
+    @Czq(name = "科室")
+    private String  depName;
 
     /**
      * 学历
@@ -213,5 +215,13 @@ public class Doctor {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getDepName() {
+        return depName;
+    }
+
+    public void setDepName(String depName) {
+        this.depName = depName;
     }
 }

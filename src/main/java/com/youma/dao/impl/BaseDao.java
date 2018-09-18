@@ -23,8 +23,8 @@ import java.text.SimpleDateFormat;
  * @author Administrator
  */
 public class BaseDao {
-    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    private static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    private static final String YYYY_MM_DD = "yyyy-MM-dd";
     /**
      * 数据库连接
      */

@@ -1,6 +1,6 @@
 /**
  * Copyright (C),2015-2018
- * FileNmae: ResourceSeverImpl
+ * FileNmae: ResourceServerImpl
  * Author:   Administrator
  * Date:     2018/9/1111:06
  * History:
@@ -11,7 +11,7 @@ package com.youma.server.impl;
 
 import com.youma.dao.ResourcesDao;
 import com.youma.dao.impl.ResourcesDaoImpl;
-import com.youma.server.ResourceSever;
+import com.youma.server.ResourceServer;
 import com.youma.util.Page;
 import com.youma.vo.Resources;
 
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author 陈泽群
  */
-public class ResourceSeverImpl implements ResourceSever {
+public class ResourceServerImpl implements ResourceServer {
     private ResourcesDao resourcesDao = new ResourcesDaoImpl();
 
     @Override

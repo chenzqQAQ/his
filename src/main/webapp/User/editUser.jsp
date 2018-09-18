@@ -32,9 +32,22 @@
                 padding-right: 5px;
             }
         }
-
-
     </style>
+    <script type="text/javascript">
+        //异步请求全部角色信息
+        $.ajax({
+            url: "/his/roleAjaxAction",
+            success: function (msg) {
+                var k = eval("(" + msg + ")");
+                console.log(k);
+                $.each(k, function (index, i) {
+                    var option = $('<option></option>');
+                    option.text(i['roleName']).val(i['roleID']).appendTo($('#role'));
+                })
+                document.getElementById('role').value =${user.roleID};
+            }
+        });
+    </script>
 </head>
 <body>
 <form action="/his/userUpdateAction" method="post" class="definewidth m20">
@@ -70,15 +83,8 @@
             <td class="tableleft">角色</td>
             <td>
                 <select name="role" id="role">
-                    <option value="">--请选择--
-                    <option value="0">管理员
-                    <option value="1">院长
-                    <option value="2">医生护士
                 </select>
             </td>
-            <script>
-                document.getElementById('role').value =${user.roleID};
-            </script>
         </tr>
         <tr>
             <td class="tableleft"></td>

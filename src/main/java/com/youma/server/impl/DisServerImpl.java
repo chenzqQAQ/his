@@ -46,4 +46,10 @@ public class DisServerImpl implements DisServer {
     public List<DispensedDrug> findDispensedDrug(int id) {
         return dispensedDrugDao.findDispensedDrug(id);
     }
+
+    @Override
+    public int disDrug(DispensedDrug dispensedDrug) {
+        return dispensedDrugDao.disDrug(dispensedDrug);
+    }
+
 }

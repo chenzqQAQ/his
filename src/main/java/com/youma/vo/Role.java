@@ -9,6 +9,8 @@
  */
 package com.youma.vo;
 
+import java.util.List;
+
 /**
  * 角色实体类
  * @author Administrator
@@ -26,6 +28,14 @@ public class Role {
      * 角色名称
      */
     private String roleName;
+    /**
+     * 对应的资源权限
+     */
+    private List<Resources> resources;
+    /**
+     * 状态
+     */
+    private int status;
 
     public int getRoleID() {
         return roleID;
@@ -60,4 +70,19 @@ public class Role {
                 '}';
     }
 
+    public List<Resources> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resources> resources) {
+        this.resources = resources;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

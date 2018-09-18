@@ -133,7 +133,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
     @Override
     public List<DispensedDrug> findDispensedDrug(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "SELECT dispenseddrug.medicalNum,\n" +
+        String sql = "SELECT dispenseddrug.medicalNum," +
+                "drug.drugID,\n" +
                 "    drug.drugName,\n" +
                 "    dispenseddrug.totalQuantity,\n" +
                 "    dispenseddrug.dispensedQuantity,\n" +
@@ -142,7 +143,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 "FROM his.dispenseddrug join drug on drug.drugID=dispenseddrug.drugID " +
                 "join register on register.medicalNum=dispenseddrug.medicalNum\n" +
                 "WHERE dispenseddrug.medicalNum=?";
-        List<DispensedDrug> list=new ArrayList<>();
+        List<DispensedDrug> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
@@ -155,6 +156,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 dispensedDrug.setTotalQuantity(rs.getInt("totalQuantity"));
                 dispensedDrug.setDispensedQuantity(rs.getInt("dispensedQuantity"));
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
+                dispensedDrug.setDrugId(rs.getString("drugID"));
                 list.add(dispensedDrug);
             }
         } catch (SQLException e) {
@@ -247,5 +249,23 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             closeAll();
         }
         return list;
+    }
+
+    @Override
+    public int disDrug(DispensedDrug dispensedDrug) {
+        conn = ConnectionDB.getConnection();
+        String sql = "update dispenseddrug set dispensedQuantity=dispensedQuantity+?,undispensedQuantity=totalQuantity-dispensedQuantity " +
+                "WHERE drugID=? and medicalNum=?";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, dispensedDrug.getDispensedQuantity());
+            ps.setString(2, dispensedDrug.getDrugId());
+            ps.setInt(3, dispensedDrug.getMedicalNum());
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
     }
 }

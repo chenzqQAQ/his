@@ -132,7 +132,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public List<Users> findAllUsers(Page page) {
         conn = ConnectionDB.getConnection();
-        String sql = "select userID,userName,userPassword,modifyTime,roleID,flag,realName,email from users\n" +
+        String sql = "select userID,userName,roleName,realName from users\n" +
+                "join  role on role.roleID=users.roleID\n" +
                 "limit ?,?";
         List<Users> list = new ArrayList();
         try {
@@ -142,10 +143,11 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             rs = ps.executeQuery();
             while (rs.next()) {
 
-                Users users = new Users(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
-                users.setFlag(rs.getInt("flag"));
+                Users users = new Users();
+                users.setUserID(rs.getInt("userID"));
+                users.setUserName(rs.getString("userName"));
                 users.setRealName(rs.getString("realName"));
-                users.setEmail(rs.getString("email"));
+                users.setRoleName(rs.getString("roleName"));
                 list.add(users);
             }
         } catch (SQLException e) {
@@ -229,7 +231,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             ps = conn.prepareStatement(sql);
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getUserPassword());
-            rs=ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
                 users.setRoleID(rs.getInt("roleID"));
                 users.setRealName(rs.getString("realName"));

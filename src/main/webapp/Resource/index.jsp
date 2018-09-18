@@ -140,7 +140,7 @@
             <td>${p[resource.status]}</td>
             <td>
                 <a href="/his/resourceAction?action=find&resID=${resource.resID}">编辑</a>&nbsp;&nbsp;&nbsp;<a
-                    href="javascript:alert('删除成功！');">删除</a>
+                    href="/his/resourceAction?action=del&resID=${resource.resID}">删除</a>
             </td>
         </tr>
     </c:forEach>

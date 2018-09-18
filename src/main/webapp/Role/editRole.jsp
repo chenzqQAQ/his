@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,7 @@
     </style>
 </head>
 <body>
-<form action="index.html" method="post" class="definewidth m20" >
+<form action="index.jsp" method="post" class="definewidth m20" >
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
         <td width="10%" class="tableleft">角色名称</td>
@@ -80,7 +81,7 @@
         });
 
 		$('#backid').click(function(){
-				window.location.href="index.html";
+				window.location.href="index.jsp";
 		 });
 
     });

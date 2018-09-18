@@ -42,4 +42,10 @@ public interface DisServer {
      * @return 集合
      */
     public List<DispensedDrug> findDispensedDrug(int id);
+    /**
+     * 给用户发药
+     * @param dispensedDrug
+     * @return
+     */
+    public int disDrug(DispensedDrug dispensedDrug);
 }

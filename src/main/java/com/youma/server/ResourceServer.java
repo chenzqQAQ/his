@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author 陈泽群
  */
-public interface ResourceSever {
+public interface ResourceServer {
     /**
      * 添加权限资源信息
      *

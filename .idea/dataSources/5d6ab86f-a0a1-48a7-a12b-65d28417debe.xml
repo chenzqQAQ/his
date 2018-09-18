@@ -991,11 +991,13 @@
     <column id="257" parent="236" name="dispensedQuantity">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="258" parent="236" name="undispensedQuantity">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="259" parent="236" name="dispensedTime">
@@ -1459,6 +1461,7 @@
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="347" parent="245" name="roleNum">
@@ -1471,94 +1474,115 @@
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="349" parent="245" name="PRIMARY">
+    <column id="349" parent="245" name="status">
+      <Position>4</Position>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="350" parent="245" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>roleID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="350" parent="246" name="roleID">
+    <column id="351" parent="246" name="roleID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="351" parent="246" name="resID">
+    <column id="352" parent="246" name="resID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="352" parent="246" name="PRIMARY">
+    <index id="353" parent="246" name="resid_idx">
+      <ColNames>resID</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="354" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>roleID
 resID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="353" parent="247" name="id">
+    <foreign-key id="355" parent="246" name="roleid">
+      <ColNames>roleID</ColNames>
+      <RefSchemaName>his</RefSchemaName>
+      <RefTableName>role</RefTableName>
+      <RefColNames>roleID</RefColNames>
+    </foreign-key>
+    <foreign-key id="356" parent="246" name="resid">
+      <ColNames>resID</ColNames>
+      <RefSchemaName>his</RefSchemaName>
+      <RefTableName>resources</RefTableName>
+      <RefColNames>resid</RefColNames>
+    </foreign-key>
+    <column id="357" parent="247" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="354" parent="247" name="userID">
+    <column id="358" parent="247" name="userID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="355" parent="247" name="roleID">
+    <column id="359" parent="247" name="roleID">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="356" parent="247" name="PRIMARY">
+    <key id="360" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="357" parent="248" name="userID">
+    <column id="361" parent="248" name="userID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="358" parent="248" name="userName">
+    <column id="362" parent="248" name="userName">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="359" parent="248" name="userPassword">
+    <column id="363" parent="248" name="userPassword">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="360" parent="248" name="modifyTime">
+    <column id="364" parent="248" name="modifyTime">
       <Position>4</Position>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="361" parent="248" name="roleID">
+    <column id="365" parent="248" name="roleID">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="362" parent="248" name="flag">
+    <column id="366" parent="248" name="flag">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="363" parent="248" name="realName">
+    <column id="367" parent="248" name="realName">
       <Position>7</Position>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="364" parent="248" name="email">
+    <column id="368" parent="248" name="email">
       <Position>8</Position>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="365" parent="248" name="PRIMARY">
+    <key id="369" parent="248" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userID</ColNames>
       <Primary>1</Primary>

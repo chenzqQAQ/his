@@ -37,7 +37,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "add.html";
+                window.location.href = "/his/dispenedFindAction";
             });
         });
 
@@ -74,7 +74,7 @@
 
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "dispensing.html";
+                window.location.href = "/his/dispenedFindAction";
             });
         });
     </script>
@@ -101,8 +101,16 @@
             <td style="vertical-align:middle;">${drug.totalQuantity}</td>
             <td style="vertical-align:middle;">${drug.dispensedQuantity}</td>
             <td style="vertical-align:middle;">${drug.undispensedQuantity}</td>
-            <td style="vertical-align:middle;"><a href="#">发全</a>&nbsp;&nbsp;&nbsp;<a
-                    href="#">发1</a>&nbsp;&nbsp;&nbsp;<a href="#">发5</a>&nbsp;&nbsp;&nbsp;<a href="#">发30</a></td>
+            <td style="vertical-align:middle;">
+                <c:set value="${drug.undispensedQuantity}" var="a" scope="page"/>
+                <c:if test="${a>0}">
+                    <a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=${a}">发全</a>
+                    <c:if test="${a>0}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=1">发1</a></c:if>
+                    <c:if test="${a>2}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=3">发3</a></c:if>
+                    <c:if test="${a>4}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=5">发5</a></c:if>
+                    <c:if test="${a>29}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=30">发30</a></c:if>
+                </c:if>
+            </td>
         </tr>
     </c:forEach>
 </table>

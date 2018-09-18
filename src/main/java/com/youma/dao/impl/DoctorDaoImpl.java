@@ -147,7 +147,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     public List<Doctor> findAllDoctor() {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT \n" +
-                "    ID,\n" +
+                "    doctor.ID,\n" +
                 "    doctorName,\n" +
                 "    identifierType,\n" +
                 "    identifierNum,\n" +
@@ -159,9 +159,9 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    email,\n" +
                 "    depID,\n" +
                 "    degree,\n" +
-                "    remark\n" +
+                "    remark,depName,docDate\n" +
                 "FROM\n" +
-                "    doctor;";
+                "    doctor join department on doctor.depID=department.ID;";
         List<Doctor> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
@@ -176,6 +176,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setSetaPhoneNum(rs.getString("seatPhoneNum"));
                 doctor.setSex(rs.getInt("sex"));
                 doctor.setAge(rs.getInt("age"));
+                doctor.setDepName(rs.getString("depName"));
                 if (rs.getDate("birthday") == null) {
                     doctor.setBirthday("null");
                 } else {
@@ -186,6 +187,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 doctor.setDepId(rs.getInt("depID"));
                 doctor.setDegree(rs.getInt("degree"));
                 doctor.setRemark(rs.getString("remark"));
+                doctor.setDocDate(sdf1.format(rs.getDate("docDate")));
                 list.add(doctor);
             }
         } catch (SQLException e) {

@@ -9,8 +9,8 @@
  */
 package com.youma.action;
 
-import com.youma.server.ResourceSever;
-import com.youma.server.impl.ResourceSeverImpl;
+import com.youma.server.ResourceServer;
+import com.youma.server.impl.ResourceServerImpl;
 import com.youma.util.Page;
 import com.youma.vo.Resources;
 
@@ -28,6 +28,8 @@ import java.util.List;
 @WebServlet("/resourceAction")
 public class ResourceAction extends HttpServlet {
 
+    private static final long serialVersionUID = -4986845458925922946L;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -38,7 +40,7 @@ public class ResourceAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
-        ResourceSever resourceSever = new ResourceSeverImpl();
+        ResourceServer resourceSever = new ResourceServerImpl();
         String action = req.getParameter("action");
         if ("add".equals(action)) {
             String resName = req.getParameter("resName");
@@ -79,6 +81,12 @@ public class ResourceAction extends HttpServlet {
             resources.setResUrl(resUrl);
             resources.setStatus(status);
             if (0 != resourceSever.uepdateResources(resources)) {
+                resp.sendRedirect("/his/resourceAction?action=findAll");
+            }
+        }
+        else if ("del".equals(action)) {
+            int resID = Integer.parseInt(req.getParameter("resID"));
+            if (0 != resourceSever.delResources(resID)) {
                 resp.sendRedirect("/his/resourceAction?action=findAll");
             }
         }

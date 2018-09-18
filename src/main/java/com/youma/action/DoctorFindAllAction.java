@@ -107,11 +107,7 @@ public class DoctorFindAllAction extends HttpServlet {
             str[2] = null;
             req.removeAttribute("depName");
         }
-        System.out.println(str[0]);
-        System.out.println(str[1]);
-        System.out.println(str[2]);
         int col = doctorServer.allDoctorCount(str);
-        System.out.println(String.format("id%s医生姓名%s科室%s有%d人", str[0], str[1], str[2], col));
         Page page = new Page();
         page.setTotalCount(col);
         if (null != req.getParameter("pageNo") && !req.getParameter("pageNo").equals("")) {

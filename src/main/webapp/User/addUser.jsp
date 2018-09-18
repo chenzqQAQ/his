@@ -110,6 +110,18 @@
                     alert("提交事件");
                 }
             });
+            //异步请求全部角色信息
+            $.ajax({
+                url: "/his/roleAjaxAction",
+                success: function (msg) {
+                    var k = eval("(" + msg + ")");
+                    console.log(k);
+                    $.each(k, function (index, i) {
+                        var option = $('<option></option>');
+                        option.text(i['roleName']).val(i['roleID']).appendTo($('#role'));
+                    })
+                }
+            });
         });
     </script>
     <style>
@@ -158,22 +170,17 @@
             <td class="tableleft">角色</td>
             <td>
                 <select id="role" name="role" required>
-                    <option value="">--请选择--
-                    <option value="0">管理员
-                    <option value="1">院长
-                    <option value="2">医生护士
+                    <option value="">--请选择--</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td class="tableleft"></td>
             <td>
-                <button type="submit" class="btn btn-primary" type="button">更新</button>&nbsp;&nbsp;<button type="button"
-                                                                                                           class="btn btn-success"
-                                                                                                           name="backid"
-                                                                                                           id="backid">
-                返回列表
-            </button>
+                <button type="submit" class="btn btn-primary" type="button">更新</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-success" name="backid" id="backid">
+                    返回列表
+                </button>
             </td>
         </tr>
     </table>

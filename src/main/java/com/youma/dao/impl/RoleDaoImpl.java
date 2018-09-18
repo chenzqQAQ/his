@@ -11,6 +11,8 @@ package com.youma.dao.impl;
 
 import com.youma.dao.RoleDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
+import com.youma.vo.Resources;
 import com.youma.vo.Role;
 
 import java.sql.SQLException;
@@ -24,22 +26,23 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
         conn = ConnectionDB.getConnection();
         int col = 0;
         String sql = "    INSERT INTO role\n" +
-                "(roleID,\n" +
+                "(" +
                 "roleNum,\n" +
                 "roleName)\n" +
                 "VALUES\n" +
                 "(?,\n" +
-                "?,\n" +
                 "?);";
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, role.getRoleID());
-            ps.setObject(2, role.getRoleNum());
-            ps.setObject(3, role.getRoleName());
+
+            ps.setObject(1, role.getRoleNum());
+            ps.setObject(2, role.getRoleName());
             col = ps.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -63,6 +66,8 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
 
         return col;
@@ -80,6 +85,8 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -104,8 +111,59 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
+    }
+
+    @Override
+    public List<Role> findAllRole(Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT roleID,\n" +
+                "    roleNum,\n" +
+                "    roleName,status\n" +
+                "FROM role limit ?,?";
+        List<Role> list = new ArrayList<Role>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, page.getOffset());
+            ps.setInt(2, page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Role role = new Role();
+                role.setRoleID(rs.getInt("roleID"));
+                role.setRoleNum(rs.getString("roleNum"));
+                role.setRoleName(rs.getString("roleName"));
+                role.setStatus(rs.getInt("status"));
+                list.add(role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public int roleCount() {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT count(roleID)\n" +
+                "FROM role";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
     }
 
     @Override
@@ -127,6 +185,104 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
                 role.setRoleNum(rs.getString("roleNum"));
                 role.setRoleName(rs.getString("roleName"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return role;
+    }
+
+    @Override
+    public int findRole(String name) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT roleID\n" +
+                "FROM role\n" +
+                "WHERE roleName = ?";
+        int id = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return id;
+    }
+
+    @Override
+    public int delRes(int id) {
+        conn = ConnectionDB.getConnection();
+        String sql = "delete from  role_resources where roleID=?";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+
+    }
+
+    @Override
+    public int addRes(Role role) {
+        conn = ConnectionDB.getConnection();
+        String sql = "insert role_resources(roleID, resID) values(?,?)";
+        List<Resources> list = role.getResources();
+        if (list != null) {
+            for (int i = 1; i < list.size(); i++) {
+                sql += " ,(?,?)";
+            }
+        } else {
+            //没有可添加项
+            return 0;
+        }
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            int index = 1;
+            for (int i = 0; i < list.size(); i++) {
+                ps.setInt(index++, role.getRoleID());
+                ps.setInt(index++, list.get(i).getResID());
+            }
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public Role findRes(int id) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select resources.resid as p,resName,resUrl from role join role_resources on role.roleID=role_resources.roleID join resources on resources.resid=role_resources.resID\n" +
+                "where role.roleID=? and resources.status=1";
+        Role role = new Role();
+        try {
+            role.setRoleID(id);
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            List<Resources> list = new ArrayList<>();
+            while (rs.next()) {
+                Resources resources = new Resources();
+                resources.setResID(rs.getInt("p"));
+                resources.setResName(rs.getString("resName"));
+                resources.setResUrl(rs.getString("resUrl"));
+                list.add(resources);
+            }
+            role.setResources(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
