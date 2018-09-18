@@ -25,6 +25,11 @@ import java.io.PrintWriter;
  */
 @WebServlet("/ajaxAction")
 public class AjaxAction extends HttpServlet {
+
+    public static final String ACTION = "action";
+    public static final String USER_NAME = "userName";
+    private static final long serialVersionUID = 2420676865157698130L;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -37,8 +42,8 @@ public class AjaxAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         System.out.println(req.getQueryString());
         // System.out.println("进入ajax");
-        String action = req.getParameter("action");
-        String userName = req.getParameter("userName");
+        String action = req.getParameter(ACTION);
+        String userName = req.getParameter(USER_NAME);
         // System.out.println("用户名为" + userName);
         UsersServer usersServer = new UsersServerImpl();
         PrintWriter printWriter = resp.getWriter();
@@ -48,6 +53,7 @@ public class AjaxAction extends HttpServlet {
             printWriter.write("1");
         } else {
             printWriter.write("0");
+
         }
         printWriter.flush();
     }

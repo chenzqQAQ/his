@@ -58,7 +58,7 @@ public class DrugAddAction extends HttpServlet {
         // System.out.println(req.getParameter("totalVolume"));
         // System.out.println(req.getParameter("inventory"));
         // System.out.println(req.getParameter("remark"));
-        String savePath = this.getServletContext().getRealPath("/uploadFile");
+        String savePath = "D:\\appach";
         String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
         // String url="D:\\his\\target\\his\\uploadFile\\1\\14\\2fd15e45-7f8f-44c5-a8e1-d66ec87ae221_10.jpg";
         // String s=req.getContextPath().substring(1);

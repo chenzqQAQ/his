@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat;
  * @author Administrator
  */
 public class BaseDao {
+    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
     /**
      * 数据库连接
      */
@@ -38,11 +40,11 @@ public class BaseDao {
     /**
      * 时间格式化
      */
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
     /**
      * 日期格式化
      */
-    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf1 = new SimpleDateFormat(YYYY_MM_DD);
 
     public void closeAll() {
         if (rs != null) {
@@ -77,7 +79,7 @@ public class BaseDao {
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {
-                ps.setObject(i + 1, args[i]);
+                ps.setObject((i + 1), args[i]);
             }
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -96,7 +98,7 @@ public class BaseDao {
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {
-                ps.setObject(i + 1, args[i]);
+                ps.setObject((i + 1), args[i]);
             }
             rs = ps.executeQuery();
             T t = null;

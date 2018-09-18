@@ -25,6 +25,8 @@ import java.io.IOException;
  */
 @WebServlet("/drugFindAction")
 public class DrugFindAction extends HttpServlet {
+    private static final long serialVersionUID = 3052487058278888970L;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -40,10 +42,10 @@ public class DrugFindAction extends HttpServlet {
         Drug drug = drugServer.findDrug(id);
         // System.out.println("全查" + list.size());
         String str=drug.getDrugUrl();
-        //去掉项目的斜杠
-        String ss=req.getContextPath().substring(1);
-        int i=str.lastIndexOf(ss);
+        //去掉磁盘
+        int i=str.lastIndexOf("appach");
         drug.setDrugUrl(str.substring(i-1));
+        System.out.println(drug.getDrugUrl());
         req.setAttribute("drug", drug);
         req.getRequestDispatcher("/medicine/edit.jsp").forward(req, resp);
     }
