@@ -89,7 +89,6 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            System.out.println(drug.getDrugID());
             ps.setObject(1, drug.getDrugID());
             ps.setObject(2, drug.getDrugUrl());
             ps.setObject(3, drug.getPurchasePrice());

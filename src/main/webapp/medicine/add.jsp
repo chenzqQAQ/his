@@ -35,7 +35,25 @@
             }
         }
 
+        img {
+            width: 200px;
+            height: 150px;
+            float: left;
+        }
 
+        #imgdiv:after {
+            clear: both;
+            display: block;
+            content: "";
+            width: 0;
+            height: 0;
+            visibility: hidden;
+        }
+
+        #imgdiv {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
     <script type="text/javascript">
         var datepicker1 = {
@@ -64,19 +82,35 @@
                 window.location.href = "/his/drugFindNameAction";
             });
             $('input[name="qualityLife"]').mouseover(function () {
-                var date1=$('#productionDate').val();
-                var date2=$('#overdueDate').val();
-                if(date1!==''&&date2!=='')
-                {
+                var date1 = $('#productionDate').val();
+                var date2 = $('#overdueDate').val();
+                if (date1 !== '' && date2 !== '') {
                     console.log(date1);
                     console.log(date2);
-                    var long=new Date(date2).getTime()-new Date(date1).getTime();
-                    var day=Math.floor(long/(1000*60*60*24*30));
+                    var long = new Date(date2).getTime() - new Date(date1).getTime();
+                    var day = Math.floor(long / (1000 * 60 * 60 * 24 * 30));
                     console.log(day);
                     $('input[name="qualityLife"]').val(day);
                 }
             })
+            $('#img').hide();
         });
+
+        function readFile() {
+            var img = $('#imgfile')[0].files[0];
+            if (window.FileReader) {
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('#img').prop("src", fileReader.result);
+                    $('#img').show();
+                };
+                fileReader.readAsDataURL(img);
+            }
+
+        }
+        function oo() {
+            $('#imgfile').click();
+        }
     </script>
 </head>
 <body>
@@ -88,7 +122,11 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">图片</td>
-            <td><input type="file" name="drugUrl" value=""/></td>
+            <td>
+                <div id="imgdiv"><img src="" id="img" style=""></div>
+                <button onclick="oo();return false">上传图片</button>
+                <input id="imgfile" type="file" name="drugUrl" value="" onchange="readFile()" hidden="hidden"/>
+            </td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">进价</td>

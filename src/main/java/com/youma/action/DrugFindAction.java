@@ -43,9 +43,11 @@ public class DrugFindAction extends HttpServlet {
         // System.out.println("全查" + list.size());
         String str=drug.getDrugUrl();
         //去掉磁盘
-        int i=str.lastIndexOf("appach");
-        drug.setDrugUrl(str.substring(i-1));
-        System.out.println(drug.getDrugUrl());
+        if(str!=null)
+        {
+            int i=str.lastIndexOf("appach");
+            drug.setDrugUrl(str.substring(i-1));
+        }
         req.setAttribute("drug", drug);
         req.getRequestDispatcher("/medicine/edit.jsp").forward(req, resp);
     }

@@ -135,6 +135,18 @@
         <td width="10%" class="tableleft">总花费：</td>
         <td>${hosSettle.cost}元</td>
     </tr>
+    <c:if test="${hosSettle.medicalCost>0}">
+        <tr>
+            <td width="10%" class="tableleft">医疗费用：</td>
+            <td>${hosSettle.medicalCost}元</td>
+        </tr>
+    </c:if>
+    <c:if test="${hosSettle.drugCost>0}">
+        <tr>
+            <td width="10%" class="tableleft">药品总额：</td>
+            <td>${hosSettle.drugCost}元</td>
+        </tr>
+    </c:if>
     <tr>
         <td width="10%" class="tableleft">押金：</td>
         <td>${hosSettle.deposit}元</td>

@@ -137,9 +137,8 @@ public class Upload {
             upload.setHeaderEncoding("UTF-8");
             //3.判断提交上来的数据是否有文件内容(enctype="multipart/form-data")
             if (!ServletFileUpload.isMultipartContent(req)) {
-
                 //表单请求中没有文件类型
-                map.put("message", "没有文件类型");
+                map.put("message", "请求不是文件类型");
                 return map;
             }
             //设置上传的单个文件的大小的最大值,目前为10MB
@@ -154,12 +153,14 @@ public class Upload {
                     //获取文件名
                     String name = fileItem.getName();
                     if (name == null || name.trim().equals("")) {
+                        //提示文件传来的文件不存在
+                        map.put("message", "文件不存在");
                         continue;
                     }
-                    System.out.println("文件名：" + name);
+                    // System.out.println("文件名：" + name);
                     //获取文件名部分
                     name = name.substring(name.lastIndexOf("\\") + 1);
-                    System.out.println("文件：" + name);
+                    // System.out.println("文件：" + name);
                     //获取文件的扩展名
                     String fileExtName = name.substring(name.lastIndexOf(".") + 1);
                     InputStream in = fileItem.getInputStream();
@@ -185,7 +186,9 @@ public class Upload {
                 }
             }
             //文件上传成功
-            map.put("message", "文件上传成功");
+            if (map.get("message") != null) {
+                map.put("message", "文件上传成功");
+            }
             flag = 1;
         } catch (FileUploadBase.FileSizeLimitExceededException e) {
             e.printStackTrace();

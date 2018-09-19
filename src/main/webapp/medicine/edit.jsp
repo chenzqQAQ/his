@@ -37,11 +37,24 @@
         }
 
         img {
-            width: 500px;
-            height: 200px;
+            width: 200px;
+            height: 150px;
+            float: left;
         }
 
+        #imgdiv:after {
+            clear: both;
+            display: block;
+            content: "";
+            width: 0;
+            height: 0;
+            visibility: hidden;
+        }
 
+        #imgdiv {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 
     <script type="text/javascript">
@@ -50,10 +63,27 @@
                 window.location.href = "/his/drugFindNameAction";
             });
         });
+
+        function readFile() {
+            var img = $('#imgfile')[0].files[0];
+            if (window.FileReader) {
+
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('#img').prop("src", fileReader.result);
+                };
+                fileReader.readAsDataURL(img);
+            }
+
+        }
+
+        function oo() {
+            $('#imgfile').click();
+        }
     </script>
 </head>
 <body>
-<form action="/his/drugUpdateAction" method="post" class="definewidth m20">
+<form action="/his/drugUpdateAction" method="post" class="definewidth m20" enctype="multipart/form-data">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品编号</td>
@@ -64,8 +94,14 @@
         <tr>
             <td width="10%" class="tableleft">图片</td>
 
-            <td><img src="${drug.drugUrl}" title="药品图片" alt="图片找不到"/>
-                <%--<input type="file" name="drugUrl" value="${drug.drugUrl}"/>--%>
+            <td>
+                <div id="imgdiv">
+                    <img src="${drug.drugUrl}" title="${drug.drugName}" alt="图片找不到" id="img"/>
+                </div>
+                <button onclick="oo();return false">上传图片</button>
+                <input id="imgfile" type="file" name="drugUrl" title="${drug.drugUrl}" onchange="readFile()"
+                       hidden="hidden"/>
+
             </td>
         </tr>
         <tr>
