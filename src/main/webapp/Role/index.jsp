@@ -131,7 +131,8 @@
             <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${role.roleID}"></td>
             <td>${role.roleName}</td>
             <td>${status[role.status]}</td>
-            <td><a href="editRole.jsp">编辑</a>&nbsp;&nbsp;&nbsp;<a href="javascript:alert('删除成功！');">删除</a></td>
+            <td><a href="/his/roleFindAction?action=find&roleId=${role.roleID}">编辑</a>&nbsp;&nbsp;&nbsp;
+                <a href="/his/roleDelAction?roleId=${role.roleID}">删除</a></td>
         </tr>
     </c:forEach>
 </table>

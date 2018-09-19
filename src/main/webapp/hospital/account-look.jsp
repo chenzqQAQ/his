@@ -1,10 +1,10 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>发药详情--2015</title>
+    <title>结算详细--中软高科-2015</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
@@ -37,7 +37,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "/his/dispenedFindAction";
+                window.location.href = "add.html";
             });
         });
 
@@ -74,7 +74,7 @@
 
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "/his/dispenedFindAction";
+                window.location.href = "account.html";
             });
         });
     </script>
@@ -86,31 +86,27 @@
     <tr>
         <th>病历号</th>
         <th>姓名</th>
-        <th>药品名称</th>
-        <th>药品数量</th>
-        <th>已发数量</th>
-        <th>未发数量</th>
-        <th>操作</th>
+        <th>收费项目</th>
+        <th>收费金额</th>
+        <th>收费日期</th>
     </tr>
     </thead>
+    <c:forEach items="${pays}" var="pay">
+        <tr>
+            <td style="vertical-align:middle;">${medicalNum}</td>
+            <td style="vertical-align:middle;">${pay.name}</td>
+            <td style="vertical-align:middle;">${pay.payName}</td>
+            <td style="vertical-align:middle;">${pay.chargeAmount}</td>
+            <td style="vertical-align:middle;">${pay.payDate}</td>
+        </tr>
+    </c:forEach>
     <c:forEach items="${drugs}" var="drug">
         <tr>
-            <td style="vertical-align:middle;">${drug.medicalNum}</td>
+            <td style="vertical-align:middle;">${medicalNum}</td>
             <td style="vertical-align:middle;">${drug.rName}</td>
             <td style="vertical-align:middle;">${drug.drugName}</td>
-            <td style="vertical-align:middle;">${drug.totalQuantity}</td>
-            <td style="vertical-align:middle;">${drug.dispensedQuantity}</td>
-            <td style="vertical-align:middle;">${drug.undispensedQuantity}</td>
-            <td style="vertical-align:middle;">
-                <c:set value="${drug.undispensedQuantity}" var="a" scope="page"/>
-                <c:if test="${a>0}">
-                    <a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=${a}">发全</a>
-                    <c:if test="${a>0}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=1">发1</a></c:if>
-                    <c:if test="${a>2}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=3">发3</a></c:if>
-                    <c:if test="${a>4}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=5">发5</a></c:if>
-                    <c:if test="${a>29}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=30">发30</a></c:if>
-                </c:if>
-            </td>
+            <td style="vertical-align:middle;">${drug.account}</td>
+            <td style="vertical-align:middle;">${drug.dispensedTime}</td>
         </tr>
     </c:forEach>
 </table>
@@ -126,10 +122,36 @@
             </div>
             <div>
                 <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+                <button type="button" class="btn btn-success">打印</button>
             </div>
 
         </th>
     </tr>
+</table>
+
+
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td width="10%" class="tableleft">总花费：</td>
+        <td>${hosSettle.cost}元</td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">押金：</td>
+        <td>${hosSettle.deposit}元</td>
+    </tr>
+    <c:if test="${hosSettle.balance>0}">
+        <tr>
+            <td width="10%" class="tableleft">余额：</td>
+            <td>${hosSettle.balance}元</td>
+        </tr>
+    </c:if>
+    <c:if test="${hosSettle.overplusCost>0}">
+        <tr>
+            <td width="10%" class="tableleft">需付款：</td>
+            <td>${hosSettle.overplusCost}元</td>
+        </tr>
+    </c:if>
+
 </table>
 
 </body>

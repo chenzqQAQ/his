@@ -12,6 +12,7 @@ package com.youma.dao.impl;
 import com.youma.dao.HosSettleDao;
 import com.youma.util.ConnectionDB;
 import com.youma.vo.HosSettle;
+import com.youma.vo.Inpatient;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -71,6 +72,38 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public int hosSettleAdd(Inpatient inpatient) {
+        conn = ConnectionDB.getConnection();
+        String sql = "INSERT INTO his.hossettle\n" +
+                "(\n" +
+                "medicalNum,\n" +
+                "flag,\n" +
+                "deposit,\n" +
+                "paidCost)\n" +
+                "VALUES\n" +
+                "(?,\n" +
+                "?,\n" +
+                "?,\n" +
+                "?);";
+        int col = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, inpatient.getMedicalNum());
+            ps.setInt(2, 0);
+            ps.setDouble(3, inpatient.getDeposit());
+            ps.setDouble(4, inpatient.getDeposit());
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -114,6 +147,8 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -130,6 +165,8 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return col;
     }
@@ -170,6 +207,8 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return list;
     }
@@ -188,7 +227,7 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
                 "    hossettle.medicalCost,\n" +
                 "    hossettle.drugCost,\n" +
                 "    hossettle.paidCost\n" +
-                "FROM his.hossettle WHERE ID=?";
+                "FROM his.hossettle WHERE hossettle.medicalNum=?";
         HosSettle hosSettle = new HosSettle();
         try {
             ps = conn.prepareStatement(sql);
@@ -202,14 +241,100 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
                 hosSettle.setDeposit(rs.getDouble("deposit"));
                 hosSettle.setOverplusCost(rs.getDouble("overplusCost"));
                 hosSettle.setBalance(rs.getDouble("balance"));
-                hosSettle.setPayDate(sdf.format(rs.getDate("payDate")));
+                if (rs.getDate("payDate") != null) {
+
+                    hosSettle.setPayDate(sdf.format(rs.getDate("payDate")));
+                } else {
+                    hosSettle.setPayDate("未付款");
+                }
                 hosSettle.setMedicalCost(rs.getDouble("medicalCost"));
                 hosSettle.setDrugCost(rs.getDouble("drugCost"));
                 hosSettle.setPaidCost(rs.getDouble("paidCost"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeAll();
         }
         return hosSettle;
+    }
+
+    @Override
+    public int updateCost(int id) {
+        conn = ConnectionDB.getConnection();
+        int col = 0;
+        String sql = "update hossettle, \n" +
+                "(SELECT \n" +
+                "    hossettle.medicalNum,\n" +
+                "    p1.a1 as a,\n" +
+                "    p2.a2 as b\n" +
+                "FROM\n" +
+                "    hossettle,\n" +
+                "    (SELECT \n" +
+                "        hossettle.medicalNum, IFNULL(SUM(chargeAmount), 0.0) AS a1\n" +
+                "    FROM\n" +
+                "        hossettle\n" +
+                "    LEFT JOIN paymanager ON paymanager.medicalNum = hossettle.medicalNum\n" +
+                "    GROUP BY hossettle.medicalNum) p1,\n" +
+                "    (SELECT \n" +
+                "        hossettle.medicalNum,\n" +
+                "            IFNULL(SUM(drug.sellingPrice * dispenseddrug.totalQuantity), 0.0) AS a2\n" +
+                "    FROM\n" +
+                "        hossettle\n" +
+                "    LEFT JOIN dispenseddrug ON dispenseddrug.medicalNum = hossettle.medicalNum\n" +
+                "    LEFT JOIN drug ON drug.drugID = dispenseddrug.drugID\n" +
+                "    GROUP BY hossettle.medicalNum\n" +
+                "    ORDER BY hossettle.medicalNum) p2\n" +
+                "WHERE\n" +
+                "    p1.medicalNum = hossettle.medicalNum\n" +
+                "        AND p2.medicalNum = hossettle.medicalNum) p\n" +
+                "set\n" +
+                "    cost = p.a + p.b,\n" +
+                "    medicalCost = p.a,\n" +
+                "    drugCost = p.b,\n" +
+                "    overplusCost = cost - paidCost,\n" +
+                "    balance = paidCost - cost\n" +
+                "where p.medicalNum=hossettle.medicalNum\n" +
+                "and hossettle.medicalNum=?";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return col;
+    }
+
+    @Override
+    public List<HosSettle> findAll() {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT hossettle.ID,\n" +
+                "    hossettle.medicalNum,\n" +
+                "    hossettle.flag,\n" +
+                "    hossettle.deposit," +
+                "registerName\n" +
+                "FROM his.hossettle join register on hossettle.medicalNum=register.medicalNum";
+        List<HosSettle> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                HosSettle hosSettle = new HosSettle();
+                hosSettle.setId(rs.getInt("id"));
+                hosSettle.setMedicalNum(rs.getInt("medicalNum"));
+                hosSettle.setFlag(rs.getInt("flag"));
+                hosSettle.setDeposit(rs.getDouble("deposit"));
+                hosSettle.setrName(rs.getString("registerName"));
+                list.add(hosSettle);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
     }
 }

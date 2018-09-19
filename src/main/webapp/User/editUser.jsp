@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
-<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title></title>
@@ -104,7 +104,7 @@
 <script>
     $(function () {
         $('#backid').click(function () {
-            window.location.href = "index.jsp";
+            window.location.href = "/his/usersFindAllAction";
         });
     });
 </script>

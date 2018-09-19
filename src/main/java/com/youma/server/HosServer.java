@@ -1,4 +1,13 @@
-package com.youma.dao;
+/**
+ * Copyright (C),2015-2018
+ * FileNmae: HosServer
+ * Author:   Administrator
+ * Date:     2018/9/19 9:37
+ * History:
+ * <author> <Time> <version> <desc>
+ * 陈泽群  时间    版本号  描述
+ */
+package com.youma.server;
 
 import com.youma.vo.HosSettle;
 import com.youma.vo.Inpatient;
@@ -6,11 +15,12 @@ import com.youma.vo.Inpatient;
 import java.util.List;
 
 /**
- * 住院结算管理
- *
- * @author 陈泽群
+ *HosServer
+ *住院结算
+ *@author 陈泽群
+ *@date 2018/9/19 9:37
  */
-public interface HosSettleDao {
+public interface HosServer{
     /**
      * 住院结算信息添加操作
      *
@@ -57,16 +67,16 @@ public interface HosSettleDao {
      */
     public HosSettle findHosSettle(int id);
     /**
+     * 查询所有住院结算信息操作
+     *
+     * @return List<HosSettle> 住院结算信息集合
+     */
+    public List<HosSettle> findAll();
+    /**
      * 计算指定病历号的全部花费
      *
      * @param id 病历号
      * @return 修改行数
      */
     public int updateCost(int id);
-    /**
-     * 查询所有住院结算信息操作
-     *
-     * @return List<HosSettle> 住院结算信息集合
-     */
-    public List<HosSettle> findAll();
 }

@@ -9,7 +9,9 @@
  */
 package com.youma.action;
 
+import com.youma.server.HosServer;
 import com.youma.server.InpServer;
+import com.youma.server.impl.HosServerImpl;
 import com.youma.server.impl.InpServerImpl;
 import com.youma.vo.Inpatient;
 
@@ -37,7 +39,8 @@ public class InpatientAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
-        InpServer inpServer=new InpServerImpl();
+        InpServer inpServer = new InpServerImpl();
+        HosServer hosServer = new HosServerImpl();
         String action = req.getParameter("action");
         if ("add".equals(action)) {
             //进入住院信息添加操作;
@@ -52,8 +55,7 @@ public class InpatientAction extends HttpServlet {
             inpatient.setBedNum(bedNum);
             inpatient.setDeposit(deposit);
             inpatient.setIllness(illness);
-            if(0!=inpServer.inpatientAdd(inpatient))
-            {
+            if (0 != inpServer.inpatientAdd(inpatient) && 0 != hosServer.hosSettleAdd(inpatient)) {
                 //添加成功，跳转到全查结果
                 resp.sendRedirect("/his/inpFindAction?action=findAll");
             }

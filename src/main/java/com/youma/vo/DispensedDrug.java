@@ -63,6 +63,10 @@ public class DispensedDrug {
      * 发药时间
      */
     private String dispensedTime;
+    /**
+     * 药品金额
+     */
+    private double account;
 
     public int getId() {
         return id;
@@ -134,5 +138,13 @@ public class DispensedDrug {
 
     public void setDispensedTime(String dispensedTime) {
         this.dispensedTime = dispensedTime;
+    }
+
+    public double getAccount() {
+        return account;
+    }
+
+    public void setAccount(double account) {
+        this.account = account;
     }
 }

@@ -1,15 +1,16 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>发药详情--2015</title>
+    <title>住院结算--中软高科-2015</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
     <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
     <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <script type="text/javascript" src="/his/Js/jquery.sorted.js"></script>
     <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
@@ -37,7 +38,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "/his/dispenedFindAction";
+                window.location.href = "dispensing-gives.html";
             });
         });
 
@@ -71,45 +72,55 @@
                 alert("请选中要操作的项");
             }
         }
-
-        $(function () {
-            $('#backid').click(function () {
-                window.location.href = "/his/dispenedFindAction";
-            });
-        });
     </script>
 </head>
 <body>
 
+<form action="account.jsp" method="post" class="definewidth m20">
+    <table class="table table-bordered table-hover definewidth m10">
+        <tr>
+            <td width="10%" class="tableleft">病例号：</td>
+            <td><input type="text" name="pname" value=""/></td>
+            <td width="10%" class="tableleft">姓名：</td>
+            <td><input type="text" name="pname" value=""/></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <center>
+                    <button type="submit" class="btn btn-primary" type="button">查询</button>
+                    <button type="submit" class="btn btn-primary" type="button">清空</button>
+                </center>
+            </td>
+        </tr>
+    </table>
+</form>
+
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
     <tr>
+        <th><input type="checkbox" id="checkall" onChange="checkall();"></th>
         <th>病历号</th>
         <th>姓名</th>
-        <th>药品名称</th>
-        <th>药品数量</th>
-        <th>已发数量</th>
-        <th>未发数量</th>
+        <th>押金</th>
+        <%--<th>当前余额</th>--%>
+        <th>状态</th>
+        <% String[] type = {"未结算", "已结算"};
+            request.setAttribute("type", type);
+        %>
         <th>操作</th>
     </tr>
     </thead>
-    <c:forEach items="${drugs}" var="drug">
+    <c:forEach items="${hos}" var="ho">
         <tr>
-            <td style="vertical-align:middle;">${drug.medicalNum}</td>
-            <td style="vertical-align:middle;">${drug.rName}</td>
-            <td style="vertical-align:middle;">${drug.drugName}</td>
-            <td style="vertical-align:middle;">${drug.totalQuantity}</td>
-            <td style="vertical-align:middle;">${drug.dispensedQuantity}</td>
-            <td style="vertical-align:middle;">${drug.undispensedQuantity}</td>
+            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${ho.id}"></td>
+            <td style="vertical-align:middle;">${ho.medicalNum}</td>
+            <td style="vertical-align:middle;">${ho.rName}</td>
+            <td style="vertical-align:middle;">${ho.deposit}元</td>
+                <%--<td style="vertical-align:middle;">150元</td>--%>
+            <td style="vertical-align:middle;">${type[ho.flag]}</td>
             <td style="vertical-align:middle;">
-                <c:set value="${drug.undispensedQuantity}" var="a" scope="page"/>
-                <c:if test="${a>0}">
-                    <a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=${a}">发全</a>
-                    <c:if test="${a>0}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=1">发1</a></c:if>
-                    <c:if test="${a>2}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=3">发3</a></c:if>
-                    <c:if test="${a>4}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=5">发5</a></c:if>
-                    <c:if test="${a>29}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=30">发30</a></c:if>
-                </c:if>
+                <a href="/his/hosFindAction?action=find&medicalNum=${ho.medicalNum}">详细信息</a>&nbsp;&nbsp;&nbsp;
+                <a href="">结算</a>
             </td>
         </tr>
     </c:forEach>
@@ -125,7 +136,7 @@
                 &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
             </div>
             <div>
-                <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+                <button type="button" class="btn btn-success" id="delPro">导出Excel</button>
             </div>
 
         </th>

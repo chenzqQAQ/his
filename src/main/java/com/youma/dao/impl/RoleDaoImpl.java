@@ -28,15 +28,16 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
         String sql = "    INSERT INTO role\n" +
                 "(" +
                 "roleNum,\n" +
-                "roleName)\n" +
+                "roleName,status)\n" +
                 "VALUES\n" +
                 "(?,\n" +
-                "?);";
+                "?,?);";
         try {
             ps = conn.prepareStatement(sql);
 
             ps.setObject(1, role.getRoleNum());
             ps.setObject(2, role.getRoleName());
+            ps.setInt(3, role.getStatus());
             col = ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -53,15 +54,14 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
         int col = 0;
         String sql = "UPDATE role\n" +
                 "SET\n" +
-                "roleID = ?,\n" +
                 "roleNum = ?,\n" +
-                "roleName = ?\n" +
+                "roleName = ?,status=?\n" +
                 "WHERE roleID = ?";
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, role.getRoleID());
-            ps.setObject(2, role.getRoleNum());
-            ps.setObject(3, role.getRoleName());
+            ps.setObject(1, role.getRoleNum());
+            ps.setObject(2, role.getRoleName());
+            ps.setObject(3, role.getStatus());
             ps.setObject(4, role.getRoleID());
             col = ps.executeUpdate();
         } catch (SQLException e) {
@@ -172,7 +172,7 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT roleID,\n" +
                 "    roleNum,\n" +
-                "    roleName\n" +
+                "    roleName,status\n" +
                 "FROM role\n" +
                 "WHERE roleID = ?";
         Role role = new Role();
@@ -184,6 +184,7 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
                 role.setRoleID(rs.getInt("roleID"));
                 role.setRoleNum(rs.getString("roleNum"));
                 role.setRoleName(rs.getString("roleName"));
+                role.setStatus(rs.getInt("status"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -246,6 +247,7 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             //没有可添加项
             return 0;
         }
+        System.out.println(sql);
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);

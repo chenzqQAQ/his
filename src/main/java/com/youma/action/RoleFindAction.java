@@ -44,6 +44,17 @@ public class RoleFindAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         RoleServer roleServer = new RoleServerImpl();
+        String action = req.getParameter("action");
+        if (action != null && !"".equals(action)) {
+            //单查
+            int id = Integer.parseInt(req.getParameter("roleId"));
+            Role role = roleServer.findRole(id);
+            Role role1 = roleServer.findRes(id);
+            role.setResources(role1.getResources());
+            req.setAttribute("role", role);
+            req.getRequestDispatcher("/Role/editRole.jsp").forward(req, resp);
+            return;
+        }
         String pageNo = req.getParameter("pageNo");
         Page page = new Page();
         page.setTotalCount(roleServer.roleCount());

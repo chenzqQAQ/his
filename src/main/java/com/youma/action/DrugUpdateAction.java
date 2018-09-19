@@ -57,7 +57,7 @@ public class DrugUpdateAction extends HttpServlet {
         System.out.println(drug.getDrugID());
         if (0 != drugServer.updateDrug(drug)) {
             System.out.println("更新成功");
-            resp.sendRedirect("/his/drugFindAllAction");
+            resp.sendRedirect("/his/drugFindNameAction");
         } else {
             System.out.println("未修改");
         }

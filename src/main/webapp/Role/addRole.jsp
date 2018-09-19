@@ -93,7 +93,7 @@
         });
 
         $('#backid').click(function () {
-            window.location.href = "index.jsp";
+            window.location.href = "/his/roleFindAction";
         });
     });
 </script>

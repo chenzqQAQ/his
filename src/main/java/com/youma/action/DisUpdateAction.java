@@ -47,7 +47,7 @@ public class DisUpdateAction extends HttpServlet {
         int dispensedQuantity = Integer.parseInt(req.getParameter("dispensedQuantity"));
         DispensedDrug dispensedDrug = new DispensedDrug();
         dispensedDrug.setMedicalNum(medicalNum);
-        dispensedDrug.setDrugId(drugID);
+        dispensedDrug.setId(Integer.parseInt(drugID));
         dispensedDrug.setDispensedQuantity(dispensedQuantity);
         DisServer disServer=new DisServerImpl();
         if(0!=disServer.disDrug(dispensedDrug))

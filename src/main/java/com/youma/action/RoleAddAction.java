@@ -49,27 +49,47 @@ public class RoleAddAction extends HttpServlet {
         String[] resources = req.getParameterValues("resources");
         //获取角色名称
         String roleName = req.getParameter("roleName");
+        int status = Integer.parseInt(req.getParameter("status"));
         List<Resources> list = new ArrayList<>();
         //将权限的id存储到角色类中
         for (String str : resources) {
             Resources resources1 = new Resources();
             resources1.setResID(Integer.parseInt(str));
             list.add(resources1);
+            System.out.println(resources1.getResID());
         }
         Role role = new Role();
         role.setRoleName(roleName);
         role.setResources(list);
-        if (roleServer.roleAdd(role) != 0)
-        {
+        role.setStatus(status);
+        String action = req.getParameter("action");
+        if (action != null && !"".equals(action)) {
+            //修改权限
+            //获取角色id
+            int id = Integer.parseInt(req.getParameter("roleId"));
+            role.setRoleID(id);
+            roleServer.updateRole(role);
+            //先删除原有权限资源,再重新添加
+            roleServer.delRes(role.getRoleID());
+            if (resources.length == roleServer.addRes(role)) {
+                System.out.println("权限重新分配成功");
+            } else {
+                System.out.println("权限重新分配失败");
+            }
+            resp.sendRedirect("/his/roleFindAction");
+            return;
+        }
+        if (roleServer.roleAdd(role) != 0) {
             System.out.println("角色添加成功");
             role.setRoleID(roleServer.findRole(roleName));
             System.out.println(roleServer.findRole(roleName));
-            if (0 != roleServer.addRes(role)) {
+            if (resources.length == roleServer.addRes(role)) {
                 System.out.println("权限分配成功");
+                resp.sendRedirect("/his/roleFindAction");
             }
-        }
-        else{
+        } else {
             System.out.println("角色添加失败");
+            resp.sendRedirect("/his/roleFindAction");
         }
 
     }

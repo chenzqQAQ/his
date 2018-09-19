@@ -24,7 +24,11 @@ public class HosSettle {
      */
     private int medicalNum;
     /**
-     * 状态
+     * 病患名字
+     */
+    private String rName;
+    /**
+     * 状态(0:未结算,1:已结算)
      */
     private int flag;
     /**
@@ -146,5 +150,13 @@ public class HosSettle {
 
     public void setPaidCost(double paidCost) {
         this.paidCost = paidCost;
+    }
+
+    public String getrName() {
+        return rName;
+    }
+
+    public void setrName(String rName) {
+        this.rName = rName;
     }
 }

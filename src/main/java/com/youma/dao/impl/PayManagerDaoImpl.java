@@ -113,9 +113,10 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
     public List<PayManager> findAll(int id) {
         conn = ConnectionDB.getConnection();
         List<PayManager> list = new ArrayList<>();
-        String sql = "select medicalNum ,projectName,chargeAmount\n" +
+        String sql = "select paymanager.medicalNum ,projectName,chargeAmount,registerName\n" +
                 "from paymanager  join payproject" +
-                " on payID=payproject.ID where medicalNum=?";
+                " on payID=payproject.ID join register on paymanager.medicalNum=register.medicalNum " +
+                "where paymanager.medicalNum=?";
         // System.out.println(sql);
         try {
             ps = conn.prepareStatement(sql);
@@ -126,6 +127,7 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
                 payManager.setMedicalNum(rs.getInt("medicalNum"));
                 payManager.setPayName(rs.getString("projectName"));
                 payManager.setChargeAmount(rs.getDouble("chargeAmount"));
+                payManager.setName(rs.getString("registerName"));
                 list.add(payManager);
             }
         } catch (SQLException e) {
