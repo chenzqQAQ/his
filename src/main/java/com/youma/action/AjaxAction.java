@@ -26,8 +26,8 @@ import java.io.PrintWriter;
 @WebServlet("/ajaxAction")
 public class AjaxAction extends HttpServlet {
 
-    private static final String ACTION = "action";
-    private static final String USER_NAME = "userName";
+    public static final String ACTION = "action";
+    public static final String USER_NAME = "userName";
     private static final long serialVersionUID = 2420676865157698130L;
 
     @Override
@@ -40,7 +40,7 @@ public class AjaxAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
-        System.out.println(req.getQueryString());
+        // System.out.println(req.getQueryString());
         // System.out.println("进入ajax");
         String action = req.getParameter(ACTION);
         String userName = req.getParameter(USER_NAME);
@@ -53,7 +53,6 @@ public class AjaxAction extends HttpServlet {
             printWriter.write("1");
         } else {
             printWriter.write("0");
-
         }
         printWriter.flush();
     }
