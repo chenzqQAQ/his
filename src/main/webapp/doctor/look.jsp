@@ -38,7 +38,7 @@ pageEncoding="UTF-8" %>
     <script type="text/javascript">
     $(function () {       
 		$('#backid').click(function(){
-				window.location.href="index.jsp";
+				window.location.href="/his/doctorFindAllAction";
 		 });
     });
     </script>

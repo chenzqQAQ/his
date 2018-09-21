@@ -15,6 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 对象转json时,有注释时加入到json的字符串中
  *@author 陈泽群
  */
 @Retention(RetentionPolicy.RUNTIME)

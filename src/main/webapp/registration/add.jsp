@@ -56,6 +56,7 @@
                         var option = $("<option></option>");
                         option.val(dep['id']).text(dep['depName']).appendTo($('#depName'));
                     })
+                    //全部科室信息添加后,选取首位科室id去将该科室的全部医生显示到页面上
                     updateDocName();
                 }
 
@@ -179,11 +180,12 @@
         $(function () {
             console.log("jQuery可用")
             $('#backid').click(function () {
-                window.location.href = "index.jsp";
+                window.location.href = "/his/registerFindAction";
             });
             $('#depName').change(function () {
                 updateDocName();
             });
+            //页面加载后，异步查询全部科室
             findAllDep();
             $("#form1").validate(
                 {

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 医生更新
  * @author 陈泽群
  */
 @WebServlet("/doctorUpdateAction")
@@ -36,6 +37,7 @@ public class DoctorUpdateAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset:UTF-8");
         Doctor doctor = new Doctor();
+        //获取页面的医生信息来修改
         doctor.setId(Integer.parseInt(req.getParameter("id")));
         doctor.setDoctorName(req.getParameter("doctorName"));
         doctor.setIdentifierType(Integer.parseInt(req.getParameter("identifierType")));

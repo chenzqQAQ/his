@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * 获取属性的中文名字
+ * 配合exl类使用,将属性名用name中的中文代替
+ * 将int转为对应的文字
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

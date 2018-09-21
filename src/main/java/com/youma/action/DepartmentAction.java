@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * 异步请求数据库里全部的科室信息
  * @author 陈泽群
  */
 @WebServlet("/departmentAction")
@@ -49,7 +50,9 @@ public class DepartmentAction extends HttpServlet {
          */
         if (FINDALL.equals(action)) {
             System.out.println("开始科室全查");
+            //全查科室信息
             List<Department> list = depServer.findAllDepartment();
+            //将科室信息转为json格式,方便页面js解析
             String json = gson.toJson(list);
             PrintWriter out = resp.getWriter();
             out.write(json);

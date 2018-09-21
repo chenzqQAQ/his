@@ -41,13 +41,14 @@
 
     </style>
     <script>
+        //首页跳转
         function totalPage() {
             $("#pageNo").val(1);
             $("#form1").attr("action", "/his/usersFindAllAction");
             $("#form1").submit();
             return false;
         }
-
+        //上一页
         function up() {
             var k = parseInt($("#pageNo").val());
             $("#pageNo").val(k > 1 ? k - 1 : 1);
@@ -55,7 +56,7 @@
             $("#form1").submit();
             return false;
         }
-
+        //下一页
         function down() {
             var k = parseInt($("#pageNo").val());
             var k1 = parseInt($("#totalPage").val());
@@ -64,7 +65,7 @@
             $("#form1").submit();
             return false;
         }
-
+        //尾页
         function lastPage() {
             $("#pageNo").val($("#totalPage").val());
             $("#form1").attr("action", "/his/usersFindAllAction");

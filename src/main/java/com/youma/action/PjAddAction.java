@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * PjAddAction
- * TODO(描述类的作用)
+ * 收费项目添加
  *
  * @author 陈泽群
  * @date 2018/9/14 10:36
@@ -41,13 +41,16 @@ public class PjAddAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
+        //获取病历号
         String medicalNum = req.getParameter("medicalNum");
+        //获取要添加的项目和对应收费金额
         String[] kk = req.getParameterValues("pid");
         String[] cost = req.getParameterValues("cost");
         PayMgServer payMgServer = new PayMgServerImpl();
         List<PayManager> list = new ArrayList<>();
         if (medicalNum != null) {
             if (kk != null) {
+                //将项目转为一个集合
                 for (int i = 0; i < kk.length; i++) {
                     PayManager payManager = new PayManager();
                     payManager.setMedicalNum(Integer.parseInt(medicalNum));
@@ -56,6 +59,7 @@ public class PjAddAction extends HttpServlet {
                     list.add(payManager);
                 }
                 if (kk.length == payMgServer.addPay(list)) {
+                    //给该用户添加所需要增加的收费项目
                     System.out.println("添加成功");
                     resp.sendRedirect("/his/pJFindAction");
                 }

@@ -52,6 +52,7 @@ public class HosFindAction extends HttpServlet {
         HosServer hosServer = new HosServerImpl();
         String action = req.getParameter("action");
         if (!"".equals(action) && action != null) {
+            //单查某个病历号的结算信息
             int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
             //计算全部花费
             hosServer.updateCost(medicalNum);
@@ -69,12 +70,14 @@ public class HosFindAction extends HttpServlet {
             req.getRequestDispatcher("/hospital/account-look.jsp").forward(req, resp);
             return;
         }
+        //全查全部结算信息
         HosSettle hosSettle = new HosSettle();
         if(req.getParameter("medicalNum")!=null&&!req.getParameter("medicalNum").isEmpty())
         {
             hosSettle.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
         }
         Page page = new Page();
+        //设置总条数和页码
         page.setTotalCount(hosServer.allCount(hosSettle));
         if(req.getParameter("pageNo")!=null&&!req.getParameter("pageNo").isEmpty())
         {
@@ -83,9 +86,11 @@ public class HosFindAction extends HttpServlet {
         else{
             page.setPageNo(1);
         }
+        //查询符合条件,当前页面需要展示的结算信息
         List<HosSettle> list = hosServer.findAll(hosSettle,page);
         for(int i=0;i<list.size();i++)
         {
+            //遍历这些结算信息,更新结算(因为没有在收费项目添加和药品分发时,更新结算信息,也没有触发器)
             hosServer.updateCost(list.get(i).getMedicalNum());
         }
         req.setAttribute("hos", list);

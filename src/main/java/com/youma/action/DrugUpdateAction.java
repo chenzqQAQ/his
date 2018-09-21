@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * 药品信息更细
  * @author 陈泽群
  */
 @WebServlet("/drugUpdateAction")
@@ -40,16 +41,21 @@ public class DrugUpdateAction extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         DrugServer drugServer = new DrugServerImpl();
         Drug drug = null;
+        //文件的保存路径,与设置的虚拟路径对应
         String savePath = "D:\\appach";
         String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
         Upload upload = new Upload(savePath, tempPath);
         Map<String, String> map = upload.up(req);
+        //获取药品id对应的药品信息
+        //因为页面的file的value属性是只读,当用户没有选择新图时,值为空,需要获取药品图片的原来地址
         drug=drugServer.findDrug(map.get("drugID"));
         if (map.get("url") != null) {
+            //当修改页面选择了新的图片,设置新的图片地址
             drug.setDrugUrl(map.get("url"));
             System.out.println("图片地址"+map.get("url"));
             System.out.println(map.get("message"));
         } else {
+            //药品图片地址保留为原来地址
             System.out.println(map.get("message"));
         }
         drug.setPurchasePrice(Double.parseDouble(map.get("purchasePrice")));

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 异步请求医生名是否存在
  *@author 陈泽群
  */
 @WebServlet("/ajaxAction1")

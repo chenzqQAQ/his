@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 医生添加
  * @author 陈泽群
  */
 @WebServlet("/doctorAddAction")
@@ -36,6 +37,7 @@ public class DoctorAddAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset:UTF-8");
         Doctor doctor = new Doctor();
+        //获取页面传来的医生信息
         doctor.setDoctorName(req.getParameter("doctorName"));
         doctor.setIdentifierType(Integer.parseInt(req.getParameter("identifierType")));
         doctor.setIdentifierNum(req.getParameter("identifierNum"));
@@ -49,6 +51,7 @@ public class DoctorAddAction extends HttpServlet {
         doctor.setDegree(Integer.parseInt(req.getParameter("degree")));
         doctor.setRemark(req.getParameter("remark"));
         DoctorServer doctorServer=new DoctorServerImpl();
+        //添加医生信息到数据库
         if(0!=doctorServer.doctorAdd(doctor))
         {
             System.out.println("添加成功");

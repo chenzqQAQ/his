@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * DocExlOut
- * TODO(描述类的作用)
+ * 异步导出医生信息exl文件到服务器的缓存地址
  *
  * @author 陈泽群
  * @date 2018/9/15 11:30
@@ -43,27 +43,33 @@ public class DocExlOut extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         String all = req.getParameter("all");
-        //全部挂号信息表文件
+        //全部挂号信息表文件存放地址
         String allDoc = "D://docAll.xlsx";
-        //选中挂号部分信息表文件
+        //选中挂号部分信息表存放地址
         String partDoc = "D://docPart.xlsx";
         String str;
         DoctorServer doctorServer = new DoctorServerImpl();
         if (all == null) {
+            //导出全部的医生信息表
             List<Doctor> list = doctorServer.findAllDoctor();
+            //设置工作表的名字
             Exl exl = new Exl("医生信息表");
             //exl保存路径
             int i = exl.createExl(Doctor.class, allDoc, list);
+
             PrintWriter out = resp.getWriter();
             if (1 == i) {
+                //将文件的缓存地址发给页面,以便下载找到文件原始地址
                 str = "{\"message\":1,\"url\":\"" + allDoc + "\"}";
                 out.write(str);
             } else {
+                //exl文件生成失败
                 out.write("{message:2}");
             }
             out.flush();
             return;
         } else {
+            //导出选中部分的医生信息
             String[] id = req.getParameterValues("medicalNum");
             int[] ids = new int[id.length];
             for (int i = 0; i < id.length; i++) {

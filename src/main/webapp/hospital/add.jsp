@@ -53,7 +53,7 @@
             '0': "初诊",
             '1': "复诊"
         };
-
+        //清空挂号信息
         function pp() {
             $("#registerName").next().empty();
             $("#identifierType").next().empty();
@@ -95,6 +95,7 @@
                         // console.log(k);
                         if (parseInt(k['medicalNum']) === 0) {
                             $('input[name="medicalNum"]').next("span").text("病历号不存在，请输入正确病历号");
+                            //清空挂号信息,上次信息可能存在
                             pp();
                         }
                         else {
@@ -106,10 +107,12 @@
                             else {
                                 if (parseInt(k['noFind']) === 1) {
                                     $('input[name="medicalNum"]').next("span").text("病历号已住院");
+                                    //清空挂号信息,上次信息可能存在
                                     pp();
                                 } else {
-
+                                    //找到了病历号对应的挂号信息
                                     $('input[name="medicalNum"]').next("span").text("病历号存在,自动录入相关信息");
+                                    //将挂号信息显示到页面上
                                     $("#registerName").next().text(k['registerName']);
                                     $("#identifierType").next().text(p1[k['identifierType']]);
                                     $("#identifierNum").next().text(k['identifierNum']);

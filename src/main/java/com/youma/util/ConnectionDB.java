@@ -41,6 +41,7 @@ public class ConnectionDB {
             e.printStackTrace();
         }
     }
+    //获取连接
     public static Connection getConnection(){
         Connection conn=null;
         try {

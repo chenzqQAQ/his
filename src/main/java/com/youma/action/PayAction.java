@@ -50,16 +50,21 @@ public class PayAction extends HttpServlet {
         HosServer hosServer=new HosServerImpl();
         int id = Integer.parseInt(req.getParameter("medicalNum"));
         Date date = new Date();
+        //更新该病历号的收费项目的收费时间(未收费的行,收费时间为null的行)
         int a = payMgServer.pay(id, date);
+        //更新该病历号的药品分发的收费时间(未收费的行,收费时间为null的行)
         int b = disServer.pay(id, date);
         if(a!=0||b!=0)
         {
+            //有需要收费的项目或药品
             System.out.println("付款成功");
         }
         else{
             System.out.println("无需付款");
         }
+        //更新收费时间到结算表中
         hosServer.pay(id,date);
+        //重定向到这个病历号的单查页面
         resp.sendRedirect("/his/hosFindAction?action=find&medicalNum="+id);
 
     }

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 医生单查
  * @author 陈泽群
  */
 @WebServlet("/doctorFindAction")
@@ -35,6 +36,7 @@ public class DoctorFindAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset:UTF-8");
+        //获取医生id
         DoctorServer doctorServer = new DoctorServerImpl();
         String id = req.getParameter("id");
         Doctor doctor;

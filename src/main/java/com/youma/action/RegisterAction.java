@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 挂号信息操作
  * @author 陈泽群
  */
 @WebServlet("/registerAction")
@@ -41,25 +42,10 @@ public class RegisterAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         RegisterServer registerServer = new RegisterServerImpl();
-        System.out.println("请求参数为" + req.getQueryString());
         String action = req.getParameter("action");
-        System.out.println(action);
         if ("add".equals(action)) {
-            System.out.println("这是添加事件");
+            //挂号信息添加
             Register register = new Register();
-            // System.out.println("姓名" + req.getParameter("registerName"));
-            // System.out.println("证件类型" + req.getParameter("identifierType"));
-            // System.out.println("证件号" + req.getParameter("identifierNum"));
-            // System.out.println("社保号" + req.getParameter("socialSecurityNum"));
-            // System.out.println("联系电话" + req.getParameter("phoneNum"));
-            // System.out.println("是否自费" + req.getParameter("expenseFlag"));
-            // System.out.println("性别" + req.getParameter("sex"));
-            // System.out.println("年龄" + req.getParameter("age"));
-            // System.out.println("职业" + req.getParameter("profession"));
-            // System.out.println("初复诊" + req.getParameter("czFlag"));
-            // System.out.println("所挂科室" + req.getParameter("depName"));
-            // System.out.println("指定医生" + req.getParameter("docName"));
-            // System.out.println("备注" + req.getParameter("remark"));
             register.setRegisterName(req.getParameter("registerName"));
             register.setIdentifierType(Integer.parseInt(req.getParameter("identifierType")));
             register.setIdentifierNum(req.getParameter("identifierNum"));
@@ -79,6 +65,8 @@ public class RegisterAction extends HttpServlet {
                 System.out.println("添加失败");
             }
         } else if ("find".equals(action)) {
+            //挂号信息单查
+            //将int所对应的文字放入req
             String[] p1 = {"身份证", "护照", "军人证"};
             String[] p2 = {"否", "是"};
             String[] p3 = {"女", "男"};
@@ -98,8 +86,10 @@ public class RegisterAction extends HttpServlet {
             req.setAttribute("register", register);
             req.setAttribute("docName", doctor.getDoctorName());
             req.setAttribute("depName", department.getDepName());
+            //请求转发到查看页面
             req.getRequestDispatcher("/registration/look.jsp").forward(req, resp);
         } else if ("del".equals(action)) {
+            //删除挂号信息,修改状态为已退号
             System.out.println("这是删除");
             int id = Integer.parseInt(req.getParameter("medicalNum"));
             if (0 != registerServer.delRegister(id)) {
@@ -110,6 +100,7 @@ public class RegisterAction extends HttpServlet {
             }
 
         } else if ("delAll".equals(action)) {
+            //删除选中的挂号信息,修改状态为已退号
             System.out.println("删除选中的挂号信息");
             String[] a = req.getParameterValues("medicalNum");
             int[] id = new int[a.length];
@@ -120,6 +111,7 @@ public class RegisterAction extends HttpServlet {
                 resp.sendRedirect("/his/registerFindAction");
             }
         } else if ("edit".equals(action)) {
+            //单查信息，跳转到修改页面
             String[] p1 = {"身份证", "护照", "军人证"};
             String[] p2 = {"否", "是"};
             String[] p3 = {"女", "男"};
@@ -140,23 +132,10 @@ public class RegisterAction extends HttpServlet {
             req.setAttribute("depId", department.getId());
             req.getRequestDispatcher("/registration/edit.jsp").forward(req, resp);
         } else if ("update".equals(action)) {
+            //根据修改页面的信息来更新挂号信息
             System.out.println("这是修改事件");
             int id = Integer.parseInt(req.getParameter("medicalNum"));
             Register register = new Register(id);
-            // System.out.println("ID" + id);
-            // System.out.println("姓名" + req.getParameter("registerName"));
-            // System.out.println("证件类型" + req.getParameter("identifierType"));
-            // System.out.println("证件号" + req.getParameter("identifierNum"));
-            // System.out.println("社保号" + req.getParameter("socialSecurityNum"));
-            // System.out.println("联系电话" + req.getParameter("phoneNum"));
-            // System.out.println("是否自费" + req.getParameter("expenseFlag"));
-            // System.out.println("性别" + req.getParameter("sex"));
-            // System.out.println("年龄" + req.getParameter("age"));
-            // System.out.println("职业" + req.getParameter("profession"));
-            // System.out.println("初复诊" + req.getParameter("czFlag"));
-            // System.out.println("所挂科室" + req.getParameter("depName"));
-            // System.out.println("指定医生" + req.getParameter("docName"));
-            // System.out.println("备注" + req.getParameter("remark"));
             register.setRegisterName(req.getParameter("registerName"));
             register.setIdentifierType(Integer.parseInt(req.getParameter("identifierType")));
             register.setIdentifierNum(req.getParameter("identifierNum"));

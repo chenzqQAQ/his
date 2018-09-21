@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 医生单查
  * @author 陈泽群
  */
 @WebServlet("/drugFindAction")
@@ -40,11 +41,13 @@ public class DrugFindAction extends HttpServlet {
         DrugServer drugServer = new DrugServerImpl();
         String id = req.getParameter("drugid");
         Drug drug = drugServer.findDrug(id);
-        // System.out.println("全查" + list.size());
         String str=drug.getDrugUrl();
         //去掉磁盘
+        //文件地址在数据库存的是绝对路径,例如D:\appach\13\14\84fbe6b1-6db0-4241-82a4-a98924355287_头孢克洛.jpg
         if(str!=null)
         {
+            //需要将地址转为配置好的虚拟路径
+            // /appach对应D:\appach
             int i=str.lastIndexOf("appach");
             drug.setDrugUrl(str.substring(i-1));
         }

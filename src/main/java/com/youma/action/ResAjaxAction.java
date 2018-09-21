@@ -48,10 +48,14 @@ public class ResAjaxAction extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("roleId"));
         Role role = roleServer.findRes(id);
         List<Resources> list = role.getResources();
+        //将角色对应的id转为json格式
         StringBuilder sb = new StringBuilder();
+        //参数为一个数组
         sb.append("[");
         for (int i = 0; i < list.size(); i++) {
+            //拼接字符串
             Resources resources = list.get(i);
+            //格式化字符串,是bui中设置好的参数
             String str = String.format("{id:\'%d\',text:\'%s\',href:\'%s\'}", resources.getResID(), resources.getResName(), resources.getResUrl());
             if (i != 0) {
                 sb.append(",");

@@ -62,6 +62,7 @@
                 return false;
             })
             $('#exlOut').click(function () {
+                //选择部分导出exl
                 var alls = document.getElementsByName("check");
                 var str = "/his/exlOut?all=All";
                 for (var i = 0; i < alls.length; i++) {
@@ -125,7 +126,7 @@
                 alert("请选中要删除的项");
             }
         }
-
+        //清空查询的条件
         function clearA() {
             $("input[name='medicalNum']").val("");
             $("input[name='docName']").val("");

@@ -49,14 +49,14 @@
     </style>
     <script type="text/javascript">
         var i = 0;
-
+        //根据单查信息,将单选框选中对应值
         function kk() {
             $("input[name='expenseFlag'][value=${register.expenseFlag}]").prop("checked", "true");
             $("input[name='sex'][value=${register.sex}]").prop("checked", "true");
             $("input[name='czFlag'][value=${register.czFlag}]").prop("checked", "true");
             $("#identifierType").val(${register.identifierType});
         }
-
+        //查询全部科室信息，页面加载后调用
         function findAllDep() {
             $.ajax({
                 url: "/his/departmentAction",
@@ -74,6 +74,7 @@
                         option.val(dep['id']).text(dep['depName']).appendTo($('#depName'));
 
                     });
+                    //修改页面，需要将科室选中到该病患的科室id
                     console.log("当前科室id" +${depId});
                     $('#depName').val(${depId});
                     updateDocName();
@@ -103,10 +104,13 @@
                         option.val(doc['id']).text(doc['doctorName']).appendTo($('#docName'));
                     })
                     console.log("状态"+i);
+                    //判断是否为首次调用，不是默认选中第一个医生
                     if (i == 0) {
+                        //首次调用,需要将病历号对应的医生选中
                         $('#docName').val(${register.doctorID});
                         i=1;
                     }
+
                 }
 
             })
@@ -205,11 +209,13 @@
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "index.jsp";
+                window.location.href = "/his/registerFindAction";
             });
+            //科室下拉框绑定医生更新时间
             $('#depName').change(function () {
                 updateDocName();
             });
+            //设置验证框架
             $("#form1").validate(
                 {
                     // "debug": true,

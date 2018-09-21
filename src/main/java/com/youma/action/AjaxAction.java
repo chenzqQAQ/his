@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 异步请求用户名是否已存在
  * @author 陈泽群
  */
 @WebServlet("/ajaxAction")
@@ -48,10 +49,13 @@ public class AjaxAction extends HttpServlet {
         UsersServer usersServer = new UsersServerImpl();
         PrintWriter printWriter = resp.getWriter();
         if (null == userName || "".equals(userName)) {
+            //如果传来的用户名为空
             printWriter.write("2");
         } else if (0 != usersServer.findUsers(userName)) {
+            //用户名存在
             printWriter.write("1");
         } else {
+            //用户名可用
             printWriter.write("0");
         }
         printWriter.flush();

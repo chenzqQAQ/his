@@ -137,6 +137,7 @@
         <th>操作</th>
     </tr>
     </thead>
+
     <c:forEach items="${hos}" var="ho">
         <tr>
             <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${ho.id}"></td>

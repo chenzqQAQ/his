@@ -23,7 +23,6 @@ import java.io.IOException;
 /**
  * DisUpdateAction
  * 发药
- *
  * @author 陈泽群
  * @date 2018/9/18 9:23
  */
@@ -42,6 +41,7 @@ public class DisUpdateAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset:UTF-8");
+        //获取病例号信息,药品编号以及发药数量
         int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
         String drugID = req.getParameter("drugID");
         int dispensedQuantity = Integer.parseInt(req.getParameter("dispensedQuantity"));

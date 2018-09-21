@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * DispenedFindAction
  * 查询分发药品信息
- *
  * @author 陈泽群
  * @date 2018/9/17 11:22
  */
@@ -44,24 +43,29 @@ public class DispenedFindAction extends HttpServlet {
         DisServer disServer = new DisServerImpl();
         String action = req.getParameter("action");
         if (!"".equals(action) && action != null) {
+            //单查分发药品信息,获取病例号
             int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
+            //获取该病例号全部的发药信息
             List<DispensedDrug> list = disServer.findDispensedDrug(medicalNum);
             req.setAttribute("drugs", list);
+            //请求转发到单查页面
             req.getRequestDispatcher("/hospital/dispensing-look.jsp").forward(req, resp);
             return;
         } else {
-
+            //全查分发药品信息
             Page page = new Page();
+            //设置分页类的总条数
             page.setTotalCount(disServer.disCount());
             String pageNo = req.getParameter("pageNo");
             if (!"".equals(pageNo) && pageNo != null) {
+                //有页码,设置页码
                 page.setPageNo(Integer.parseInt(pageNo));
             } else {
+                //没有页面,默认首页
                 page.setPageNo(1);
             }
+            //获取当前页的全部信息
             List<DispensedDrug> list = disServer.findAllDispensedDrug(page);
-            System.out.println("总条数" + page.getTotalCount());
-            System.out.println("集合个数" + list.size());
             req.setAttribute("dis", list);
             req.setAttribute("page", page);
             req.getRequestDispatcher("/hospital/dispensing.jsp").forward(req, resp);

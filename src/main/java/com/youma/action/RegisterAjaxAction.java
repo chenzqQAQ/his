@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 住院页面异步请求病历号信息
+ * 查看是否可住院
  * @author 陈泽群
  */
 @WebServlet("/registerAjaxAction")

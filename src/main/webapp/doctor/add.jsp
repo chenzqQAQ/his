@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>添加医生---2015</title>
@@ -112,7 +112,7 @@
             }, depId: {
                 required: "请选择科室"
             }, degree: {
-                required: "请选择学历",
+                required: "请选择学历"
             }
         };
     </script>
@@ -124,13 +124,13 @@
                     action: "findAll"
                 },
                 success: function (msg) {
-                    console.log("ajax请求成功，开始执行成功后的回调函数");
+                    // console.log("ajax请求成功，开始执行成功后的回调函数");
                     var deps = eval("(" + msg + ")");
                     $('#depName').empty();
                     $.each(deps, function (item, dep) {
-                        console.log(dep['id']);
-                        console.log(dep['depName']);
-                        var option = $("<option></option>");
+                        // console.log(dep['id']);
+                        // console.log(dep['depName']);
+                        var option = $('<option></option>');
                         option.val(dep['id']).text(dep['depName']).appendTo($('#depName'));
                     })
                 }
@@ -187,7 +187,7 @@
                     type: "GET",
                     dataType: "text",
                     success: function (msg) {
-                        console.log(msg);
+                        // console.log(msg);
                         var i=parseInt(msg);
                         if (i === 1) {
                             $('#k').text("医生已存在");
@@ -197,7 +197,7 @@
                         else{
                             $('#k').text("医生名不能为空");
                         }
-                        console.log("执行回调函数");
+                        // console.log("执行回调函数");
                     }
                 })
                 return false;
@@ -260,9 +260,6 @@
         <tr>
             <td width="10%" class="tableleft">所属科室</td>
             <td><select name="depId" id="depName">
-                <option value="0">急诊科</option>
-                <option value="1">骨科</option>
-                <option value="2">血液科</option>
             </select></td>
         </tr>
         <tr>

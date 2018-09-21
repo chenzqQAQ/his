@@ -42,6 +42,7 @@ public class ResourceAjaxAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset:UTF-8");
         ResourceServer resourceServer = new ResourceServerImpl();
+        //将资源集合转为json格式,方便js用eval解析
         List<Resources> list = resourceServer.findAllResources();
         Gson gson = new Gson();
         String str = gson.toJson(list);

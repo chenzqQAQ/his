@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * 药品信息添加(有文件)
  * @author 陈泽群
  */
 @WebServlet("/drugAddAction")
@@ -42,16 +43,24 @@ public class DrugAddAction extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        //文件上传地址
         String savePath = "D:\\appach";
+        //文件缓存地址
         String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
+        //实例文件上传下载类
         Upload upload = new Upload(savePath, tempPath);
+        //因为有文件,不能使用一般的参数获取getParameter()方法
+        //使用上传下载类,将存在的文件上传到地址中,非文件参数以map类型返回
         Map<String, String> map = upload.up(req);
         if (map.get("url") != null) {
+            //文件上传成功了,获取文件的地址(目录加文件名)
             drug.setDrugUrl(map.get("url"));
             System.out.println(map.get("message"));
         } else {
+            //文件没有或者上传失败,药品中的地址为空字符串
             System.out.println(map.get("message"));
         }
+        //将其他非文件参数通过map获取
         drug.setDrugID(map.get("drugID"));
         drug.setPurchasePrice(Double.parseDouble(map.get("purchasePrice")));
         drug.setSellingPrice(Double.parseDouble(map.get("sellingPrice")));
@@ -67,6 +76,7 @@ public class DrugAddAction extends HttpServlet {
         drug.setTotalVolume(Integer.parseInt(map.get("totalVolume")));
         drug.setInventory(Integer.parseInt(map.get("inventory")));
         drug.setRemark(map.get("remark"));
+        //添加药品信息到数据库
         if (0 != drugServer.drugAdd(drug)) {
             System.out.println("添加成功");
             resp.sendRedirect("/his/drugFindNameAction");

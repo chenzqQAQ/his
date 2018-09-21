@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 资源信息操作
  * @author 陈泽群
  */
 @WebServlet("/resourceAction")
@@ -43,6 +44,7 @@ public class ResourceAction extends HttpServlet {
         ResourceServer resourceSever = new ResourceServerImpl();
         String action = req.getParameter("action");
         if ("add".equals(action)) {
+            //资源添加
             String resName = req.getParameter("resName");
             String resUrl = req.getParameter("resUrl");
             int status = Integer.parseInt(req.getParameter("status"));
@@ -76,6 +78,7 @@ public class ResourceAction extends HttpServlet {
             req.setAttribute("resources", resources);
             req.getRequestDispatcher("/Resource/edit.jsp").forward(req, resp);
         } else if ("update".equals(action)) {
+            //资源更新
             int resID = Integer.parseInt(req.getParameter("resID"));
             String resName = req.getParameter("resName");
             String resUrl = req.getParameter("resUrl");
@@ -90,6 +93,7 @@ public class ResourceAction extends HttpServlet {
             }
         }
         else if ("del".equals(action)) {
+            //资源删除
             int resID = Integer.parseInt(req.getParameter("resID"));
             if (0 != resourceSever.delResources(resID)) {
                 resp.sendRedirect("/his/resourceAction?action=findAll");

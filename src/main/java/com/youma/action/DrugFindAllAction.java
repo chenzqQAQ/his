@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * 药品全查
  * @author 陈泽群
  */
 @WebServlet("/drugFindAllAction")
@@ -42,6 +43,7 @@ public class DrugFindAllAction extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         if (!"".equals(req.getParameter("action"))&&req.getParameter("action") != null) {
+            //异步请求药品信息(发药页面发来ajax请求)
             DrugServer drugServer = new DrugServerImpl();
             List<Drug> list = drugServer.findAllDrug();
             Gson gson = new Gson();
@@ -52,6 +54,7 @@ public class DrugFindAllAction extends HttpServlet {
             out.flush();
             return;
         } else {
+            //药品列表页面全查,已不用(用drugFindNameAction代替)
             DrugServer drugServer = new DrugServerImpl();
             List<Drug> list = drugServer.findAllDrug();
             req.setAttribute("drugs", list);
