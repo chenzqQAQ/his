@@ -3,6 +3,7 @@ package com.youma.server;
 import com.youma.util.Page;
 import com.youma.vo.PayManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,4 +54,12 @@ public interface PayMgServer {
      * @return
      */
     public  List<PayManager> findAll(PayManager payManager,Page page);
+
+    /**
+     * 付款更新日期
+     * @param id 病历号
+     * @param date 日期
+     * @return 影响行数
+     */
+    public int pay(int id, Date date);
 }

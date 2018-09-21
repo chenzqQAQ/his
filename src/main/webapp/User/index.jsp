@@ -106,6 +106,14 @@
                 alert("请选中要删除的项");
             }
         }
+        //清空输入框
+        function clearA() {
+           $('input[name="username"]') .val("");
+        }
+        //清空页面信息
+        function clearB() {
+            $("#pageNo").val("");
+        }
     </script>
     <script type="text/javascript">
         $(function () {
@@ -116,11 +124,11 @@
     </script>
 </head>
 <body>
-<form id="form1" class="form-inline definewidth m20" action="index.jsp" method="post">
+<form id="form1" class="form-inline definewidth m20" action="/his/usersFindAllAction" method="post">
     用户名称：
-    <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
-    <button type="submit" class="btn btn-primary">查询</button>
-    <a href="/his/usersFindAllAction">全部</a>
+    <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="${user.userName}">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary" onclick="clearB()">查询</button>
+    <button type="submit" class="btn btn-primary" onclick="clearA();return false">清空</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>

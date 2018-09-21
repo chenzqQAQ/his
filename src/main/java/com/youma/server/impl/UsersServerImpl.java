@@ -44,13 +44,13 @@ public class UsersServerImpl implements UsersServer {
     }
 
     @Override
-    public int allUsersCount() {
-        return usersDao.allUsersCount();
+    public int allUsersCount(Users users) {
+        return usersDao.allUsersCount(users);
     }
 
     @Override
-    public List<Users> findAllUsers(Page page) {
-        return usersDao.findAllUsers(page);
+    public List<Users> findAllUsers(Users users,Page page) {
+        return usersDao.findAllUsers(users,page);
     }
 
     @Override

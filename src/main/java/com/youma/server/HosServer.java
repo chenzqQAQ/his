@@ -9,9 +9,11 @@
  */
 package com.youma.server;
 
+import com.youma.util.Page;
 import com.youma.vo.HosSettle;
 import com.youma.vo.Inpatient;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,4 +81,22 @@ public interface HosServer{
      * @return 修改行数
      */
     public int updateCost(int id);
+    /**
+     * 付款
+     * @param id
+     * @return
+     */
+    public int pay(int id, Date date);
+    /**
+     * 分页查询所有住院结算信息操作
+     *
+     * @return List<HosSettle> 住院结算信息集合
+     */
+    public List<HosSettle> findAll(HosSettle hosSettle,Page page);
+    /**
+     * 分页查询所有住院结算信息操作
+     *
+     * @return int 住院结算信息总条数
+     */
+    public int allCount(HosSettle hosSettle);
 }

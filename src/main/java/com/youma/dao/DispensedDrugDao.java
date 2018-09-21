@@ -3,6 +3,7 @@ package com.youma.dao;
 import com.youma.util.Page;
 import com.youma.vo.DispensedDrug;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,4 +80,12 @@ public interface DispensedDrugDao {
      * @return
      */
     public int disDrug(DispensedDrug dispensedDrug);
+
+    /**
+     * 付款更新日期
+     * @param id 病历号
+     * @param date 日期
+     * @return 影响行数
+     */
+    public int pay(int id, Date date);
 }

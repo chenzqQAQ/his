@@ -37,7 +37,7 @@
     <script type="text/javascript">
         $(function () {
             $('#newNav').click(function () {
-                window.location.href = "add.html";
+                window.location.href = "/his/hosFindAction";
             });
         });
 
@@ -74,7 +74,7 @@
 
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "account.html";
+                window.location.href = "/his/hosFindAction";
             });
         });
     </script>
@@ -97,16 +97,33 @@
             <td style="vertical-align:middle;">${pay.name}</td>
             <td style="vertical-align:middle;">${pay.payName}</td>
             <td style="vertical-align:middle;">${pay.chargeAmount}</td>
-            <td style="vertical-align:middle;">${pay.payDate}</td>
+            <td style="vertical-align:middle;">${pay.payDate==null?"未付款":pay.payDate}</td>
         </tr>
     </c:forEach>
+</table>
+<table class="table table-bordered table-hover definewidth m10">
+    <thead>
+    <tr>
+        <th>病历号</th>
+        <th>姓名</th>
+        <th>药品名称</th>
+        <th>药品数量</th>
+        <th>药品售价</th>
+        <th>收费金额</th>
+        <th>发药日期</th>
+        <th>收费日期</th>
+    </tr>
+    </thead>
     <c:forEach items="${drugs}" var="drug">
         <tr>
             <td style="vertical-align:middle;">${medicalNum}</td>
             <td style="vertical-align:middle;">${drug.rName}</td>
             <td style="vertical-align:middle;">${drug.drugName}</td>
+            <td style="vertical-align:middle;">${drug.totalQuantity}</td>
+            <td style="vertical-align:middle;">${drug.sellPrice}</td>
             <td style="vertical-align:middle;">${drug.account}</td>
             <td style="vertical-align:middle;">${drug.dispensedTime}</td>
+            <td style="vertical-align:middle;">${drug.payTime==null?"未付款":drug.payTime}</td>
         </tr>
     </c:forEach>
 </table>
@@ -123,6 +140,7 @@
             <div>
                 <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
                 <button type="button" class="btn btn-success">打印</button>
+                <a href="/his/payAction?medicalNum=${medicalNum}">结算</a>
             </div>
 
         </th>
@@ -161,6 +179,11 @@
         <tr>
             <td width="10%" class="tableleft">需付款：</td>
             <td>${hosSettle.overplusCost}元</td>
+        </tr>
+    </c:if>
+    <c:if test="${hosSettle.balance==0}">
+        <tr>
+            <td width="10%" class="tableleft" colspan="2">已结算</td>
         </tr>
     </c:if>
 

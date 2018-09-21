@@ -17,6 +17,7 @@ import com.youma.vo.DispensedDrug;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -139,8 +140,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 "    dispenseddrug.totalQuantity,\n" +
                 "    dispenseddrug.dispensedQuantity,\n" +
                 "    dispenseddrug.undispensedQuantity," +
-                "drug.sellingPrice*dispenseddrug.totalQuantity as k,\n" +
-                "registerName\n" +
+                "drug.sellingPrice*dispenseddrug.totalQuantity as k,drug.sellingPrice,\n" +
+                "registerName,dispensedTime,payDate\n" +
                 "FROM his.dispenseddrug join drug on drug.drugID=dispenseddrug.drugID " +
                 "join register on register.medicalNum=dispenseddrug.medicalNum\n" +
                 "WHERE dispenseddrug.medicalNum=?";
@@ -159,6 +160,15 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
                 dispensedDrug.setDrugId(rs.getString("drugID"));
                 dispensedDrug.setAccount(rs.getDouble("k"));
+                dispensedDrug.setSellPrice(rs.getDouble("sellingPrice"));
+                dispensedDrug.setDispensedTime(sdf.format(rs.getTimestamp("dispensedTime")));
+                if(rs.getTimestamp("payDate")!=null)
+                {
+                    dispensedDrug.setPayTime(sdf.format(rs.getTimestamp("payDate")));
+                }
+                else{
+                    dispensedDrug.setPayTime("未付款");
+                }
                 list.add(dispensedDrug);
             }
         } catch (SQLException e) {
@@ -265,6 +275,23 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             ps.setInt(2, dispensedDrug.getId());
             ps.setInt(3, dispensedDrug.getMedicalNum());
             col = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
+
+    @Override
+    public int pay(int id, Date date) {
+
+        conn = ConnectionDB.getConnection();
+        String sql = "update dispenseddrug set payDate =? where medicalNum=? and isnull(payDate)=1";
+        int col=0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setTimestamp(1, new Timestamp(date.getTime()));
+            ps.setInt(2, id);
+            col=ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

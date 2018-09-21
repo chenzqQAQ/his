@@ -15,6 +15,7 @@ import com.youma.server.DisServer;
 import com.youma.util.Page;
 import com.youma.vo.DispensedDrug;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +51,11 @@ public class DisServerImpl implements DisServer {
     @Override
     public int disDrug(DispensedDrug dispensedDrug) {
         return dispensedDrugDao.disDrug(dispensedDrug);
+    }
+
+    @Override
+    public int pay(int id, Date date) {
+        return dispensedDrugDao.pay(id,date);
     }
 
 }

@@ -54,18 +54,23 @@ public class ResourceAction extends HttpServlet {
                 resp.sendRedirect("/his/resourceAction?action=findAll");
             }
         } else if ("findAll".equals(action)) {
+            //全查
             Page page = new Page();
-            page.setTotalCount(resourceSever.allResourcesCount());
-            if (null != req.getParameter("pageNo")) {
+            Resources resources=new Resources();
+            resources.setResName(req.getParameter("resName"));
+            page.setTotalCount(resourceSever.allResourcesCount(resources));
+            if (null != req.getParameter("pageNo")&&!req.getParameter("pageNo").isEmpty()) {
                 page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
             } else {
                 page.setPageNo(1);
             }
-            List<Resources> list = resourceSever.findAllResources(page);
+            List<Resources> list = resourceSever.findAllResources(resources,page);
             req.setAttribute("resources", list);
             req.setAttribute("page", page);
+            req.setAttribute("res", resources);
             req.getRequestDispatcher("/Resource/index.jsp").forward(req, resp);
         } else if ("find".equals(action)) {
+            //单查
             int id = Integer.parseInt(req.getParameter("resID"));
             Resources resources = resourceSever.findResources(id);
             req.setAttribute("resources", resources);

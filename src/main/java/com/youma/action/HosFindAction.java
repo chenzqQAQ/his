@@ -15,6 +15,7 @@ import com.youma.server.PayMgServer;
 import com.youma.server.impl.DisServerImpl;
 import com.youma.server.impl.HosServerImpl;
 import com.youma.server.impl.PayMgServerImpl;
+import com.youma.util.Page;
 import com.youma.vo.DispensedDrug;
 import com.youma.vo.HosSettle;
 import com.youma.vo.PayManager;
@@ -68,8 +69,27 @@ public class HosFindAction extends HttpServlet {
             req.getRequestDispatcher("/hospital/account-look.jsp").forward(req, resp);
             return;
         }
-        List<HosSettle> list = hosServer.findAll();
+        HosSettle hosSettle = new HosSettle();
+        if(req.getParameter("medicalNum")!=null&&!req.getParameter("medicalNum").isEmpty())
+        {
+            hosSettle.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
+        }
+        Page page = new Page();
+        page.setTotalCount(hosServer.allCount(hosSettle));
+        if(req.getParameter("pageNo")!=null&&!req.getParameter("pageNo").isEmpty())
+        {
+            page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
+        }
+        else{
+            page.setPageNo(1);
+        }
+        List<HosSettle> list = hosServer.findAll(hosSettle,page);
+        for(int i=0;i<list.size();i++)
+        {
+            hosServer.updateCost(list.get(i).getMedicalNum());
+        }
         req.setAttribute("hos", list);
+        req.setAttribute("page", page);
         req.getRequestDispatcher("/hospital/account.jsp").forward(req, resp);
     }
 

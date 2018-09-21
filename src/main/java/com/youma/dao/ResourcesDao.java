@@ -54,13 +54,13 @@ public interface ResourcesDao {
      * 全部资源条数
      * @return
      */
-    public int allResourcesCount();
+    public int allResourcesCount(Resources resources);
 
     /**
      * 分页查询资源信息
      * @param page 分页
      * @return
      */
-    public List<Resources> findAllResources(Page page);
+    public List<Resources> findAllResources(Resources resources,Page page);
 
 }

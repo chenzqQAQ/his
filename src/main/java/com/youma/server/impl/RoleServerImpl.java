@@ -73,12 +73,12 @@ public class RoleServerImpl implements RoleServer {
     }
 
     @Override
-    public List<Role> findAllRole(Page page) {
-        return roleDao.findAllRole(page);
+    public List<Role> findAllRole(Role role,Page page) {
+        return roleDao.findAllRole(role,page);
     }
 
     @Override
-    public int roleCount() {
-        return roleDao.roleCount();
+    public int roleCount(Role role) {
+        return roleDao.roleCount(role);
     }
 }

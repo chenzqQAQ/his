@@ -47,14 +47,14 @@ public interface UsersServer {
      *
      * @return int
      */
-    public int allUsersCount();
+    public int allUsersCount(Users users);
 
     /**
      * 获取所有用户信息
      *
      * @return List<Users> 用户集合
      */
-    public List<Users> findAllUsers(Page page);
+    public List<Users> findAllUsers(Users users,Page page);
 
 
     /**

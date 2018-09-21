@@ -110,14 +110,23 @@
                 alert("请选中要删除的项");
             }
         }
+        //清空输入框
+        function clearA() {
+            $('input[name="resName"]') .val("");
+        }
+        //清空页面信息
+        function clearB() {
+            $("#pageNo").val("");
+        }
     </script>
 </head>
 <body>
-<form id="form1" class="form-inline definewidth m20" action="index.jsp" method="get">
-    <input type="hidden" name="action" value="">
+<form id="form1" class="form-inline definewidth m20" action="/his/resourceAction" method="POST">
+    <input type="hidden" name="action" value="findAll">
     资源(菜单)名称：
-    <input type="text" name="username" id="username" class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
-    <button type="submit" class="btn btn-primary">查询</button>
+    <input type="text" name="resName" id="resName" class="abc input-default" placeholder="" value="${res.resName}">&nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary" onclick="clearB()">查询</button>
+    <button type="submit" class="btn btn-primary" onclick="clearA();return false">清空</button>
 </form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>

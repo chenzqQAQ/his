@@ -42,15 +42,17 @@ public class UsersFindAllAction extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         UsersServer usersServer = new UsersServerImpl();
         Page page = new Page();
-        int col = usersServer.allUsersCount();
+        Users user=new Users();
+        user.setUserName(req.getParameter("username"));
+        int col = usersServer.allUsersCount(user);
         page.setPageSize(5);
         page.setTotalCount(col);
         int pageNo = 1;
-        if (req.getParameter("pageNo") != null) {
+        if (req.getParameter("pageNo") != null&&!req.getParameter("pageNo").isEmpty()) {
             pageNo = Integer.parseInt(req.getParameter("pageNo"));
         }
         page.setPageNo(pageNo);
-        List<Users> list = usersServer.findAllUsers(page);
+        List<Users> list = usersServer.findAllUsers(user,page);
         System.out.println("全查" + list.size());
         System.out.println("总页数"+page.getTotalPage());
         System.out.println("总条数"+page.getTotalCount());
@@ -59,6 +61,7 @@ public class UsersFindAllAction extends HttpServlet {
         System.out.println("偏移量"+page.getOffset());
         req.setAttribute("users", list);
         req.setAttribute("page", page);
+        req.setAttribute("user", user);
         req.getRequestDispatcher("/User/index.jsp").forward(req, resp);
     }
 }

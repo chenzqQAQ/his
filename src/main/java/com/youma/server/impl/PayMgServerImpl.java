@@ -15,6 +15,7 @@ import com.youma.server.PayMgServer;
 import com.youma.util.Page;
 import com.youma.vo.PayManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,5 +56,10 @@ public class PayMgServerImpl implements PayMgServer {
     @Override
     public List<PayManager> findAll(PayManager payManager, Page page) {
         return payManagerDao.findAll(payManager, page);
+    }
+
+    @Override
+    public int pay(int id, Date date) {
+        return payManagerDao.pay(id,date);
     }
 }

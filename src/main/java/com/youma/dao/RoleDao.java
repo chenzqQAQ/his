@@ -47,14 +47,14 @@ public interface RoleDao {
      *
      * @return 角色集合
      */
-    public List<Role> findAllRole(Page page);
+    public List<Role> findAllRole(Role role,Page page);
 
     /**
      * 角色条数
      *
      * @return
      */
-    public int roleCount();
+    public int roleCount(Role role);
 
     /**
      * 查找指定角色

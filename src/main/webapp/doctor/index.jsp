@@ -133,6 +133,10 @@
             $("input[name='docName']").val("");
             $("input[name='depName']").val("");
         }
+        //清空页面信息
+        function clearB() {
+            $("#pageNo").val("");
+        }
     </script>
 </head>
 <body>
@@ -154,7 +158,7 @@
         <tr>
             <td colspan="6">
                 <center>
-                    <button type="submit" class="btn btn-primary">查询</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearB()">查询</button>
                     <button type="reset" class="btn btn-primary" onclick="clearA();return false">清空</button>
                 </center>
             </td>

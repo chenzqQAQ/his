@@ -64,9 +64,17 @@ public class DispensedDrug {
      */
     private String dispensedTime;
     /**
+     * 付款时间
+     */
+    private String payTime;
+    /**
      * 药品金额
      */
     private double account;
+    /**
+     * 药品售价
+     */
+    private double sellPrice;
 
     public int getId() {
         return id;
@@ -146,5 +154,21 @@ public class DispensedDrug {
 
     public void setAccount(double account) {
         this.account = account;
+    }
+
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public String getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(String payTime) {
+        this.payTime = payTime;
     }
 }

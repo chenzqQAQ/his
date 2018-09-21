@@ -131,7 +131,6 @@
             $("input[name='docName']").val("");
             $("input[name='depName']").val("");
         }
-
         $(function () {
             <%--var k = jQuery.parseJSON('${docs}');--%>
         });
@@ -160,7 +159,7 @@
             <td colspan="5">
                 <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="submit" class="btn btn-primary" type="button">查询</button>
+                <button type="submit" class="btn btn-primary">查询</button>
                 <button class="btn btn-primary" type="button" onclick="clearA();return false">清空</button>
 
             </td>

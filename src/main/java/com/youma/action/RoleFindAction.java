@@ -56,16 +56,19 @@ public class RoleFindAction extends HttpServlet {
             return;
         }
         String pageNo = req.getParameter("pageNo");
+        Role role=new Role();
+        role.setRoleName(req.getParameter("roleName"));
         Page page = new Page();
-        page.setTotalCount(roleServer.roleCount());
-        if (pageNo != null && !"".equals(pageNo)) {
+        page.setTotalCount(roleServer.roleCount(role));
+        if (pageNo != null && !pageNo.isEmpty()) {
             page.setPageNo(Integer.parseInt(pageNo));
         } else {
             page.setPageNo(1);
         }
-        List<Role> list = roleServer.findAllRole(page);
+        List<Role> list = roleServer.findAllRole(role,page);
         req.setAttribute("page", page);
         req.setAttribute("roles", list);
+        req.setAttribute("role", role);
         req.getRequestDispatcher("/Role/index.jsp").forward(req, resp);
     }
 }

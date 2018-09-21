@@ -91,7 +91,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     public List<Users> findAllUsers() {
         conn = ConnectionDB.getConnection();
         String sql = "select userID,userName,userPassword,modifyTime,roleID,flag,realName,email from users";
-        List<Users> list = new ArrayList();
+        List<Users> list = new ArrayList<>();
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -112,15 +112,22 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     }
 
     @Override
-    public int allUsersCount() {
+    public int allUsersCount(Users users) {
         conn = ConnectionDB.getConnection();
-        String sql = "select count(userID) from users";
+        String sql = "select count(userID) from users where 1 = 1";
+        if (users.getUserName() != null && !users.getUserName().isEmpty()) {
+            sql += " and userName like ?";
+        }
         int col = 0;
+        System.out.println(sql);
         try {
             ps = conn.prepareStatement(sql);
+            int index = 1;
+            if (users.getUserName() != null && !users.getUserName().isEmpty()) {
+                ps.setString(index++, "%"+users.getUserName()+"%");
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
-
                 col = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -130,16 +137,24 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     }
 
     @Override
-    public List<Users> findAllUsers(Page page) {
+    public List<Users> findAllUsers(Users users1, Page page) {
         conn = ConnectionDB.getConnection();
         String sql = "select userID,userName,roleName,realName from users\n" +
-                "join  role on role.roleID=users.roleID\n" +
-                "limit ?,?";
-        List<Users> list = new ArrayList();
+                "join  role on role.roleID=users.roleID where  1=1 \n";
+        if (users1.getUserName() != null && !users1.getUserName().isEmpty()) {
+            sql += " and userName like \"%\" ? \"%\" ";
+        }
+        sql += " limit ?,?";
+        System.out.println(sql);
+        List<Users> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, page.getOffset());
-            ps.setInt(2, page.getPageSize());
+            int index = 1;
+            if (users1.getUserName() != null && !users1.getUserName().isEmpty()) {
+                ps.setString(index++,users1.getUserName());
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
 

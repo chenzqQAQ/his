@@ -11,11 +11,13 @@ package com.youma.dao.impl;
 
 import com.youma.dao.HosSettleDao;
 import com.youma.util.ConnectionDB;
+import com.youma.util.Page;
 import com.youma.vo.HosSettle;
 import com.youma.vo.Inpatient;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -292,8 +294,9 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
                 "    cost = p.a + p.b,\n" +
                 "    medicalCost = p.a,\n" +
                 "    drugCost = p.b,\n" +
-                "    overplusCost = cost - paidCost,\n" +
-                "    balance = paidCost - cost\n" +
+                "    overplusCost = p.a + p.b - paidCost,\n" +
+                "    balance = paidCost - (p.a + p.b)," +
+                "flag=if(p.a + p.b - paidCost=0,1,0)\n" +
                 "where p.medicalNum=hossettle.medicalNum\n" +
                 "and hossettle.medicalNum=?";
         try {
@@ -336,5 +339,93 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             closeAll();
         }
         return list;
+    }
+
+    @Override
+    public int pay(int id, java.util.Date date) {
+
+        conn = ConnectionDB.getConnection();
+        String sql = "update hossettle set flag=1,paidCost=cost,overplusCost=0,balance=0 ,payDate=? " +
+                "where medicalNum=?";
+        int col=0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setTimestamp(1, new Timestamp(date.getTime()));
+            ps.setInt(2, id);
+            col=ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
+    }
+
+    @Override
+    public List<HosSettle> findAll(HosSettle hosSettle1, Page page) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT hossettle.ID,\n" +
+                "    hossettle.medicalNum,\n" +
+                "    hossettle.flag,\n" +
+                "    hossettle.deposit,hossettle.balance," +
+                "registerName\n" +
+                "FROM his.hossettle join register on hossettle.medicalNum=register.medicalNum where 1=1 ";
+        if(hosSettle1.getMedicalNum()!=0)
+        {
+            sql+=" and medicalNum =? ";
+        }
+        sql+="limit ?,?";
+        List<HosSettle> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            int index=1;
+            if(hosSettle1.getMedicalNum()!=0)
+            {
+                ps.setInt(index++,hosSettle1.getMedicalNum());
+            }
+            ps.setInt(index++,page.getOffset());
+            ps.setInt(index++,page.getPageSize());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                HosSettle hosSettle = new HosSettle();
+                hosSettle.setId(rs.getInt("id"));
+                hosSettle.setMedicalNum(rs.getInt("medicalNum"));
+                hosSettle.setFlag(rs.getInt("flag"));
+                hosSettle.setDeposit(rs.getDouble("deposit"));
+                hosSettle.setrName(rs.getString("registerName"));
+                hosSettle.setBalance(rs.getDouble("balance"));
+                list.add(hosSettle);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public int allCount(HosSettle hosSettle) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select  count(ID) from hossettle where 1=1 ";
+        if(hosSettle.getMedicalNum()!=0)
+        {
+            sql+=" and medicalNum =? ";
+        }
+        int col=0;
+        try {
+            ps = conn.prepareStatement(sql);
+            int index=1;
+            if(hosSettle.getMedicalNum()!=0)
+            {
+                ps.setInt(index++,hosSettle.getMedicalNum());
+            }
+            rs=ps.executeQuery();
+            if(rs.next())
+            {
+                col=rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
     }
 }

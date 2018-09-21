@@ -12,9 +12,11 @@ package com.youma.server.impl;
 import com.youma.dao.HosSettleDao;
 import com.youma.dao.impl.HosSettleDaoImpl;
 import com.youma.server.HosServer;
+import com.youma.util.Page;
 import com.youma.vo.HosSettle;
 import com.youma.vo.Inpatient;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,5 +67,20 @@ public class HosServerImpl implements HosServer {
     @Override
     public int updateCost(int id) {
         return hosSettleDao.updateCost(id);
+    }
+
+    @Override
+    public int pay(int id, Date date) {
+        return hosSettleDao.pay(id, date);
+    }
+
+    @Override
+    public List<HosSettle> findAll(HosSettle hosSettle, Page page) {
+        return hosSettleDao.findAll(hosSettle, page);
+    }
+
+    @Override
+    public int allCount(HosSettle hosSettle) {
+        return hosSettleDao.allCount(hosSettle);
     }
 }

@@ -49,12 +49,12 @@ public class ResourceServerImpl implements ResourceServer {
     }
 
     @Override
-    public int allResourcesCount() {
-        return resourcesDao.allResourcesCount();
+    public int allResourcesCount(Resources resources) {
+        return resourcesDao.allResourcesCount(resources);
     }
 
     @Override
-    public List<Resources> findAllResources(Page page) {
-        return resourcesDao.findAllResources(page);
+    public List<Resources> findAllResources(Resources resources,Page page) {
+        return resourcesDao.findAllResources(resources,page);
     }
 }

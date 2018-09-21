@@ -159,12 +159,19 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
     }
 
     @Override
-    public int allResourcesCount() {
+    public int allResourcesCount(Resources resources) {
         conn = ConnectionDB.getConnection();
-        String sql = "select  count(resid) as a from resources";
+        String sql = "select  count(resid) as a from resources where 1=1 ";
+        if (resources.getResName() != null && !resources.getResName().isEmpty()) {
+            sql += " and resName like \"%\" ? \"%\" ";
+        }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
+            int index = 1;
+            if (resources.getResName() != null && !resources.getResName().isEmpty()) {
+                ps.setString(index++, resources.getResName());
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
                 col = rs.getInt("a");
@@ -176,20 +183,27 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
     }
 
     @Override
-    public List<Resources> findAllResources(Page page) {
+    public List<Resources> findAllResources(Resources resources1, Page page) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT resID,\n" +
                 "    resName,\n" +
                 "    resUrl,\n" +
                 "    resParentID,\n" +
                 "status \n" +
-                "FROM resources";
+                "FROM resources where 1=1 ";
+        if (resources1.getResName() != null && !resources1.getResName().isEmpty()) {
+            sql += " and resName like \"%\" ? \"%\" ";
+        }
         sql += " limit ?,?";
         List<Resources> list = new ArrayList<Resources>();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, page.getOffset());
-            ps.setInt(2, page.getPageSize());
+            int index = 1;
+            if (resources1.getResName() != null && !resources1.getResName().isEmpty()) {
+                ps.setString(index++, resources1.getResName());
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 Resources resources = new Resources();

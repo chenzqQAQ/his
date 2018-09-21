@@ -118,17 +118,25 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
     }
 
     @Override
-    public List<Role> findAllRole(Page page) {
+    public List<Role> findAllRole(Role role1, Page page) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT roleID,\n" +
                 "    roleNum,\n" +
                 "    roleName,status\n" +
-                "FROM role limit ?,?";
+                "FROM role where 1=1 ";
+        if (role1.getRoleName() != null && !role1.getRoleName().isEmpty()) {
+            sql += " and roleName like \"%\" ? \"%\" ";
+        }
+        sql += " limit ?,?";
         List<Role> list = new ArrayList<Role>();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, page.getOffset());
-            ps.setInt(2, page.getPageSize());
+            int index = 1;
+            if (role1.getRoleName() != null && !role1.getRoleName().isEmpty()) {
+                ps.setString(index++, role1.getRoleName());
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 Role role = new Role();
@@ -147,13 +155,20 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
     }
 
     @Override
-    public int roleCount() {
+    public int roleCount(Role role) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT count(roleID)\n" +
-                "FROM role";
+                "FROM role where 1=1 ";
+        if (role.getRoleName() != null && !role.getRoleName().isEmpty()) {
+            sql += " and roleName like \"%\" ? \"%\" ";
+        }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
+            int index = 1;
+            if (role.getRoleName() != null && !role.getRoleName().isEmpty()) {
+                ps.setString(index++, role.getRoleName());
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
                 col = rs.getInt(1);

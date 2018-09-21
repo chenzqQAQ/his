@@ -15,7 +15,9 @@ import com.youma.util.Page;
 import com.youma.vo.PayManager;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -113,7 +115,7 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
     public List<PayManager> findAll(int id) {
         conn = ConnectionDB.getConnection();
         List<PayManager> list = new ArrayList<>();
-        String sql = "select paymanager.medicalNum ,projectName,chargeAmount,registerName\n" +
+        String sql = "select paymanager.medicalNum ,projectName,chargeAmount,registerName,payDate\n" +
                 "from paymanager  join payproject" +
                 " on payID=payproject.ID join register on paymanager.medicalNum=register.medicalNum " +
                 "where paymanager.medicalNum=?";
@@ -128,6 +130,11 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
                 payManager.setPayName(rs.getString("projectName"));
                 payManager.setChargeAmount(rs.getDouble("chargeAmount"));
                 payManager.setName(rs.getString("registerName"));
+                if (rs.getDate("payDate") == null) {
+                    payManager.setPayDate("未付款");
+                } else {
+                    payManager.setPayDate(sdf.format(rs.getTimestamp("payDate")));
+                }
                 list.add(payManager);
             }
         } catch (SQLException e) {
@@ -216,5 +223,21 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
             closeAll();
         }
         return list;
+    }
+
+    @Override
+    public int pay(int id, Date date) {
+        conn = ConnectionDB.getConnection();
+        String sql = "update paymanager set payDate =? where medicalNum=? and isnull(payDate)=1";
+        int col=0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setTimestamp(1, new Timestamp(date.getTime()));
+            ps.setInt(2, id);
+            col=ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return col;
     }
 }

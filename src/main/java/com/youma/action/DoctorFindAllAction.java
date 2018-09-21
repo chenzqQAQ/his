@@ -110,7 +110,7 @@ public class DoctorFindAllAction extends HttpServlet {
         int col = doctorServer.allDoctorCount(str);
         Page page = new Page();
         page.setTotalCount(col);
-        if (null != req.getParameter("pageNo") && !req.getParameter("pageNo").equals("")) {
+        if (null != req.getParameter("pageNo") && !req.getParameter("pageNo").isEmpty()) {
             page.setPageNo(Integer.parseInt(req.getParameter("pageNo")));
         } else {
             page.setPageNo(1);

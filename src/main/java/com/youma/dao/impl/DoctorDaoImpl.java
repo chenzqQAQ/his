@@ -475,7 +475,6 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
         if (args[2] != null && !("").equals(args[2])) {
             sql += "and depName=?\n";
         }
-        System.out.println(sql);
         try {
             int index = 1;
             ps = conn.prepareStatement(sql);
