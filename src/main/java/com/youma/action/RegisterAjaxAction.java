@@ -73,7 +73,7 @@ public class RegisterAjaxAction extends HttpServlet {
                 str = String.format("\"noFind\":%d,", 2);
             }
             str4 = str4 + String.format(",\"docName\":\"%s\",", doctor.getDoctorName()) +str+ String.format("\"depName\":\"%s\"}", department.getDepName());
-            System.out.println(str4);
+            // System.out.println(str4);
             PrintWriter out = resp.getWriter();
             out.write(str4);
             out.flush();

@@ -119,7 +119,6 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             sql += " and userName like ?";
         }
         int col = 0;
-        System.out.println(sql);
         try {
             ps = conn.prepareStatement(sql);
             int index = 1;

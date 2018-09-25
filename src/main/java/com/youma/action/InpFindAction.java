@@ -42,20 +42,39 @@ public class InpFindAction extends HttpServlet {
         InpServer inpServer = new InpServerImpl();
         String action = req.getParameter("action");
         String pageNo = req.getParameter("pageNo");
+        Inpatient inpatient = new Inpatient();
         Page page = new Page();
         if ("findAll".equals(action)) {
-            page.setTotalCount(inpServer.inpCount());
+            if (req.getParameter("medicalNum") != null && !req.getParameter("medicalNum").isEmpty()) {
+                inpatient.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
+            }
+           inpatient.setDoctor(req.getParameter("docName"));
+           inpatient.setDepName(req.getParameter("depName"));
+            page.setTotalCount(inpServer.inpCount(inpatient));
             if (pageNo != null && !"".equals(pageNo)) {
                 page.setPageNo(Integer.parseInt(pageNo));
             } else {
                 page.setPageNo(1);
             }
-            List<Inpatient> list = inpServer.findInp(page);
+            List<Inpatient> list = inpServer.findInp(inpatient, page);
             req.setAttribute("inps", list);
             // System.out.println("当前页"+page.getPageNo());
             // System.out.println("最后页"+page.getTotalPage());
             req.setAttribute("page", page);
+            req.setAttribute("inp", inpatient);
             req.getRequestDispatcher("/hospital/index.jsp").forward(req, resp);
+        }
+        else if("find".equals(action)){
+            int id= Integer.parseInt(req.getParameter("medicalNum"));
+            inpatient=inpServer.findInpatient(id);
+            req.setAttribute("inp", inpatient);
+            req.getRequestDispatcher("/hospital/edit.jsp").forward(req, resp);
+        }
+        else if("look".equals(action)){
+            int id= Integer.parseInt(req.getParameter("medicalNum"));
+            inpatient=inpServer.findInpatient(id);
+            req.setAttribute("inp", inpatient);
+            req.getRequestDispatcher("/hospital/look.jsp").forward(req, resp);
         }
     }
 }

@@ -59,7 +59,22 @@ public class InpatientAction extends HttpServlet {
                 //添加成功，跳转到全查结果
                 resp.sendRedirect("/his/inpFindAction?action=findAll");
             }
-        } else {
+        } else if("update".equals(action)){
+            int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
+            String nurse = req.getParameter("nurse");
+            String bedNum = req.getParameter("bedNum");
+            double deposit = Double.parseDouble(req.getParameter("deposit"));
+            String illness = req.getParameter("illness");
+            Inpatient inpatient = new Inpatient();
+            inpatient.setMedicalNum(medicalNum);
+            inpatient.setNurse(nurse);
+            inpatient.setBedNum(bedNum);
+            inpatient.setDeposit(deposit);
+            inpatient.setIllness(illness);
+            if (0 != inpServer.updateInpatient(inpatient)) {
+                //添加成功，跳转到全查结果
+                resp.sendRedirect("/his/inpFindAction?action=findAll");
+            }
 
         }
     }

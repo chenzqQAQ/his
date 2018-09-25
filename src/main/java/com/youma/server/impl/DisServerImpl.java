@@ -34,13 +34,13 @@ public class DisServerImpl implements DisServer {
     }
 
     @Override
-    public int disCount() {
-        return dispensedDrugDao.disCount();
+    public int disCount(DispensedDrug d) {
+        return dispensedDrugDao.disCount(d);
     }
 
     @Override
-    public List<DispensedDrug> findAllDispensedDrug(Page page) {
-        return dispensedDrugDao.findAllDispensedDrug(page);
+    public List<DispensedDrug> findAllDispensedDrug(DispensedDrug d,Page page) {
+        return dispensedDrugDao.findAllDispensedDrug(d,page);
     }
 
     @Override

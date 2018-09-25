@@ -51,11 +51,11 @@ public interface InpServer {
      * 全部住院信息条数
      * @return 全部住院信息条数
      */
-    public int inpCount();
+    public int inpCount(Inpatient inpatient);
 
     /**
      * 分页查询住院信息
      * @return
      */
-    public List<Inpatient> findInp(Page page);
+    public List<Inpatient> findInp(Inpatient inpatient,Page page);
 }

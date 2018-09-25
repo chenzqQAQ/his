@@ -53,12 +53,6 @@ public class UsersFindAllAction extends HttpServlet {
         }
         page.setPageNo(pageNo);
         List<Users> list = usersServer.findAllUsers(user,page);
-        System.out.println("全查" + list.size());
-        System.out.println("总页数"+page.getTotalPage());
-        System.out.println("总条数"+page.getTotalCount());
-        System.out.println("当前页"+page.getPageNo());
-        System.out.println("单页条数"+page.getPageSize());
-        System.out.println("偏移量"+page.getOffset());
         req.setAttribute("users", list);
         req.setAttribute("page", page);
         req.setAttribute("user", user);

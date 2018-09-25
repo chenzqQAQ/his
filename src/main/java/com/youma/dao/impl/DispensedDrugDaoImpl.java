@@ -162,11 +162,9 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 dispensedDrug.setAccount(rs.getDouble("k"));
                 dispensedDrug.setSellPrice(rs.getDouble("sellingPrice"));
                 dispensedDrug.setDispensedTime(sdf.format(rs.getTimestamp("dispensedTime")));
-                if(rs.getTimestamp("payDate")!=null)
-                {
+                if (rs.getTimestamp("payDate") != null) {
                     dispensedDrug.setPayTime(sdf.format(rs.getTimestamp("payDate")));
-                }
-                else{
+                } else {
                     dispensedDrug.setPayTime("未付款");
                 }
                 list.add(dispensedDrug);
@@ -213,12 +211,19 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
     }
 
     @Override
-    public int disCount() {
+    public int disCount(DispensedDrug d) {
         conn = ConnectionDB.getConnection();
-        String sql = "select count(distinct medicalNum) from dispenseddrug";
+        String sql = "select count(distinct medicalNum) from dispenseddrug where 1=1 ";
+        if (d.getMedicalNum() != 0) {
+            sql += " and medicalNum=? ";
+        }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
+            int index = 0;
+            if (d.getMedicalNum() != 0) {
+                ps.setInt(++index, d.getMedicalNum());
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
                 col = rs.getInt(1);
@@ -232,20 +237,26 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
     }
 
     @Override
-    public List<DispensedDrug> findAllDispensedDrug(Page page) {
+    public List<DispensedDrug> findAllDispensedDrug(DispensedDrug d, Page page) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT dispenseddrug.id," +
                 "dispenseddrug.medicalNum,\n" +
                 "    doctorName,registerName\n" +
                 "FROM his.dispenseddrug join register on dispenseddrug.medicalNum=register.medicalNum " +
-                "join doctor on doctorID=register.doctorID group by medicalNum";
-        sql += " limit ?,?";
-        System.out.println(sql);
+                "join doctor on doctorID=register.doctorID where 1=1";
+        if (d.getMedicalNum() != 0) {
+            sql += " and dispenseddrug.medicalNum=? ";
+        }
+        sql += " group by dispenseddrug.medicalNum limit ?,?";
         List<DispensedDrug> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, page.getOffset());
-            ps.setInt(2, page.getPageSize());
+            int index = 0;
+            if (d.getMedicalNum() != 0) {
+                ps.setInt(++index, d.getMedicalNum());
+            }
+            ps.setInt(++index, page.getOffset());
+            ps.setInt(++index, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 DispensedDrug dispensedDrug = new DispensedDrug();
@@ -286,12 +297,12 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
 
         conn = ConnectionDB.getConnection();
         String sql = "update dispenseddrug set payDate =? where medicalNum=? and isnull(payDate)=1";
-        int col=0;
+        int col = 0;
         try {
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, new Timestamp(date.getTime()));
             ps.setInt(2, id);
-            col=ps.executeUpdate();
+            col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -71,7 +71,7 @@
         };
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "index.jsp";
+                window.location.href = "/his/inpFindAction?action=findAll";
             });
             $('input[name="medicalNum"]').blur(function () {
                 var k = $('input[name=medicalNum]').val();

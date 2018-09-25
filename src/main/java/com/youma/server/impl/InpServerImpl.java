@@ -49,12 +49,12 @@ public class InpServerImpl implements InpServer {
     }
 
     @Override
-    public int inpCount() {
-        return inpatientDao.inpCount();
+    public int inpCount(Inpatient inpatient) {
+        return inpatientDao.inpCount(inpatient);
     }
 
     @Override
-    public List<Inpatient> findInp(Page page) {
-        return inpatientDao.findInp(page);
+    public List<Inpatient> findInp(Inpatient inpatient,Page page) {
+        return inpatientDao.findInp(inpatient,page);
     }
 }

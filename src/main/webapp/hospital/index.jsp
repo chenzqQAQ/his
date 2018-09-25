@@ -118,22 +118,51 @@
                 alert("请选中要操作的项");
             }
         }
+
+        function clearA() {
+            $('#pageNo').val("");
+        }
+
+        function clearB() {
+            $('input[name="medicalNum"]').val("");
+            $('input[name="docName"]').val("");
+            $('input[name="depName"]').val("");
+        }
+
+        function out(a) {
+            $.ajax({
+                url: "inpAjaxAction",
+                data: {medicalNum: a},
+                success: function (msg) {
+                    console.log(msg);
+                    if (parseInt(msg) === 1) {
+                        alert("出院成功");
+                        window.location.reload();
+                    }
+                    else if (parseInt(msg) === 2) {
+                        alert("未结账,没法出院");
+                    }
+
+                }
+            })
+
+        }
     </script>
 </head>
 <body>
 
-<form id="form1" action="index.jsp" method="post" class="definewidth m20">
+<form id="form1" action="/his/inpFindAction" method="post" class="definewidth m20">
     <input type="hidden" value="findAll" name="action"/>
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病例号：</td>
-            <td><input type="text" name="medicalNum" value=""/></td>
+            <td><input type="text" name="medicalNum" value="${inp.medicalNum==0?"":inp.medicalNum}"/></td>
 
             <td width="10%" class="tableleft">主治医生：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="docName" value="${inp.doctor}"/></td>
 
             <td width="10%" class="tableleft">科室：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="depName" value="${inp.depName}"/></td>
         </tr>
         <tr>
 
@@ -142,8 +171,8 @@
             <td colspan="5">
                 <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="submit" class="btn btn-primary" type="button">查询</button>
-                <button type="submit" class="btn btn-primary" type="button">清空</button>
+                <button type="submit" class="btn btn-primary" onclick="clearA()">查询</button>
+                <button type="submit" class="btn btn-primary" onclick="clearB();return false">清空</button>
 
             </td>
         </tr>
@@ -178,9 +207,13 @@
             <td style="vertical-align:middle;">${inp.inpTime}</td>
             <td style="vertical-align:middle;">${inp.depName}</td>
             <td style="vertical-align:middle;">${flag[inp.flag]}</td>
-            <td style="vertical-align:middle;"><a href="look.html">详情>>></a>&nbsp;&nbsp;&nbsp;<a href="edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a
-                    href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;<a
-                    href="javascript:alert('出院成功！');">出院</a>
+            <td style="vertical-align:middle;">
+                <c:if test="${inp.flag!=4}">
+                    <a href="/his/inpFindAction?action=look&medicalNum=${inp.medicalNum}">详情>>></a>&nbsp;&nbsp;&nbsp;<a
+                    href="/his/inpFindAction?action=find&medicalNum=${inp.medicalNum}">更改</a>&nbsp;&nbsp;&nbsp;
+                    <%--<a href="javascript:alert('退院成功！');">退院</a>&nbsp;&nbsp;&nbsp;--%>
+                    <a href="javascript:alert('出院成功！');" onclick="out(${inp.medicalNum});return false;">出院</a>
+                </c:if>
             </td>
         </tr>
     </c:forEach>

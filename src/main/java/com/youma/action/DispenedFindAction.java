@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * DispenedFindAction
  * 查询分发药品信息
+ *
  * @author 陈泽群
  * @date 2018/9/17 11:22
  */
@@ -42,6 +43,7 @@ public class DispenedFindAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         DisServer disServer = new DisServerImpl();
         String action = req.getParameter("action");
+        DispensedDrug d = new DispensedDrug();
         if (!"".equals(action) && action != null) {
             //单查分发药品信息,获取病例号
             int medicalNum = Integer.parseInt(req.getParameter("medicalNum"));
@@ -52,10 +54,13 @@ public class DispenedFindAction extends HttpServlet {
             req.getRequestDispatcher("/hospital/dispensing-look.jsp").forward(req, resp);
             return;
         } else {
+            if (req.getParameter("medicalNum") != null && !req.getParameter("medicalNum").isEmpty()) {
+                d.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
+            }
             //全查分发药品信息
             Page page = new Page();
             //设置分页类的总条数
-            page.setTotalCount(disServer.disCount());
+            page.setTotalCount(disServer.disCount(d));
             String pageNo = req.getParameter("pageNo");
             if (!"".equals(pageNo) && pageNo != null) {
                 //有页码,设置页码
@@ -65,9 +70,10 @@ public class DispenedFindAction extends HttpServlet {
                 page.setPageNo(1);
             }
             //获取当前页的全部信息
-            List<DispensedDrug> list = disServer.findAllDispensedDrug(page);
+            List<DispensedDrug> list = disServer.findAllDispensedDrug(d, page);
             req.setAttribute("dis", list);
             req.setAttribute("page", page);
+            req.setAttribute("d", d);
             req.getRequestDispatcher("/hospital/dispensing.jsp").forward(req, resp);
         }
     }

@@ -28,14 +28,14 @@ public interface DisServer {
      *
      * @return
      */
-    public int disCount();
+    public int disCount(DispensedDrug d);
 
     /**
      * 分页查询
      *
      * @return
      */
-    public List<DispensedDrug> findAllDispensedDrug(Page page);
+    public List<DispensedDrug> findAllDispensedDrug(DispensedDrug d,Page page);
     /**
      * 查询指定病历号的发药信息
      *

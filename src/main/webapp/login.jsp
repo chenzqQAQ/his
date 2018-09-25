@@ -5,13 +5,13 @@
 <head>
     <title>枣阳市第二人民医院管理系统--中软高科2015</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="Css/style.css"/>
-    <script type="text/javascript" src="Js/jquery.js"></script>
-    <script type="text/javascript" src="Js/bootstrap.js"></script>
-    <script type="text/javascript" src="Js/ckform.js"></script>
-    <script type="text/javascript" src="Js/common.js"></script>
+    <%--<link rel="stylesheet" type="text/css" href="Css/bootstrap.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="Css/bootstrap-responsive.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="Css/style.css"/>--%>
+    <%--<script type="text/javascript" src="Js/jquery.js"></script>--%>
+    <%--<script type="text/javascript" src="Js/bootstrap.js"></script>--%>
+    <%--<script type="text/javascript" src="Js/ckform.js"></script>--%>
+    <%--<script type="text/javascript" src="Js/common.js"></script>--%>
     <style type="text/css">
         body {
             padding-top: 40px;

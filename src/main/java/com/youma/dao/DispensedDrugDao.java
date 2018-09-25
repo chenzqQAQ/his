@@ -65,14 +65,14 @@ public interface DispensedDrugDao {
      *
      * @return
      */
-    public int disCount();
+    public int disCount(DispensedDrug d);
 
     /**
      * 分页查询
      *
      * @return
      */
-    public List<DispensedDrug> findAllDispensedDrug(Page page);
+    public List<DispensedDrug> findAllDispensedDrug(DispensedDrug d,Page page);
 
     /**
      * 给用户发药

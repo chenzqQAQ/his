@@ -15,6 +15,8 @@
     <script type="text/javascript" src="/his/Js/common.js"></script>
     <script type="text/javascript" src="/his/Js/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../Js/messages_zh.js"></script>
 
 
     <style type="text/css">
@@ -108,13 +110,110 @@
             }
 
         }
+
         function oo() {
             $('#imgfile').click();
         }
+
+        /**
+         * 校验规则
+         */
+        var rules = {
+            drugID: {
+                required: true
+            },
+            imgfile: {
+                required: true
+            },
+            purchasePrice: {
+                required: true,
+                number: true
+            }, sellingPrice: {
+                required: true,
+                number: true
+            }, drugName: {
+                required: true
+            },
+            drugType: {
+                required: true
+            },
+            productionDate: {
+                required: true
+            },
+            overdueDate: {
+                required: true
+            },
+            description: {
+                required: true
+            },
+            totalVolume: {
+                required: true
+            }
+
+        };
+        /**
+         * 错误提示信息
+         */
+        var messages = {
+            drugID: {
+                required: "请输入药品编号"
+            },
+            imgfile: {
+                required: "请选择药品图片"
+            },
+            purchasePrice: {
+                required: "请输入药品进价",
+                number: "请填数字"
+            }, sellingPrice: {
+                required: "请输入药品售价",
+                number: "请填数字"
+            }, drugName: {
+                required: "请输入药品名"
+            },
+            drugType: {
+                required: "请选择药品类型"
+            },
+            productionDate: {
+                required: "请选择生产日期"
+            },
+            overdueDate: {
+                required: "请选择过期日期"
+            },
+            description: {
+                required: "请输入简单描述"
+            },
+            totalVolume: {
+                required: "请输入进货量"
+            }
+        };
+        /**
+         * 启动校验框架
+         */
+        $(function () {
+            $("#form1").validate(
+                {
+                    // "debug": true,
+                    //失去焦点验证
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    "rules": rules,
+                    "messages": messages,
+                    errorPlacement: function (error, element) {
+                        error.appendTo(element.parent());
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
+        })
     </script>
 </head>
 <body>
-<form action="../drugAddAction" method="post" class="definewidth m20" enctype="multipart/form-data">
+<form action="../drugAddAction" method="post" class="definewidth m20" enctype="multipart/form-data" id="form1">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品编号</td>

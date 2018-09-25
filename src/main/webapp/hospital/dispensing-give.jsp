@@ -38,7 +38,7 @@
     <script type="text/javascript">
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "dispensing.jsp";
+                window.location.href = "/his/dispenedFindAction";
             });
             //获取数据库里的全部药信息
             $.ajax({

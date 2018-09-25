@@ -85,10 +85,9 @@
                 }
 
             })
-        };
+        }
         /**
-         * 验证规则
-         * @type
+         * 校验规则
          */
         var rules = {
             registerName: {
@@ -132,7 +131,6 @@
         };
         /**
          * 错误提示信息
-         * @type {{registerName: {required: string, minlength: string}, identifierNum: {required: string, minlength: string, number: string}, socialSecurityNum: {required: string, minlength: string, number: string}, phoneNum: {required: string, minlength: string, number: string}, age: {required: string, number: string}}}
          */
         var messages = {
             registerName: {
@@ -175,21 +173,14 @@
                 required: "请选择医生"
             }
         };
-    </script>
-    <script type="text/javascript">
+        /**
+         * 启动校验框架
+         */
         $(function () {
-            console.log("jQuery可用")
-            $('#backid').click(function () {
-                window.location.href = "/his/registerFindAction";
-            });
-            $('#depName').change(function () {
-                updateDocName();
-            });
-            //页面加载后，异步查询全部科室
-            findAllDep();
             $("#form1").validate(
                 {
                     // "debug": true,
+                    //失去焦点验证
                     onfocusout:function (element) {
                         $(element).valid();
                     },
@@ -205,6 +196,19 @@
                     alert("提交事件");
                 }
             });
+        })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            console.log("jQuery可用")
+            $('#backid').click(function () {
+                window.location.href = "/his/registerFindAction";
+            });
+            $('#depName').change(function () {
+                updateDocName();
+            });
+            //页面加载后，异步查询全部科室
+            findAllDep();
         });
     </script>
     <style>

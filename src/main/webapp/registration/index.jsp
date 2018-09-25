@@ -95,12 +95,13 @@
         function checkall() {
             var alls = document.getElementsByName("check");
             var ch = document.getElementById("checkall");
+            var i;
             if (ch.checked) {
-                for (var i = 0; i < alls.length; i++) {
+                for (i = 0; i < alls.length; i++) {
                     alls[i].checked = true;
                 }
             } else {
-                for (var i = 0; i < alls.length; i++) {
+                for (i = 0; i < alls.length; i++) {
                     alls[i].checked = false;
                 }
             }

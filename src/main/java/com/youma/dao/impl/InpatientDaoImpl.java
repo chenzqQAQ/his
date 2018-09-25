@@ -86,8 +86,8 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
     @Override
     public int delInpatient(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "DELETE FROM his.inpatient\n" +
-                "WHERE medicalNum=?;";
+        String sql = "update inpatient left join hossettle on inpatient.medicalNum=hossettle.medicalNum set inpatient.flag=4\n" +
+                "WHERE inpatient.medicalNum=? and hossettle.flag=1 ";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -169,13 +169,33 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
     }
 
     @Override
-    public int inpCount() {
+    public int inpCount(Inpatient inpatient) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT count(inpatient.medicalNum)\n" +
-                "FROM his.inpatient\n";
+                "FROM his.inpatient join register on inpatient.medicalNum=register.medicalNum\n" +
+                "join doctor on doctorID=ID join department on doctor.depID=department.ID where 1=1 \n";
+        if (inpatient.getMedicalNum() != 0) {
+            sql += " and inpatient.medicalNum=? ";
+        }
+        if (inpatient.getDoctor() != null && !inpatient.getDoctor().isEmpty()) {
+            sql += " and doctor.doctorName like \"%\" ? \"%\" ";
+        }
+        if (inpatient.getDepName() != null && !inpatient.getDepName().isEmpty()) {
+            sql += " and department.depName like \"%\" ? \"%\" ";
+        }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
+            int index = 0;
+            if (inpatient.getMedicalNum() != 0) {
+                ps.setInt(++index, inpatient.getMedicalNum());
+            }
+            if (inpatient.getDoctor() != null && !inpatient.getDoctor().isEmpty()) {
+                ps.setString(++index, inpatient.getDoctor());
+            }
+            if (inpatient.getDepName() != null && !inpatient.getDepName().isEmpty()) {
+                ps.setString(++index, inpatient.getDepName());
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
                 col = rs.getInt(1);
@@ -189,21 +209,40 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
     }
 
     @Override
-    public List<Inpatient> findInp(Page page) {
+    public List<Inpatient> findInp(Inpatient inpatient1, Page page) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT inpatient.medicalNum,\n" +
                 "    inpatient.nurse,\n" +
                 "    inpatient.bedNum,\n" +
                 "    inpatient.deposit,\n" +
-                "    inpatient.illness,inpatient.flag,inptime,registerName,register.phoneNum as 'a',doctorName,depName\n" +
+                "    inpatient.illness,inpatient.flag,inptime,registerName,register.phoneNum as a,doctorName,depName\n" +
                 "FROM his.inpatient join register on inpatient.medicalNum=register.medicalNum\n" +
-                "join doctor on doctorID=ID join department on doctor.depID=department.ID";
-        sql += " limit ?,?";
+                "join doctor on doctorID=ID join department on doctor.depID=department.ID  where  1=1 ";
+        if (inpatient1.getMedicalNum() != 0) {
+            sql += " and inpatient.medicalNum=? ";
+        }
+        if (inpatient1.getDoctor() != null && !inpatient1.getDoctor().isEmpty()) {
+            sql += " and doctor.doctorName like \"%\" ? \"%\" ";
+        }
+        if (inpatient1.getDepName() != null && !inpatient1.getDepName().isEmpty()) {
+            sql += " and department.depName like \"%\" ? \"%\" ";
+        }
+        sql += " order by inpatient.medicalNum limit ?,?";
         List<Inpatient> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, page.getOffset());
-            ps.setInt(2, page.getPageSize());
+            int index = 0;
+            if (inpatient1.getMedicalNum() != 0) {
+                ps.setInt(++index, inpatient1.getMedicalNum());
+            }
+            if (inpatient1.getDoctor() != null && !inpatient1.getDoctor().isEmpty()) {
+                ps.setString(++index, inpatient1.getDoctor());
+            }
+            if (inpatient1.getDepName() != null && !inpatient1.getDepName().isEmpty()) {
+                ps.setString(++index, inpatient1.getDepName());
+            }
+            ps.setInt(++index, page.getOffset());
+            ps.setInt(++index, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 Inpatient inpatient = new Inpatient();

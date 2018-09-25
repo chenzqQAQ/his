@@ -262,7 +262,6 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             //没有可添加项
             return 0;
         }
-        System.out.println(sql);
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);

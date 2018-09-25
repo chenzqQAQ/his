@@ -101,21 +101,29 @@
                 alert("请选中要操作的项");
             }
         }
+        //清空输入框
+        function clearA() {
+            $('input[name="medicalNum"]') .val("");
+        }
+        //清空页面信息
+        function clearB() {
+            $("#pageNo").val("");
+        }
     </script>
 </head>
 <body>
 
-<form id="form1" action="dispensing.jsp" method="post" class="definewidth m20">
+<form id="form1" action="/his/dispenedFindAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病例号：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="medicalNum" value="${d.medicalNum==0?"":d.medicalNum}"/></td>
         </tr>
         <tr>
             <td colspan="2">
                 <center>
-                    <button type="submit" class="btn btn-primary" type="button">查询</button>
-                    <button type="submit" class="btn btn-primary" type="button">清空</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearB()">查询</button>
+                    <button type="submit" class="btn btn-primary"  onclick="clearA();return false">清空</button>
                 </center>
             </td>
         </tr>

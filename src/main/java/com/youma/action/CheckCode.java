@@ -51,7 +51,7 @@ public class CheckCode extends HttpServlet {
         if(user==null)
         {
             //数据库里没有用户，或者用户名密码错误
-            System.out.println("用户名密码不正确");
+            // System.out.println("用户名密码不正确");
             //返回信息
             req.setAttribute("message","用户名密码不正确");
             //登录失败回到登录页面
@@ -64,7 +64,7 @@ public class CheckCode extends HttpServlet {
             //传来的验证码不为空，会话中有验证码信息
             if (code.equalsIgnoreCase(sessionCode)) {
                 //忽略大小写,验证码正确
-                System.out.println("验证通过! ");
+                // System.out.println("验证通过! ");
                 //传用户名
                 req.getSession().setAttribute("realName",user.getRealName());
                 //传角色id,以便主页面根据角色分配资源(角色所能查看的页面)
@@ -72,13 +72,13 @@ public class CheckCode extends HttpServlet {
                 resp.sendRedirect("/his/index.jsp");
             } else {
                 //验证码不对
-                System.out.println("验证失败!");
+                // System.out.println("验证失败!");
                 req.setAttribute("message","验证失败!");
                 req.getRequestDispatcher("login.jsp").forward(req,resp);
             }
         } else {
             //验证码为空
-            System.out.println("验证失败! ");
+            // System.out.println("验证失败! ");
             req.setAttribute("message","验证失败!");
             req.getRequestDispatcher("login.jsp").forward(req,resp);
         }

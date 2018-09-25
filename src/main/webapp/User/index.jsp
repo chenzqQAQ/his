@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <% String path = request.getContextPath();
-    System.out.println(path);
 %>
 <head>
     <title></title>

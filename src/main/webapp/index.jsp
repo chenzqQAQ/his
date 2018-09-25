@@ -49,7 +49,7 @@
             url: "/his/resAjaxAction",
             data: {
                 //全部资源，方便测试
-                roleId: 1//${sessionScope.role}
+                roleId: ${sessionScope.role}
             },
             type: "POST",
             async: false,

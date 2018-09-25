@@ -56,7 +56,7 @@ public class RoleAddAction extends HttpServlet {
             Resources resources1 = new Resources();
             resources1.setResID(Integer.parseInt(str));
             list.add(resources1);
-            System.out.println(resources1.getResID());
+            // System.out.println(resources1.getResID());
         }
         Role role = new Role();
         role.setRoleName(roleName);
