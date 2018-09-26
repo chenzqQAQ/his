@@ -17,6 +17,7 @@ import com.youma.util.Page;
 import com.youma.vo.Department;
 import com.youma.vo.Doctor;
 import com.youma.vo.Register;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,7 +50,7 @@ public class RegisterFindAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         Page page;
         HttpSession httpSession = req.getSession();
-        if (httpSession.getAttribute("page") == null) {
+        if (StringUtils.isBlank((CharSequence) httpSession.getAttribute("page"))) {
             page = new Page();
         } else {
             page = (Page) httpSession.getAttribute("page");
@@ -63,7 +64,8 @@ public class RegisterFindAction extends HttpServlet {
          * 保留上次id,docName,depName在session,从中取出
          */
         if (id == null) {
-            if (httpSession.getAttribute("medicalNum") != null && !"".equals(httpSession.getAttribute("medicalNum"))) {
+            if (
+                    httpSession.getAttribute("medicalNum") != null && !"".equals(httpSession.getAttribute("medicalNum"))) {
                 id = (String) httpSession.getAttribute("medicalNum");
             }
         }

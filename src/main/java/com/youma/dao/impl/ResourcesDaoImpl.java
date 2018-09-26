@@ -13,6 +13,7 @@ import com.youma.dao.ResourcesDao;
 import com.youma.util.ConnectionDB;
 import com.youma.util.Page;
 import com.youma.vo.Resources;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -162,14 +163,14 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
     public int allResourcesCount(Resources resources) {
         conn = ConnectionDB.getConnection();
         String sql = "select  count(resid) as a from resources where 1=1 ";
-        if (resources.getResName() != null && !resources.getResName().isEmpty()) {
+        if (StringUtils.isNotBlank(resources.getResName())) {
             sql += " and resName like \"%\" ? \"%\" ";
         }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
             int index = 1;
-            if (resources.getResName() != null && !resources.getResName().isEmpty()) {
+            if (StringUtils.isNotBlank(resources.getResName())) {
                 ps.setString(index++, resources.getResName());
             }
             rs = ps.executeQuery();
@@ -191,7 +192,7 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
                 "    resParentID,\n" +
                 "status \n" +
                 "FROM resources where 1=1 ";
-        if (resources1.getResName() != null && !resources1.getResName().isEmpty()) {
+        if (StringUtils.isNotBlank(resources1.getResName())) {
             sql += " and resName like \"%\" ? \"%\" ";
         }
         sql += " limit ?,?";
@@ -199,7 +200,7 @@ public class ResourcesDaoImpl extends BaseDao implements ResourcesDao {
         try {
             ps = conn.prepareStatement(sql);
             int index = 1;
-            if (resources1.getResName() != null && !resources1.getResName().isEmpty()) {
+            if (StringUtils.isNotBlank(resources1.getResName())) {
                 ps.setString(index++, resources1.getResName());
             }
             ps.setInt(index++, page.getOffset());
