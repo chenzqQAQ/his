@@ -17,7 +17,6 @@ import com.youma.util.Page;
 import com.youma.vo.Department;
 import com.youma.vo.Doctor;
 import com.youma.vo.Register;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,7 +49,7 @@ public class RegisterFindAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         Page page;
         HttpSession httpSession = req.getSession();
-        if (StringUtils.isBlank((CharSequence) httpSession.getAttribute("page"))) {
+        if (httpSession.getAttribute("page")==null) {
             page = new Page();
         } else {
             page = (Page) httpSession.getAttribute("page");

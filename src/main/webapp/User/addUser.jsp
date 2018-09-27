@@ -39,7 +39,7 @@
         $(function () {
             console.log("jQuery可用");
             $('#backid').click(function () {
-                window.location.href = "index.jsp";
+                window.location.href = "/his/usersFindAllAction";
             });
             $('#userName').blur(function () {
                 console.log("用户名失去焦点");

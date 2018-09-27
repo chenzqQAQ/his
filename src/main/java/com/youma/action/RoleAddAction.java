@@ -51,16 +51,23 @@ public class RoleAddAction extends HttpServlet {
         String roleName = req.getParameter("roleName");
         int status = Integer.parseInt(req.getParameter("status"));
         List<Resources> list = new ArrayList<>();
-        //将权限的id存储到角色类中
-        for (String str : resources) {
-            Resources resources1 = new Resources();
-            resources1.setResID(Integer.parseInt(str));
-            list.add(resources1);
-            // System.out.println(resources1.getResID());
-        }
         Role role = new Role();
+        //将权限的id存储到角色类中
+        System.out.println("resources"+resources);
+        if(resources!=null)
+        {
+            for (String str : resources) {
+                Resources resources1 = new Resources();
+                resources1.setResID(Integer.parseInt(str));
+                list.add(resources1);
+                // System.out.println(resources1.getResID());
+            }
+            role.setResources(list);
+        }
+        else{
+            role.setResources(null);
+        }
         role.setRoleName(roleName);
-        role.setResources(list);
         role.setStatus(status);
         String action = req.getParameter("action");
         if (action != null && !"".equals(action)) {
@@ -71,19 +78,22 @@ public class RoleAddAction extends HttpServlet {
             roleServer.updateRole(role);
             //先删除原有权限资源,再重新添加
             roleServer.delRes(role.getRoleID());
-            if (resources.length == roleServer.addRes(role)) {
-                System.out.println("权限重新分配成功");
-            } else {
-                System.out.println("权限重新分配失败");
+            if(resources!=null)
+            {
+                if (resources.length == roleServer.addRes(role)) {
+                    System.out.println("权限重新分配成功");
+                } else {
+                    System.out.println("权限重新分配失败");
+                }
+                resp.sendRedirect("/his/roleFindAction");
             }
-            resp.sendRedirect("/his/roleFindAction");
             return;
         }
         if (roleServer.roleAdd(role) != 0) {
             System.out.println("角色添加成功");
             role.setRoleID(roleServer.findRole(roleName));
             System.out.println(roleServer.findRole(roleName));
-            if (resources.length == roleServer.addRes(role)) {
+            if (resources==null||resources.length == roleServer.addRes(role)) {
                 System.out.println("权限分配成功");
                 resp.sendRedirect("/his/roleFindAction");
             }

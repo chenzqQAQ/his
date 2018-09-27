@@ -5,13 +5,13 @@
 <head>
     <title>枣阳市第二人民医院管理系统--中软高科2015</title>
     <meta charset="UTF-8">
-    <%--<link rel="stylesheet" type="text/css" href="Css/bootstrap.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="Css/bootstrap-responsive.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="Css/style.css"/>--%>
-    <%--<script type="text/javascript" src="Js/jquery.js"></script>--%>
-    <%--<script type="text/javascript" src="Js/bootstrap.js"></script>--%>
-    <%--<script type="text/javascript" src="Js/ckform.js"></script>--%>
-    <%--<script type="text/javascript" src="Js/common.js"></script>--%>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/bootstrap-responsive.css"/>
+    <link rel="stylesheet" type="text/css" href="/his/Css/style.css"/>
+    <script type="text/javascript" src="/his/Js/jquery.js"></script>
+    <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
+    <script type="text/javascript" src="/his/Js/ckform.js"></script>
+    <script type="text/javascript" src="/his/Js/common.js"></script>
     <style type="text/css">
         body {
             padding-top: 40px;
@@ -71,8 +71,8 @@
         <h2 class="form-signin-heading">&nbsp;&nbsp;&nbsp;登录系统</h2>
         <input type="text" name="username" class="input-block-level" placeholder="账号">
         <input type="password" name="password" class="input-block-level" placeholder="密码">
-        <input type="text" name="code" class="input-medium" placeholder="验证码">
-        <img id="img" alt="验证码" src="/his/getCode" onclick="changeImg();return false" title="点击切换">
+        <input type="text" name="code" class="input-medium" placeholder="验证码" autocomplete="off">
+        <img id="img" alt="验证码" src="/his/getCode" onclick="changeImg();return false" title="点击切换" style="margin-top: -15px">
         <p style="color: red">${message}</p>
         <p id="k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-large btn-primary" type="submit">登录
         </button>

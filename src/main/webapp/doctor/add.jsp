@@ -210,7 +210,7 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">姓名</td>
-            <td><input type="text" name="doctorName" value=""/><span id="k"></span></td>
+            <td><input type="text" name="doctorName" value=""/>*<span id="k"></span></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件类型</td>
@@ -219,16 +219,16 @@
                     <option value="0">身份证</option>
                     <option value="1">护照</option>
                     <option value="2">军人证</option>
-                </select>
+                </select>*
             </td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">证件号</td>
-            <td><input type="text" name="identifierNum" value=""/></td>
+            <td><input type="text" name="identifierNum" value=""/>*</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">手机</td>
-            <td><input type="text" name="phoneNum" value=""/></td>
+            <td><input type="text" name="phoneNum" value=""/>*</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">座机</td>
@@ -243,7 +243,7 @@
         <tr>
             <td width="10%" class="tableleft">出生年月</td>
             <td><input type="text" autocomplete="off" id="birthday" name="birthday" value="" class="Wdate"
-                       onfocus="WdatePicker(datepicker)"/>
+                       onfocus="WdatePicker(datepicker)"/>*
             </td>
         </tr>
         <tr>
@@ -255,12 +255,12 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">电子邮箱</td>
-            <td><input type="text" name="email" value=""/></td>
+            <td><input type="text" name="email" value=""/>*</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">所属科室</td>
             <td><select name="depId" id="depName">
-            </select></td>
+            </select>*</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">学历</td>
@@ -269,7 +269,7 @@
                 <option value="1">本科</option>
                 <option value="2">博士</option>
                 <option value="3">博士后</option>
-            </select></td>
+            </select>*</td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">备注</td>

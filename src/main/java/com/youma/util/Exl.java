@@ -58,15 +58,14 @@ public class Exl {
         if (class2.isAnnotation()) {
             //如果class2为一个注释类,获取class1中的全部属性
             Field[] fields = class1.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                if (fields[i].getDeclaredAnnotation(class2) != null) {
+            for (Field field : fields) {
+                if (field.getDeclaredAnnotation(class2) != null) {
                     //如果该属性找的到class2注释,添加到列表中
-                    list.add(fields[i]);
+                    list.add(field);
                 }
             }
             //将属性列表转为数组并返回
-            Field[] fields1 = list.toArray(new Field[list.size()]);
-            return fields1;
+            return list.toArray(new Field[list.size()]);
         } else {
             //如果class2不为注释类,返回空
             return null;
@@ -142,7 +141,7 @@ public class Exl {
             }
         }
         //列宽自适应
-        for (int i = 0; i < sheet.getLastRowNum(); i++) {
+        for (int i = 0; i < fields.length; i++) {
             sheet.autoSizeColumn(i, true);
         }
         FileOutputStream out = null;
@@ -153,10 +152,10 @@ public class Exl {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Exl文件生成出错");
+            // System.out.println("Exl文件生成出错");
             return 2;
         }
-        System.out.println("Exl生成成功");
+        // System.out.println("Exl生成成功");
         return 1;
     }
 

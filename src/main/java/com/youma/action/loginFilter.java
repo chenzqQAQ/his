@@ -9,6 +9,8 @@
  */
 package com.youma.action;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ import java.io.IOException;
  * @author 陈泽群
  * @date 2018/9/25 9:55
  */
-@WebFilter(filterName = "loginFilter",urlPatterns = "/*")
+@WebFilter(filterName = "loginFilter", urlPatterns = "/*")
 public class loginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -45,12 +47,14 @@ public class loginFilter implements Filter {
         } else if (path.contains("/his/getCode")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
-        } else if(req.getSession().getAttribute("realName")!=null){
+        } else if (req.getSession().getAttribute("realName") != null) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
-        }
-        else {
-            resp.sendRedirect("login.jsp");
+        } else if (StringUtils.containsAny(path, ".css", ".js")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        } else {
+            resp.sendRedirect("/his/login.jsp");
         }
     }
 

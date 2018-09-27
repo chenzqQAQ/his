@@ -30,7 +30,7 @@ public class CodeUtil {
     /**
      * 定义图片的高度
      */
-    private static int height = 20;
+    private static int height = 36;
     /**
      * 定义图片上验证码个数
      */
@@ -46,7 +46,7 @@ public class CodeUtil {
     /**
      * 字位置
      */
-    private static int codeY = 16;
+    private static int codeY = 24;
     /**
      * 验证码集合
      */
