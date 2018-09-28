@@ -239,7 +239,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
     @Override
     public Users findUsers(Users user) {
         conn = ConnectionDB.getConnection();
-        String sql = "select roleID,realName from users where userName=? and userPassword=?";
+        String sql = "select roleID,realName,flag from users where userName=? and userPassword=?";
         Users users = new Users();
         try {
             ps = conn.prepareStatement(sql);
@@ -249,6 +249,7 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             if (rs.next()) {
                 users.setRoleID(rs.getInt("roleID"));
                 users.setRealName(rs.getString("realName"));
+                users.setFlag(rs.getInt("flag"));
             } else {
                 users = null;
             }

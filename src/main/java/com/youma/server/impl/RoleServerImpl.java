@@ -69,7 +69,9 @@ public class RoleServerImpl implements RoleServer {
 
     @Override
     public Role findRes(int id) {
-        return roleDao.findRes(id);
+       Role role=roleDao.findRes(id);
+       role.setStatus(roleDao.findStatus(id));
+       return role;
     }
 
     @Override

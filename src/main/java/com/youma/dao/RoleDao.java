@@ -87,6 +87,13 @@ public interface RoleDao {
      * @return
      */
     public Role findRes(int id);
+    /**
+     * 查询指定角色状态
+     *
+     * @param id
+     * @return
+     */
+    public int findStatus(int id);
 
     /**
      * 添加用户的资源权限

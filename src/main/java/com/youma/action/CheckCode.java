@@ -59,6 +59,14 @@ public class CheckCode extends HttpServlet {
             req.getRequestDispatcher("login.jsp").forward(req,resp);
             return;
         }
+        if(user.getFlag()==1)
+        {
+            req.setAttribute("message","用户被禁用，请联系管理员");
+            req.setAttribute("userName",userName);
+            //登录失败回到登录页面
+            req.getRequestDispatcher("login.jsp").forward(req,resp);
+            return;
+        }
         //获取登录页面上验证码图片对应的验证码信息
         String sessionCode = String.valueOf(req.getSession().getAttribute("code"));
         if (code != null && !"".equals(code) && sessionCode != null && !"".equals(sessionCode)) {

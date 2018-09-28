@@ -46,7 +46,18 @@ public class ResAjaxAction extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         RoleServer roleServer = new RoleServerImpl();
         int id = Integer.parseInt(req.getParameter("roleId"));
+        PrintWriter out = resp.getWriter();
         Role role = roleServer.findRes(id);
+        if(req.getParameter("action")!=null)
+        {
+            String kk = "0";
+            if (role.getStatus() == 0) {
+                System.out.println("角色弃用,请联系管理员");
+                kk = "1";
+            }
+            out.write(kk);
+            return;
+        }
         List<Resources> list = role.getResources();
         //将角色对应的id转为json格式
         StringBuilder sb = new StringBuilder();
@@ -64,8 +75,7 @@ public class ResAjaxAction extends HttpServlet {
         }
         sb.append("]");
         String r = sb.toString();
-        // System.out.println(r);
-        PrintWriter out=resp.getWriter();
         out.write(r);
+        return;
     }
 }

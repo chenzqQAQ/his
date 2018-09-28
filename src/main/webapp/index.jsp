@@ -46,6 +46,39 @@
         //方便测试,不用登陆
         var config;
         $.ajax({
+            url: "/his/resAjaxAction?action=kk",
+            data: {
+                //全部资源，方便测试
+                roleId: ${sessionScope.role}
+            },
+            type: "POST",
+            async: false,
+            success: function (msg) {
+                if(msg=="0")
+                {
+                    // console.log("可用");
+                    aa();
+                }
+                else{
+                    alert("角色被禁用，请联系管理");
+                }
+            },
+            error:function (msg) {
+                console.log(msg);
+                console.log("失败");
+            }
+
+        });
+        $(function () {
+            //防止直接访问
+            <%--if(${empty sessionScope.realName})--%>
+            <%--window.location.href="login.jsp";--%>
+            // console.log(111);
+        })
+    });
+    //角色启用,才能有目录
+    function aa() {
+        $.ajax({
             url: "/his/resAjaxAction",
             data: {
                 //全部资源，方便测试
@@ -54,6 +87,7 @@
             type: "POST",
             async: false,
             success: function (msg) {
+                console.log(msg);
                 var str = eval(msg);
                 config = [
                     {
@@ -63,18 +97,17 @@
                         }]
                     }
                 ];
+            },
+            error:function (msg) {
+                console.log(msg);
+                console.log("失败");
             }
 
         });
         new PageUtil.MainPage({
             modulesConfig: config
         });
-        $(function () {
-            //防止直接访问
-            <%--if(${empty sessionScope.realName})--%>
-            <%--window.location.href="login.jsp";--%>
-        })
-    });
+    }
 </script>
 </body>
 </html>

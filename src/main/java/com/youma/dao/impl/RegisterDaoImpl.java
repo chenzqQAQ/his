@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RegisterDaoImpl extends BaseDao implements RegisterDao {
@@ -314,10 +313,12 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
                 }
                 if (null != args[3]) {
-                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()));
+                    //获取当天24点毫秒值
+                    long k=24*60*60*1000-1;
+                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()+k));
                 }
                 else{
-                    ps.setTimestamp(index++, new Timestamp(new Date().getTime()));
+                    ps.setTimestamp(index++, new Timestamp(System.currentTimeMillis()));
                 }
             }
             rs = ps.executeQuery();
@@ -376,10 +377,11 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
                 }
                 if (null != args[3]) {
-                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()));
+                    long k=24*60*60*1000-1;
+                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()+k));
                 }
                 else{
-                    ps.setTimestamp(index++, new Timestamp(new Date().getTime()));
+                    ps.setTimestamp(index++, new Timestamp(System.currentTimeMillis()));
                 }
             }
             ps.setInt(index++, page.getOffset());

@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
+    <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
 
     <style type="text/css">
         body {
@@ -141,6 +142,28 @@
             <%--var k = jQuery.parseJSON('${docs}');--%>
         });
     </script>
+    <script type="text/javascript">
+        var datepicker1 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '1980-1-1',
+            maxDate: '#F{$dp.$D(\'time2\')||\'%y-%M-%d\'}',
+            startDate: '2018-9-20',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
+        var datepicker2 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '#F{$dp.$D(\'time1\')}',
+            maxDate: new Date(),
+            startDate: new Date() || '#F{$dp.$D(\'time1\')}',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
+    </script>
 </head>
 <body>
 <form id="form2" action="/his/down" method="post" hidden>
@@ -163,9 +186,10 @@
             <td width="10%" class="tableleft">挂号时间：</td>
 
             <td colspan="5">
-                <input type="text" name="time1" value="${sessionScope.time1}"/>&nbsp;至&nbsp;<input type="text"
-                                                                                                   name="time2"
-                                                                                                   value="${sessionScope.time2}"/>
+                <input type="text" id="time1" name="time1"  class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker1)" value="${sessionScope.time1}"/>&nbsp;至&nbsp;
+                <input type="text"  id="time2" name="time2"  class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker2)" value="${sessionScope.time2}"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary">查询</button>
                 <button class="btn btn-primary" type="button" onclick="clearA();return false">清空</button>

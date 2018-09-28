@@ -299,9 +299,32 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
                 list.add(resources);
             }
             role.setResources(list);
+            rs = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return role;
+    }
+
+    @Override
+    public int findStatus(int id) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT status\n" +
+                "FROM role\n" +
+                "WHERE roleID = ?";
+        int kkk = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                kkk = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return kkk;
     }
 }
