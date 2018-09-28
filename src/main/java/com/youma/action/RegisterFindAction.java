@@ -17,6 +17,7 @@ import com.youma.util.Page;
 import com.youma.vo.Department;
 import com.youma.vo.Doctor;
 import com.youma.vo.Register;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 /**
  * 挂号信息查询
+ *
  * @author 陈泽群
  */
 @WebServlet("/registerFindAction")
@@ -49,7 +51,7 @@ public class RegisterFindAction extends HttpServlet {
         resp.setContentType("text/html;charset:UTF-8");
         Page page;
         HttpSession httpSession = req.getSession();
-        if (httpSession.getAttribute("page")==null) {
+        if (httpSession.getAttribute("page") == null) {
             page = new Page();
         } else {
             page = (Page) httpSession.getAttribute("page");
@@ -59,12 +61,13 @@ public class RegisterFindAction extends HttpServlet {
         String id = req.getParameter("medicalNum");
         String docName = req.getParameter("docName");
         String depName = req.getParameter("depName");
+        String time1 = req.getParameter("time1");
+        String time2 = req.getParameter("time2");
         /**
          * 保留上次id,docName,depName在session,从中取出
          */
         if (id == null) {
-            if (
-                    httpSession.getAttribute("medicalNum") != null && !"".equals(httpSession.getAttribute("medicalNum"))) {
+            if (httpSession.getAttribute("medicalNum") != null && !"".equals(httpSession.getAttribute("medicalNum"))) {
                 id = (String) httpSession.getAttribute("medicalNum");
             }
         }
@@ -76,6 +79,16 @@ public class RegisterFindAction extends HttpServlet {
         if (depName == null) {
             if (httpSession.getAttribute("depName") != null && !"".equals(httpSession.getAttribute("depName"))) {
                 depName = (String) httpSession.getAttribute("depName");
+            }
+        }
+        if (time1 == null) {
+            if (httpSession.getAttribute("time1") != null) {
+                time1 = (String) httpSession.getAttribute("time1");
+            }
+        }
+        if (time2 == null) {
+            if (httpSession.getAttribute("time2") != null) {
+                time2 = (String) httpSession.getAttribute("time2");
             }
         }
         // System.out.println("传来的页号为" + pNo);
@@ -95,7 +108,8 @@ public class RegisterFindAction extends HttpServlet {
         // System.out.println("传来的医生名为" + docName);
         // System.out.println("传来的科室号为" + depName);
         List<Register> myList = new ArrayList<>();
-        boolean b = (null != docName && !("").equals(docName)) || (null != depName && !("").equals(depName));
+        boolean b = (StringUtils.isNotBlank(docName) || StringUtils.isNotBlank(depName)
+                || StringUtils.isNotBlank(time1) || StringUtils.isNotBlank(time2));
         if (null != id && !("").equals(id)) {
             list = new ArrayList<>();
             httpSession.setAttribute("medicalNum", id);
@@ -114,7 +128,7 @@ public class RegisterFindAction extends HttpServlet {
             /**
              * 当医生名字or科室名字有(包括在会话session中时),进行模糊查询
              */
-            String[] args = new String[2];
+            String[] args = new String[4];
             if (null != docName && !("").equals(docName)) {
                 args[0] = docName;
                 httpSession.setAttribute("docName", docName);
@@ -129,22 +143,29 @@ public class RegisterFindAction extends HttpServlet {
                 args[1] = null;
                 httpSession.removeAttribute("depName");
             }
-            // System.out.println(String.format("医生名%s", docName));
-            // System.out.println(String.format("科室名%s", depName));
+            if (StringUtils.isNotBlank(time1)) {
+                args[2] = time1;
+                httpSession.setAttribute("time1", time1);
+            } else {
+                args[2] = null;
+                httpSession.removeAttribute("time1");
+            }
+            if (StringUtils.isNotBlank(time2)) {
+                args[3] = time2;
+                httpSession.setAttribute("time2", time2);
+            } else {
+                args[3] = null;
+                httpSession.removeAttribute("time2");
+            }
             int col = registerServer.findRegisterCount(args);
             page.setTotalCount(col);
-            // System.out.println(String.format("条数为%d", col));
             list = registerServer.PageAllRegister(page, args);
         } else {
             httpSession.removeAttribute("medicalNum");
             httpSession.removeAttribute("depName");
             httpSession.removeAttribute("docName");
-            // System.out.println("进入全查");
-            // System.out.println("全查总数" + page.getTotalCount());
-            // System.out.println("当前页面" + page.getPageNo());
-            // System.out.println("总页面数" + page.getTotalPage());
-            // System.out.println("单页条数" + page.getPageSize());
-            // System.out.println("查询的偏移量" + page.getOffset());
+            httpSession.removeAttribute("time1");
+            httpSession.removeAttribute("time2");
             myList = registerServer.PageAllRegister(page);
         }
         List<Doctor> list1 = new DoctorServerImpl().findAllDoctor();

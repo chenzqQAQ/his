@@ -69,8 +69,8 @@
 
     <form class="form-signin" method="post" action="/his/checkCode">
         <h2 class="form-signin-heading">&nbsp;&nbsp;&nbsp;登录系统</h2>
-        <input type="text" name="username" class="input-block-level" placeholder="账号">
-        <input type="password" name="password" class="input-block-level" placeholder="密码">
+        <input type="text" name="username" class="input-block-level" placeholder="账号" value="${userName}">
+        <input type="password" name="password" class="input-block-level" placeholder="密码" value="${passWord}">
         <input type="text" name="code" class="input-medium" placeholder="验证码" autocomplete="off">
         <img id="img" alt="验证码" src="/his/getCode" onclick="changeImg();return false" title="点击切换" style="margin-top: -15px">
         <p style="color: red">${message}</p>

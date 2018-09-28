@@ -15,7 +15,10 @@ import com.youma.util.Page;
 import com.youma.vo.Register;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RegisterDaoImpl extends BaseDao implements RegisterDao {
@@ -289,26 +292,42 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
         if (null != args[1]) {
             sql += "and depName = ?";
         }
-        System.out.println(sql);
+        if (null != args[2]||null != args[3]) {
+            sql += "and rtime between ? and ? ";
+        }
+        // System.out.println(sql);
         int col = 0;
         try {
             int index = 1;
             ps = conn.prepareStatement(sql);
             if (null != args[0]) {
                 ps.setString(index++, args[0]);
-                System.out.println("医生名" + args[0]);
             }
             if (null != args[1]) {
                 ps.setString(index++, args[1]);
-                System.out.println("科室名" + args[1]);
             }
-            System.out.println(index);
+            if(null != args[2]||null != args[3])
+            {
+                if (null != args[2]) {
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[2]).getTime()));
+                }else{
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
+                }
+                if (null != args[3]) {
+                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()));
+                }
+                else{
+                    ps.setTimestamp(index++, new Timestamp(new Date().getTime()));
+                }
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
 
                 col = rs.getInt(1);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         } finally {
             closeAll();
@@ -335,8 +354,11 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
         if (null != args[1]) {
             sql += "and depName = ?";
         }
+        if (null != args[2]||null != args[3]) {
+            sql += "and rtime between ? and ? ";
+        }
         sql += " Limit ?,?";
-        System.out.println(sql);
+        // System.out.println(sql);
         try {
             int index = 1;
             ps = conn.prepareStatement(sql);
@@ -346,9 +368,22 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             if (null != args[1]) {
                 ps.setString(index++, args[1]);
             }
+            if(null != args[2]||null != args[3])
+            {
+                if (null != args[2]) {
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[2]).getTime()));
+                }else{
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
+                }
+                if (null != args[3]) {
+                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()));
+                }
+                else{
+                    ps.setTimestamp(index++, new Timestamp(new Date().getTime()));
+                }
+            }
             ps.setInt(index++, page.getOffset());
             ps.setInt(index++, page.getPageSize());
-            System.out.println(index);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Register register = new Register();
@@ -360,6 +395,8 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 list.add(register);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return list;

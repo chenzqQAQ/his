@@ -46,11 +46,11 @@
                     url: "/his/exlOut",
                     type: "GET",
                     success: function (msg) {
-                        var k = eval("("+msg+")");
+                        var k = eval("(" + msg + ")");
                         console.log(k['message']);
                         if (parseInt(k['message']) === 1) {
                             alert("Excel导出成功");
-                            var form=$('#form2');
+                            var form = $('#form2');
                             $('input[name=url]').val(k['url']);
                             form.submit();
                         }
@@ -75,11 +75,11 @@
                     url: str,
                     type: "POST",
                     success: function (msg) {
-                        var k = eval("("+msg+")");
+                        var k = eval("(" + msg + ")");
                         console.log(k);
                         if (parseInt(k['message']) === 1) {
                             alert("Excel导出成功");
-                            var form=$('#form2');
+                            var form = $('#form2');
                             $('input[name=url]').val(k['url']);
                             form.submit();
                         }
@@ -127,12 +127,16 @@
                 alert("请选中要删除的项");
             }
         }
+
         //清空查询的条件
         function clearA() {
             $("input[name='medicalNum']").val("");
             $("input[name='docName']").val("");
             $("input[name='depName']").val("");
+            $("input[name='time1']").val("");
+            $("input[name='time2']").val("");
         }
+
         $(function () {
             <%--var k = jQuery.parseJSON('${docs}');--%>
         });
@@ -159,7 +163,9 @@
             <td width="10%" class="tableleft">挂号时间：</td>
 
             <td colspan="5">
-                <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
+                <input type="text" name="time1" value="${sessionScope.time1}"/>&nbsp;至&nbsp;<input type="text"
+                                                                                                   name="time2"
+                                                                                                   value="${sessionScope.time2}"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary">查询</button>
                 <button class="btn btn-primary" type="button" onclick="clearA();return false">清空</button>
