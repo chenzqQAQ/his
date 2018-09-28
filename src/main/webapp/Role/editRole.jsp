@@ -38,7 +38,7 @@
 
     </style>
     <%
-        //将传来的list转为array,以便js解析
+        //将传来的list转为json格式的数组,以便js解析
         Role role = (Role) request.getAttribute("role");
         List<Resources> list = role.getResources();
         StringBuilder sb = new StringBuilder();

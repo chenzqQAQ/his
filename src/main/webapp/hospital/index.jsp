@@ -86,6 +86,10 @@
             $('#newNav').click(function () {
                 window.location.href = "/his/hospital/add.jsp";
             });
+            $('#ExlOut').click(function () {
+                window.location.href="/his/inpExlOut"
+                return false;
+            })
         });
 
         function checkall() {
@@ -236,7 +240,7 @@
                 <button type="button" class="btn btn-success" id="newNav">录入住院信息</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-success" id="delPro" onClick="delAll();">出院</button>&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-success" id="delPro1" onClick="delAll();">退院</button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" id="delPro13">导出Excel</button>
+                <button type="button" class="btn btn-success" id="ExlOut">导出Excel</button>
                 <button type="button" class="btn btn-success" id="delPro2">打印</button>
 
             </div>

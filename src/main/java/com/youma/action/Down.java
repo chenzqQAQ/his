@@ -46,6 +46,6 @@ public class Down extends HttpServlet {
             //返回0,下载成功
             System.out.println("文件下载成功");
         }
-        resp.sendRedirect("his/registerFindAction");
+       // resp.sendRedirect("his/registerFindAction");
     }
 }
