@@ -87,7 +87,7 @@
             type: "POST",
             async: false,
             success: function (msg) {
-                console.log(msg);
+                // console.log(msg);
                 var str = eval(msg);
                 config = [
                     {

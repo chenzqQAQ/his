@@ -120,6 +120,12 @@
             $('#newNav').click(function () {
                 window.location.href = "/his/User/addUser.jsp";
             });
+            if (${u==1}) {
+                alert("当前角色状态被修改,请刷新页面");
+                <% session.removeAttribute("status");
+                %>
+                parent.location.href = "/his/index.jsp";
+            }
         });
     </script>
 </head>

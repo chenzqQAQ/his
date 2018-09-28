@@ -38,13 +38,6 @@ public class UserUpdateAction extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         Users users = new Users();
         UsersServer us = new UsersServerImpl();
-        // System.out.println(req.getParameter("userID"));
-        // System.out.println(req.getParameter("userName"));
-        // System.out.println(req.getParameter("userPassword"));
-        // System.out.println(req.getParameter("realName"));
-        // System.out.println(req.getParameter("setEmail"));
-        // System.out.println(req.getParameter("flag"));
-        // System.out.println(req.getParameter("role"));
         users.setUserID(Integer.parseInt(req.getParameter("userID")));
         users.setUserName(req.getParameter("userName"));
         users.setUserPassword(req.getParameter("userPassword"));

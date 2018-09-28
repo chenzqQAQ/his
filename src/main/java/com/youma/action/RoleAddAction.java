@@ -82,6 +82,7 @@ public class RoleAddAction extends HttpServlet {
             {
                 if (resources.length == roleServer.addRes(role)) {
                     System.out.println("权限重新分配成功");
+                    req.getSession().setAttribute("newid",role.getRoleID());
                 } else {
                     System.out.println("权限重新分配失败");
                 }
@@ -92,7 +93,6 @@ public class RoleAddAction extends HttpServlet {
         if (roleServer.roleAdd(role) != 0) {
             System.out.println("角色添加成功");
             role.setRoleID(roleServer.findRole(roleName));
-            System.out.println(roleServer.findRole(roleName));
             if (resources==null||resources.length == roleServer.addRes(role)) {
                 System.out.println("权限分配成功");
                 resp.sendRedirect("/his/roleFindAction");

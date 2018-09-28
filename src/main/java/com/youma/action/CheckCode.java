@@ -78,6 +78,7 @@ public class CheckCode extends HttpServlet {
                 req.getSession().setAttribute("realName",user.getRealName());
                 //传角色id,以便主页面根据角色分配资源(角色所能查看的页面)
                 req.getSession().setAttribute("role",user.getRoleID());
+                req.getSession().setAttribute("userid",user.getUserID());
                 resp.sendRedirect("/his/index.jsp");
                 return;
             }

@@ -61,7 +61,7 @@
                 url: "/his/resourceAjaxAction",
                 success: function (msg) {
                     var k = eval("(" + msg + ")");
-                    console.log(k);
+                    // console.log(k);
                     $.each(k, function (index, i) {
                         var check = $('<input type="checkbox" name="resources"/>');
                         var ul = $('<ul></ul>');
@@ -74,7 +74,7 @@
                     var list = eval(${sb});
                     $.each(list, function (index, i) {
                         var oo = i["resID"];
-                        console.log(oo);
+                        // console.log(oo);
                         $("input[name='resources'][value=\'" + oo + "\']").prop("checked", true);
                     });
                 }

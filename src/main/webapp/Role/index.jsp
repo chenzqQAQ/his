@@ -67,11 +67,16 @@
     </script>
     <script type="text/javascript">
         $(function () {
+            if (${newid}==${sessionScope.role}) {
+                alert("当前用户角色权限修改,需要刷新页面");
+                <% session.removeAttribute("newid");
+                %>
+                parent.location.href = "/his/index.jsp";
+            }
             $('#newNav').click(function () {
                 window.location.href = "/his/Role/addRole.jsp";
             });
         });
-
 
         function checkall() {
             var alls = document.getElementsByName("check");
@@ -103,10 +108,12 @@
                 alert("请选中要删除的项");
             }
         }
+
         //清空输入框
         function clearA() {
-            $('input[name="roleName"]') .val("");
+            $('input[name="roleName"]').val("");
         }
+
         //清空页面信息
         function clearB() {
             $("#pageNo").val("");
@@ -128,7 +135,7 @@
         <th>角色名称</th>
         <th>状态</th>
         <%
-            String[] status = {"弃用", "启用"};
+            String[] status = {"禁用", "启用"};
             request.setAttribute("status", status);
 
         %>
