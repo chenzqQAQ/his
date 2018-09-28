@@ -142,7 +142,10 @@ public class Exl {
         }
         //列宽自适应
         for (int i = 0; i < fields.length; i++) {
-            sheet.autoSizeColumn(i, true);
+            Czq czq=fields[i].getDeclaredAnnotation(Czq.class);
+            //获取注解设置的列宽(几个字符)
+            int l=czq.length();
+            sheet.setColumnWidth(i,l*256+148);
         }
         FileOutputStream out = null;
         try {

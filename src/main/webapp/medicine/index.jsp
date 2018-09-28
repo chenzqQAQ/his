@@ -82,6 +82,27 @@
             $('#newNav').click(function () {
                 window.location.href = "/his/medicine/add.jsp";
             });
+            $('#exlOutAll').click(function () {
+                //全部数据导出
+                $.ajax({
+                    url: "/his/drugExlOut",
+                    type: "GET",
+                    success: function (msg) {
+                        var k = eval("("+msg+")");
+                        console.log(k['message']);
+                        if (parseInt(k['message']) === 1) {
+                            alert("Excel导出成功");
+                            var form=$('#form2');
+                            $('input[name=url]').val(k['url']);
+                            form.submit();
+                        }
+                        else {
+                            alert("Excel导出失败");
+                        }
+                    }
+                });
+                return false;
+            })
         });
 
         function checkall() {
@@ -157,7 +178,9 @@
         </tr>
     </table>
 </form>
-
+<form id="form2" action="/his/down" method="post" hidden>
+    <input type="hidden" name="url" value="">
+</form>
 <table class="table table-bordered table-hover definewidth m10">
     <thead>
     <tr>
@@ -196,50 +219,6 @@
             </td>
         </tr>
     </c:forEach>
-    <%--<%--%>
-
-    <%--List<Drug> list = (List<Drug>) request.getAttribute("drugs");--%>
-    <%--String str;--%>
-    <%--if (null != list) {--%>
-    <%--for (int i = 0; i < list.size(); i++) {--%>
-    <%--str="/his/drugFindAction?drugid="+list.get(i).getDrugID();--%>
-    <%--request.setAttribute("str",str);--%>
-    <%--// user1 = list.get(i);--%>
-    <%--%>--%>
-    <%--<tr>--%>
-    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugID() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDrugName() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=type[list.get(i).getDrugType()] %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getDescription() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=(0 == list.get(i).getFlag()) ? "销售中" : "售完" %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><%=list.get(i).getInventory() %>--%>
-    <%--</td>--%>
-    <%--<td style="vertical-align:middle;"><a href="${str}">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.jsp">详情>>></a>--%>
-    <%--</td>--%>
-    <%--</tr>--%>
-    <%--<%--%>
-    <%--}--%>
-    <%--}--%>
-    <%--%>--%>
-
-    <%--<tr>--%>
-    <%--<td style="vertical-align:middle;"><input type="checkbox" name="check" value="1"></td>--%>
-    <%--<td style="vertical-align:middle;">J1121</td>--%>
-    <%--<td style="vertical-align:middle;">感冒药</td>--%>
-    <%--<td style="vertical-align:middle;">处方</td>--%>
-    <%--<td style="vertical-align:middle;">用于普通感冒</td>--%>
-    <%--<td style="vertical-align:middle;">销售中</td>--%>
-    <%--<td style="vertical-align:middle;">1000袋</td>--%>
-    <%--<td style="vertical-align:middle;"><a href="/his/medicine/edit.jsp">更改</a>&nbsp;&nbsp;&nbsp;<a href="look.jsp">详情>>></a>--%>
-    <%--</td>--%>
-    <%--</tr>--%>
-
 </table>
 
 <table class="table table-bordered table-hover definewidth m10">
@@ -257,7 +236,7 @@
             </div>
             <div>
                 <button type="button" class="btn btn-success" id="newNav">添加新药</button>
-                <button type="button" class="btn btn-success" id="delPro">导出Excel</button>
+                <button type="button" class="btn btn-success" id="exlOutAll">导出Excel</button>
                 <button type="button" class="btn btn-success">导出txt</button>
             </div>
 

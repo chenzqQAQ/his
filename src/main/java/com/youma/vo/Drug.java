@@ -9,6 +9,8 @@
  */
 package com.youma.vo;
 
+import com.youma.util.Czq;
+
 /**
  * @author Administrator
  * 药品实体类
@@ -17,70 +19,87 @@ public class Drug {
     /**
      * 药品编号
      */
+    @Czq(name="药品编号",length = 10)
     private String drugID;
     /**
      * 药品图片地址
      */
+    //@Czq(name="药品图片地址")
     private String drugUrl;
     /**
      * 进价
      */
+    @Czq(name="进价")
     private double purchasePrice;
     /**
      * 售价
      */
+    @Czq(name="售价")
     private double sellingPrice;
     /**
      * 药品名字
      */
+    @Czq(name="药品名字",length = 5)
     private String drugName;
     /**
      * 药品类型0"处方", 1"中药", 2"西药", 3"非处方"
      */
+    @Czq(name="药品类型",value = {"处方","中药","西药","非处方"})
     private int drugType;
     /**
      * 药品简单描述
      */
+    @Czq(name="药品简单描述",length = 10)
     private String description;
     /**
      * 生产日期
      */
+    @Czq(name="生产日期",length = 10)
     private String productionDate;
     /**
      * 过期日期
      */
+    @Czq(name="过期日期",length = 10)
     private String overdueDate;
     /**
      * 保质期
      */
+    @Czq(name="保质期")
     private int qualityLife;
     /**
      * 药品详细说明
      */
+    @Czq(name="药品详细说明",length = 10)
     private String detailedDes;
     /**
      * 生产厂商
      */
+    @Czq(name="生产厂商",length = 5)
     private String manufacturer;
     /**
      * 服用说明
      */
+    @Czq(name="服用说明",length = 5)
     private String takingDes;
     /**
      * 总的进货量
      */
+    @Czq(name="总的进货量")
     private int totalVolume;
     /**
      * 库存
      */
+    @Czq(name="库存")
     private int inventory;
     /**
      * 状态0"销售中", 1"售罄", 2"进货"
      */
+    @Czq(name="状态",value = {"销售中","售罄","进货"})
     private int flag;
     /**
      * 备注
      */
+    @Czq(name="备注",length = 10)
     private String remark;
 
     public Drug(String drugID, String drugUrl, double pruchasePrice, double sellingPrice, String drugName, int drugType, String description, String productionDate, String overdueDate, int qualityLife, String detailedDes, String manufacturer, String takingDes, int totalVolume, int flag, String remark) {

@@ -13,6 +13,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Czq {
+    //列名
     public String name() default "";
+    //int转为对应文字
     public String [] value() default {""};
+    //列宽
+    public int length() default 4;
 }
