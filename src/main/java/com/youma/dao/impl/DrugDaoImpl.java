@@ -212,6 +212,9 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
                 drug.setFlag(rs.getInt(i++));
                 drug.setRemark(rs.getString(i++));
             }
+            else {
+                drug=null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -209,6 +209,20 @@
                     alert("提交事件");
                 }
             });
+            //验证药品编号否存在
+            $('input[name="drugID"]').change(function () {
+                var drugID=this.value;
+                console.log(drugID);
+                $.ajax({
+                    url:"/his/ajaxAction1?action=drug",
+                    type:"post",
+                    data:{"drugId":drugID},
+                    success:function (msg) {
+                        $('input[name="drugID"]').next("span").text(msg);
+                    }
+                        
+                })
+            })
         })
     </script>
 </head>
@@ -217,7 +231,7 @@
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">药品编号</td>
-            <td><input type="text" name="drugID" value=""/></td>
+            <td><input type="text" name="drugID" value=""/><span></span></td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">图片</td>

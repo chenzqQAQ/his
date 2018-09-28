@@ -162,7 +162,6 @@
             </select>
                 <script>
                     document.getElementById('select').value =${drug.drugType};
-                    console.log(${drug.drugType});
                 </script>
             </td>
         </tr>
