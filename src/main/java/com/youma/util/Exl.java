@@ -76,7 +76,7 @@ public class Exl {
     }
 
     /**
-     * 生成exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值一起导出。
+     * 生成exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值一起导出到所需要的文件中。
      *
      * @param c    要导出的数据类
      * @param str  exl文件的名字(包含路径new File(str))
@@ -112,10 +112,10 @@ public class Exl {
     }
 
     /**
-     * 下载exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值一起导出。
+     * 下载exl文件,根据类获取有Czq注释的属性,将有Czq注释的属性连同值生成的exl直接下载。
      *
      * @param c    要导出的数据类
-     * @param resp 响应
+     * @param resp 响应方便未见下载
      * @param list exl数据的列表,要与类对应
      * @param <T>
      * @return 状态1：exl导出成功,2:导出失败
@@ -146,6 +146,13 @@ public class Exl {
         return 1;
     }
 
+    /**
+     * 根据集合和注释属性生成工作表
+     * @param list
+     * @param fields
+     * @param <T>
+     * @return
+     */
     private <T> boolean aaa(List<T> list, Field[] fields) {
         //遍历属性,修改属性权限，提取注释中的中文注解作为表的第一行
         for (int i = 0; i < fields.length; i++) {
@@ -165,7 +172,9 @@ public class Exl {
         }
         int max = list.size();
         for (int i = 0; i < max; i++) {
+            //遍历列表
             T t = list.get(i);
+            //创建表中新行
             row = sheet.createRow(i + 1);
             for (int j = 0; j < fields.length; j++) {
                 Cell cell = row.createCell(j);
@@ -183,6 +192,8 @@ public class Exl {
                             string = strs[index];
                         }
                     } else {
+                        //字符串数据处理
+                        //数据不存在或为空时用空字符串填充
                         if (fields[j].get(t) == null || "null".equals(fields[j].get(t))) {
                             //消除null
                             string = "";
