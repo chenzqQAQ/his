@@ -19,6 +19,7 @@ import com.youma.util.Page;
 import com.youma.vo.DispensedDrug;
 import com.youma.vo.HosSettle;
 import com.youma.vo.PayManager;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,6 +77,10 @@ public class HosFindAction extends HttpServlet {
         {
             hosSettle.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
         }
+        if(StringUtils.isNotBlank(req.getParameter("rName")))
+        {
+            hosSettle.setrName(req.getParameter("rName"));
+        }
         Page page = new Page();
         //设置总条数和页码
         page.setTotalCount(hosServer.allCount(hosSettle));
@@ -95,6 +100,7 @@ public class HosFindAction extends HttpServlet {
         }
         req.setAttribute("hos", list);
         req.setAttribute("page", page);
+        req.setAttribute("oo", hosSettle);
         req.getRequestDispatcher("/hospital/account.jsp").forward(req, resp);
     }
 

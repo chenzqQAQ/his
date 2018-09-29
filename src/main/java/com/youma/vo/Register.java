@@ -90,7 +90,7 @@ public class Register {
     /**
      * 挂号时间
      */
-    @Czq(name = "挂号时间")
+    // @Czq(name = "挂号时间")
     private String rtime;
 
     public String getRtime() {

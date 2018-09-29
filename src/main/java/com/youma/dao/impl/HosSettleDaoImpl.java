@@ -14,6 +14,7 @@ import com.youma.util.ConnectionDB;
 import com.youma.util.Page;
 import com.youma.vo.HosSettle;
 import com.youma.vo.Inpatient;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -347,12 +348,12 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
         conn = ConnectionDB.getConnection();
         String sql = "update hossettle set flag=1,paidCost=cost,overplusCost=0,balance=0 ,payDate=? " +
                 "where medicalNum=?";
-        int col=0;
+        int col = 0;
         try {
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, new Timestamp(date.getTime()));
             ps.setInt(2, id);
-            col=ps.executeUpdate();
+            col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -368,21 +369,25 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
                 "    hossettle.deposit,hossettle.balance," +
                 "registerName\n" +
                 "FROM his.hossettle join register on hossettle.medicalNum=register.medicalNum where 1=1 ";
-        if(hosSettle1.getMedicalNum()!=0)
-        {
-            sql+=" and medicalNum =? ";
+        if (hosSettle1.getMedicalNum() != 0) {
+            sql += " and hossettle.medicalNum =? ";
         }
-        sql+="limit ?,?";
+        if (StringUtils.isNotBlank(hosSettle1.getrName())) {
+            sql += " and register.registerName like \"%\" ? \"%\" ";
+        }
+        sql += "limit ?,?";
         List<HosSettle> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
-            int index=1;
-            if(hosSettle1.getMedicalNum()!=0)
-            {
-                ps.setInt(index++,hosSettle1.getMedicalNum());
+            int index = 1;
+            if (hosSettle1.getMedicalNum() != 0) {
+                ps.setInt(index++, hosSettle1.getMedicalNum());
             }
-            ps.setInt(index++,page.getOffset());
-            ps.setInt(index++,page.getPageSize());
+            if (StringUtils.isNotBlank(hosSettle1.getrName())) {
+                ps.setString(index++, StringUtils.trim(hosSettle1.getrName()));
+            }
+            ps.setInt(index++, page.getOffset());
+            ps.setInt(index++, page.getPageSize());
             rs = ps.executeQuery();
             while (rs.next()) {
                 HosSettle hosSettle = new HosSettle();
@@ -406,22 +411,19 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
     public int allCount(HosSettle hosSettle) {
         conn = ConnectionDB.getConnection();
         String sql = "select  count(ID) from hossettle where 1=1 ";
-        if(hosSettle.getMedicalNum()!=0)
-        {
-            sql+=" and medicalNum =? ";
+        if (hosSettle.getMedicalNum() != 0) {
+            sql += " and medicalNum =? ";
         }
-        int col=0;
+        int col = 0;
         try {
             ps = conn.prepareStatement(sql);
-            int index=1;
-            if(hosSettle.getMedicalNum()!=0)
-            {
-                ps.setInt(index++,hosSettle.getMedicalNum());
+            int index = 1;
+            if (hosSettle.getMedicalNum() != 0) {
+                ps.setInt(index++, hosSettle.getMedicalNum());
             }
-            rs=ps.executeQuery();
-            if(rs.next())
-            {
-                col=rs.getInt(1);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                col = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();

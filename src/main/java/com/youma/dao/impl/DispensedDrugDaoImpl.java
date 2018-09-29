@@ -135,7 +135,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
     public List<DispensedDrug> findDispensedDrug(int id) {
         conn = ConnectionDB.getConnection();
         String sql = "SELECT dispenseddrug.medicalNum," +
-                "drug.drugID,\n" +
+                "dispenseddrug.id,\n" +
                 "    drug.drugName,\n" +
                 "    dispenseddrug.totalQuantity,\n" +
                 "    dispenseddrug.dispensedQuantity,\n" +
@@ -158,7 +158,7 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
                 dispensedDrug.setTotalQuantity(rs.getInt("totalQuantity"));
                 dispensedDrug.setDispensedQuantity(rs.getInt("dispensedQuantity"));
                 dispensedDrug.setUndispensedQuantity(rs.getInt("undispensedQuantity"));
-                dispensedDrug.setDrugId(rs.getString("drugID"));
+                dispensedDrug.setId(rs.getInt("Id"));
                 dispensedDrug.setAccount(rs.getDouble("k"));
                 dispensedDrug.setSellPrice(rs.getDouble("sellingPrice"));
                 dispensedDrug.setDispensedTime(sdf.format(rs.getTimestamp("dispensedTime")));

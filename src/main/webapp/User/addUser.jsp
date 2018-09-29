@@ -69,6 +69,9 @@
             $("#form1").validate(
                 {
                     // debug: true,
+                    onfocusout:function (element) {
+                        $(element).valid();
+                    },
                     rules: {
                         userName: {
                             required: true,

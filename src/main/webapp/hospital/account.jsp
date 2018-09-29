@@ -99,23 +99,31 @@
             $("#form1").attr("action", "/his/hosFindAction").submit();
             return false;
         }
+        function clearA() {
+            $('#pageNo').val("");
+        }
+
+        function clearB() {
+            $('input[name="medicalNum"]').val("");
+            $('input[name="rName"]').val("");
+        }
     </script>
 </head>
 <body>
 
-<form id="form1" action="account.jsp" method="post" class="definewidth m20">
+<form id="form1" action="/his/hosFindAction" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病例号：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="medicalNum" value="${oo.medicalNum==0?"":oo.medicalNum}"/></td>
             <td width="10%" class="tableleft">姓名：</td>
-            <td><input type="text" name="pname" value=""/></td>
+            <td><input type="text" name="rName" value="${oo.rName}"/></td>
         </tr>
         <tr>
             <td colspan="4">
                 <center>
-                    <button type="submit" class="btn btn-primary" >查询</button>
-                    <button type="submit" class="btn btn-primary" >清空</button>
+                    <button type="submit" class="btn btn-primary"  onclick="clearA()">查询</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearB();return false" >清空</button>
                 </center>
             </td>
         </tr>

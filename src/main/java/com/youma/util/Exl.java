@@ -171,6 +171,7 @@ public class Exl {
             }
         }
         int max = list.size();
+        System.out.println(fields.length);
         for (int i = 0; i < max; i++) {
             //遍历列表
             T t = list.get(i);

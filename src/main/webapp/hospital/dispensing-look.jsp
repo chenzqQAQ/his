@@ -104,7 +104,7 @@
             <td style="vertical-align:middle;">
                 <c:set value="${drug.undispensedQuantity}" var="a" scope="page"/>
                 <c:if test="${a>0}">
-                    <a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.drugId}&dispensedQuantity=${a}">发全</a>
+                    <a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=${a}">发全</a>
                     <c:if test="${a>0}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=1">发1</a></c:if>
                     <c:if test="${a>2}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=3">发3</a></c:if>
                     <c:if test="${a>4}"><a href="/his/disUpdateAction?medicalNum=${drug.medicalNum}&drugID=${drug.id}&dispensedQuantity=5">发5</a></c:if>
