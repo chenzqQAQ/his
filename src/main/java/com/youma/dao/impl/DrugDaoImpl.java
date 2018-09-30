@@ -211,9 +211,8 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
                 drug.setInventory(rs.getInt(i++));
                 drug.setFlag(rs.getInt(i++));
                 drug.setRemark(rs.getString(i++));
-            }
-            else {
-                drug=null;
+            } else {
+                drug = null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -259,6 +258,33 @@ public class DrugDaoImpl extends BaseDao implements DrugDao {
                 drug.setInventory(rs.getInt(i++));
                 drug.setFlag(rs.getInt(i++));
                 drug.setRemark(rs.getString(i++));
+                list.add(drug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Drug> findNameDrug(String name) {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT drug.drugID ,drugName\n" +
+                "FROM drug\n" +
+                "WHERE drugName like ? ";
+        List<Drug> list = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%"+name+"%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Drug drug = new Drug();
+                int i = 1;
+                drug.setDrugID(rs.getString(i++));
+                drug.setDrugName(rs.getString(i++));
                 list.add(drug);
             }
         } catch (SQLException e) {

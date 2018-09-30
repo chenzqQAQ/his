@@ -33,6 +33,26 @@
             }
         }
 
+        ul {
+            list-style: none;
+            margin: 0px;
+        }
+
+        li {
+            margin: 0px;
+            cursor: pointer;
+        }
+
+        .mydiv {
+            background-color: white;
+            border: 1px black solid;
+            width: 210px;
+        }
+
+        .red {
+            background-color: grey;
+        }
+
 
     </style>
     <script type="text/javascript">
@@ -77,6 +97,45 @@
                     }
                 })
             })
+            $('#drugName1').keyup(function () {
+                if (this.value != "") {
+                    $.ajax({
+                        url: "/his/drugAjaxAction",
+                        data: {"name": this.value},
+                        success: function (msg) {
+                            $('#drugName1').next("div").html("");
+                            $('#drugName1').next("div").show();
+                            var ul = $("<ul></ul>");
+                            var k = eval("(" + msg + ")");
+                            $.each(k, function (index, a) {
+                                var str = a["drugName"];
+                                var li = $("<li></li>");
+                                li.text(str).click(function () {
+                                    console.log(str);
+                                    $('#drugName1').val(str);
+                                    $('#drugName1').next("div").hide();
+                                }).mouseover(function () {
+                                    li.attr("class", "red");
+                                })
+                                    .mouseout(function () {
+                                        li.removeAttr("class");
+                                    })
+                                    .appendTo(ul);
+                            });
+                            ul.appendTo($('#drugName1').next("div"));
+                        }
+                    })
+                }
+                else {
+                    $('#drugName1').next("div").hide();
+                }
+            });
+            $('div.alldiv').blur(function () {
+                $('#drugName1').next("div").hide();
+            })
+            $('div.alldiv').mouseleave(function () {
+                $('div.alldiv').focus();
+            })
         });
     </script>
 </head>
@@ -96,6 +155,15 @@
             <td><select id="drugName" name="drugId">
 
             </select></td>
+        </tr>
+        <tr>
+            <td width="10%" class="tableleft">药品名称</td>
+            <td>
+                <div class="alldiv" tabindex="1" style="outline: none;">
+                    <input id="drugName1" name="drugId1"/>
+                    <div class="mydiv" hidden></div>
+                </div>
+            </td>
         </tr>
         <tr>
             <td width="10%" class="tableleft">发药数量</td>

@@ -49,7 +49,6 @@ public class DrugFindAllAction extends HttpServlet {
             Gson gson = new Gson();
             String drugs = gson.toJson(list);
             PrintWriter out = resp.getWriter();
-            System.out.println(out);
             out.write(drugs);
             out.flush();
             return;

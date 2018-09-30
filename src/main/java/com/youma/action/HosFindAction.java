@@ -98,6 +98,7 @@ public class HosFindAction extends HttpServlet {
             //遍历这些结算信息,更新结算(因为没有在收费项目添加和药品分发时,更新结算信息,也没有触发器)
             hosServer.updateCost(list.get(i).getMedicalNum());
         }
+        list = hosServer.findAll(hosSettle,page);
         req.setAttribute("hos", list);
         req.setAttribute("page", page);
         req.setAttribute("oo", hosSettle);

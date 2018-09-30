@@ -48,6 +48,7 @@ public interface DrugServer {
      * @return Drug 药品信息
      */
     public Drug findDrug(String id);
+
     /**
      * 查询所需要的药品信息操作(药品类型,药品名称)
      * @return List<Drug> 药品信息集合
@@ -69,4 +70,5 @@ public interface DrugServer {
      * @return
      */
     public List<Drug> allDrug(Drug drug, Page page);
+    public List<Drug> findNameDrug(String name);
 }

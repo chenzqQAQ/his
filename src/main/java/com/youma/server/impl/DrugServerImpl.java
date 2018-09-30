@@ -69,4 +69,9 @@ public class DrugServerImpl implements DrugServer {
         return drugDao.allDrug(drug, page);
     }
 
+    @Override
+    public List<Drug> findNameDrug(String name) {
+        return drugDao.findNameDrug(name);
+    }
+
 }
