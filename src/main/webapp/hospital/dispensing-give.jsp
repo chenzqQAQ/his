@@ -68,37 +68,52 @@
                     $.each(k, function (index, i) {
                         var pp = $('<option></option>');
                         pp.val(i['drugID']).text(i['drugName']).appendTo(g);
-                        $('#drugName1').val($('option:eq(0)').text());
                     })
+                    //将input文本值设置为下拉列表首个选项，初始化
+                    $('#drugName1').val($('option:eq(0)').text());
                 }
             });
+            //实现类似百度输入显示相似内容
             $('#drugName1').keyup(function () {
                 if (this.value != "") {
+                    //异步传输书写内容
                     $.ajax({
                         url: "/his/drugAjaxAction",
+                        //后台模糊查询,like %%
                         data: {"name": this.value},
                         success: function (msg) {
+                            //获取input文本框
                             var dn = $('#drugName1');
+                            //清空提示信息
                             dn.next("div").html("");
+                            //创建提示列表
                             var ul = $("<ul></ul>");
+                            //解析返回的json格式数组
                             var k = eval("(" + msg + ")");
-                            if(k.length!=0){
+                            if (k.length != 0) {
+                                //有提示信息时，显示提示框
                                 dn.next("div").show();
                             }
+                            //向提示块中添加信息
                             $.each(k, function (index, a) {
                                 var str = a["drugName"];
                                 var key = a["drugID"];
                                 var li = $("<li></li>");
                                 li.text(str).click(function () {
+                                    //选中提示信息时,对文本框和下拉框同时赋值
                                     dn.val(str);
                                     $("#drugName").val(key);
+                                    //选择完提示信息时,隐藏提示块
                                     dn.next("div").hide();
                                 }).mouseover(function () {
+                                    //鼠标移动到提示信息时,背景变为灰色
                                     li.attr("class", "red");
                                 })
                                     .mouseout(function () {
+                                        //鼠标移出时,去掉背景颜色
                                         li.removeAttr("class");
                                     })
+                                    //单个提示信息li添加到ul中
                                     .appendTo(ul);
                             });
                             ul.appendTo(dn.next("div"))
@@ -106,14 +121,22 @@
                     });
                 }
                 else {
+                    //当输入框清空时,隐藏提示信息
                     $('#drugName1').next("div").hide();
                 }
             })
             $('div.alldiv').blur(function () {
+                //整个文本框和下拉框的包含块失去焦点时，隐藏提示信息
                 $('#drugName1').next("div").hide();
+                //文本框强制恢复下拉列表选中值(避免没触发提示信息点击事件，导致文本框和下拉列表值不对应)
+                var value = $('#drugName').find('option:selected').text();
+                $('#drugName1').val(value);
+
             }).mouseleave(function () {
+                //鼠标移开，给药品名称块获取焦点,以便触发失去焦点事件(块需要配合tabindex才能有焦点事件)
                 $('div.alldiv').focus();
             })
+            //下拉列表值改变时,更新文本框值
             $('#drugName').change(function () {
                 var value = $('#drugName').find('option:selected').text();
                 $('#drugName1').val(value);
@@ -134,14 +157,18 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">药品名称</td>
-            <td><div class="alldiv" tabindex="1" style="outline: none;">
-                <select id="drugName" name="drugId" style="width:210px;height:30px;border-radius: 3px;margin-bottom: 0px">
+            <td>
+                <%-- 块增加tabindex 以便触发焦点的相关事件--%>
+                <div class="alldiv" tabindex="1" style="outline: none;">
+                    <select id="drugName" name="drugId"
+                            style="width:210px;height:30px;border-radius: 3px;margin-bottom: 0px">
 
-                </select>
-                <input id="drugName1" name="drugId1"
-                       style="width:150px;height: 26px;margin-left: -212px;border:none;outline: none;"/>
-                <div class="mydiv" hidden></div>
-            </div>
+                    </select>
+                    <%-- 禁止文本框自动完成(影响提示信息显示)--%>
+                    <input id="drugName1" name="drugId1" autocomplete="off"
+                           style="width:150px;height: 26px;margin-left: -212px;border:none;outline: none;"/>
+                    <div class="mydiv" hidden></div>
+                </div>
             </td>
         </tr>
         <tr>
