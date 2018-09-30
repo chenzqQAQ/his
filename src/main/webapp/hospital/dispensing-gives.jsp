@@ -70,6 +70,7 @@
                         var pp = $('<option></option>');
                         pp.val(i['drugID']).text(i['drugName']).appendTo(g);
                     })
+                    $('#drugName1').val($('option:eq(0)').text());
                 }
             });
             $('input[name="medicalNum"]').blur(function () {
@@ -96,24 +97,28 @@
 
                     }
                 })
-            })
+            });
             $('#drugName1').keyup(function () {
                 if (this.value != "") {
                     $.ajax({
                         url: "/his/drugAjaxAction",
                         data: {"name": this.value},
                         success: function (msg) {
-                            $('#drugName1').next("div").html("");
-                            $('#drugName1').next("div").show();
+                            var dn = $('#drugName1');
+                            dn.next("div").html("");
                             var ul = $("<ul></ul>");
                             var k = eval("(" + msg + ")");
+                            if(k.length!=0){
+                                dn.next("div").show();
+                            }
                             $.each(k, function (index, a) {
                                 var str = a["drugName"];
+                                var key = a["drugID"];
                                 var li = $("<li></li>");
                                 li.text(str).click(function () {
-                                    console.log(str);
-                                    $('#drugName1').val(str);
-                                    $('#drugName1').next("div").hide();
+                                    dn.val(str);
+                                    $("#drugName").val(key);
+                                    dn.next("div").hide();
                                 }).mouseover(function () {
                                     li.attr("class", "red");
                                 })
@@ -122,21 +127,25 @@
                                     })
                                     .appendTo(ul);
                             });
-                            ul.appendTo($('#drugName1').next("div"));
+                            ul.appendTo(dn.next("div"))
                         }
-                    })
+                    });
                 }
                 else {
                     $('#drugName1').next("div").hide();
                 }
-            });
+            })
             $('div.alldiv').blur(function () {
                 $('#drugName1').next("div").hide();
-            })
-            $('div.alldiv').mouseleave(function () {
+            }).mouseleave(function () {
                 $('div.alldiv').focus();
             })
-        });
+            $('#drugName').change(function () {
+                var value = $('#drugName').find('option:selected').text();
+                $('#drugName1').val(value);
+            })
+        })
+        ;
     </script>
 </head>
 <body>
@@ -152,15 +161,13 @@
         </tr>
         <tr>
             <td width="10%" class="tableleft">药品名称</td>
-            <td><select id="drugName" name="drugId">
-
-            </select></td>
-        </tr>
-        <tr>
-            <td width="10%" class="tableleft">药品名称</td>
             <td>
                 <div class="alldiv" tabindex="1" style="outline: none;">
-                    <input id="drugName1" name="drugId1"/>
+                    <select id="drugName" name="drugId" style="width:210px;height:30px;border-radius: 3px;margin-bottom: 0px">
+
+                    </select>
+                    <input id="drugName1" name="drugId1"
+                           style="width:150px;height: 26px;margin-left: -212px;border:none;outline: none;"/>
                     <div class="mydiv" hidden></div>
                 </div>
             </td>
