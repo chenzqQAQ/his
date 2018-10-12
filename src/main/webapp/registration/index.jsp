@@ -15,6 +15,8 @@
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
     <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/his/Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/his/Js/messages_zh.js"></script>
 
     <style type="text/css">
         body {
@@ -164,12 +166,55 @@
             isShowWeek: true
         };
     </script>
+    <script type="text/javascript">
+        /**
+         * 校验规则
+         */
+        var rules = {
+            medicalNum: {
+                number:true,
+                maxlength:15
+        }
+
+        };
+        /**
+         * 错误提示信息
+         */
+        var messages = {
+            medicalNum: {
+                number: "请输入数字",
+                maxlength:"请输入合理病历号"
+            }
+        };
+        $(function () {
+            $("#form1").validate(
+                {
+                    // "debug": true,
+                    //失去焦点验证
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    "rules": rules,
+                    "messages": messages,
+                    errorPlacement: function (error, element) {
+                            element.after(error);
+                        // error.appendTo(element);
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
+        })
+    </script>
 </head>
 <body>
 <form id="form2" action="/his/down" method="post" hidden>
     <input type="hidden" name="url" value="">
 </form>
-<form action="/his/registerFindAction" method="post" class="definewidth m20">
+<form action="/his/registerFindAction" method="post" class="definewidth m20" id="form1">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <td width="10%" class="tableleft">病历号：</td>

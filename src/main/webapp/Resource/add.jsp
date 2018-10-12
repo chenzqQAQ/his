@@ -64,7 +64,7 @@
     <script>
         $(function () {
             $('#backid').click(function () {
-                window.location.href = "<%=path%>/roleFindAction";
+                window.location.href = "/his/resourceAction?action=findAll";
             });
             $('#form1').validate({
                 // debug: true,

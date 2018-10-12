@@ -41,6 +41,8 @@ public class PayProjectDaoImpl extends BaseDao implements PayProjectDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -64,6 +66,8 @@ public class PayProjectDaoImpl extends BaseDao implements PayProjectDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -80,6 +84,8 @@ public class PayProjectDaoImpl extends BaseDao implements PayProjectDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -104,6 +110,8 @@ public class PayProjectDaoImpl extends BaseDao implements PayProjectDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return list;
     }
@@ -128,6 +136,8 @@ public class PayProjectDaoImpl extends BaseDao implements PayProjectDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return payProject;
     }

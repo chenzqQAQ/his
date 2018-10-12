@@ -427,6 +427,8 @@ public class HosSettleDaoImpl extends BaseDao implements HosSettleDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }

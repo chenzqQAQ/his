@@ -173,7 +173,9 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        finally {
+            closeAll();
+        }
         return col;
     }
 
@@ -237,6 +239,8 @@ public class PayManagerDaoImpl extends BaseDao implements PayManagerDao {
             col=ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }

@@ -70,7 +70,27 @@ public class Inpatient {
     /**
      * 入院时间
      */
+    @Czq(name = "住院时间")
     private String inpTime;
+    private String time1;
+
+    public String getTime1() {
+        return time1;
+    }
+
+    public void setTime1(String time1) {
+        this.time1 = time1;
+    }
+
+    public String getTime2() {
+        return time2;
+    }
+
+    public void setTime2(String time2) {
+        this.time2 = time2;
+    }
+
+    private String time2;
 
     public String getDepName() {
         return depName;

@@ -12,6 +12,8 @@
     <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
+    <script type="text/javascript" src="/his/Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/his/Js/messages_zh.js"></script>
     <style type="text/css">
         body {
             padding-top: 40px;
@@ -63,16 +65,76 @@
             return url;
         }
     </script>
+    <script type="text/javascript">
+        /**
+         * 校验规则
+         */
+        var rules = {
+            username: {
+                required: true
+            },
+            password: {
+                required: true
+            },
+            code: {
+                required: true
+            }
+
+        };
+        /**
+         * 错误提示信息
+         */
+        var messages = {
+            username: {
+                required: "请输入账号"
+            },
+            password: {
+                required: "请输入密码"
+            },
+            code: {
+                required: "请输入验证码"
+            }
+        };
+        $(function () {
+            $("#form1").validate(
+                {
+                    // "debug": true,
+                    //失去焦点验证
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    "rules": rules,
+                    "messages": messages,
+                    errorPlacement: function (error, element) {
+                        // console.log(element.attr("name"));
+                        if(element.attr("name")=="code"){
+                            element.next().after(error);
+                        }
+                        else{
+                            element.after(error);
+                        }
+                       // error.appendTo(element);
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
+        })
+    </script>
 </head>
 <body>
 <div class="container">
 
-    <form class="form-signin" method="post" action="/his/checkCode">
+    <form id ="form1" class="form-signin" method="post" action="/his/checkCode">
         <h2 class="form-signin-heading">&nbsp;&nbsp;&nbsp;登录系统</h2>
         <input type="text" name="username" class="input-block-level" placeholder="账号" value="${userName}">
         <input type="password" name="password" class="input-block-level" placeholder="密码" value="${passWord}">
         <input type="text" name="code" class="input-medium" placeholder="验证码" autocomplete="off">
-        <img id="img" alt="验证码" src="/his/getCode" onclick="changeImg();return false" title="点击切换" style="margin-top: -15px">
+        <img id="img" alt="验证码" src="/his/getCode" onclick="changeImg();return false" title="点击切换"
+             style="margin-top: -15px">
         <p style="color: red">${message}</p>
         <p id="k">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-large btn-primary" type="submit">登录
         </button>

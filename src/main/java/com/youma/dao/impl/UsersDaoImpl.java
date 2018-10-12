@@ -43,6 +43,9 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally {
+            closeAll();
+        }
         return col;
     }
 
@@ -67,6 +70,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -83,6 +88,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -107,6 +114,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return list;
     }
@@ -131,6 +140,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -166,6 +177,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return list;
     }
@@ -192,6 +205,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return user;
     }
@@ -210,6 +225,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             col = rs.getRow();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -232,6 +249,8 @@ public class UsersDaoImpl extends BaseDao implements UsersDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }

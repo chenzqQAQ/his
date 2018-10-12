@@ -15,6 +15,8 @@
     <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
+    <script type="text/javascript" src="/his/Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/his/Js/messages_zh.js"></script>
 
     <style type="text/css">
         body {
@@ -137,6 +139,49 @@
         function clearB() {
             $("#pageNo").val("");
         }
+    </script>
+    <script type="text/javascript">
+        /**
+         * 校验规则
+         */
+        var rules = {
+            docId: {
+                number:true,
+                maxlength:5
+            }
+
+        };
+        /**
+         * 错误提示信息
+         */
+        var messages = {
+            docid: {
+                number: "请输入数字",
+                maxlength:"请输入合理医生编号"
+            }
+        };
+        $(function () {
+            $("#form1").validate(
+                {
+                    // "debug": true,
+                    //失去焦点验证
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    "rules": rules,
+                    "messages": messages,
+                    errorPlacement: function (error, element) {
+                        element.after(error);
+                        // error.appendTo(element);
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
+        })
     </script>
 </head>
 <body>

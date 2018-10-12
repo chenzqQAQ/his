@@ -13,8 +13,11 @@ import com.youma.dao.InpatientDao;
 import com.youma.util.ConnectionDB;
 import com.youma.util.Page;
 import com.youma.vo.Inpatient;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,6 +186,9 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
         if (inpatient.getDepName() != null && !inpatient.getDepName().isEmpty()) {
             sql += " and department.depName like \"%\" ? \"%\" ";
         }
+        if (StringUtils.isNotBlank(inpatient.getTime1()) || StringUtils.isNotBlank(inpatient.getTime2())) {
+            sql += " and inpatient.inptime between ? and ?";
+        }
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -196,11 +202,27 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             if (inpatient.getDepName() != null && !inpatient.getDepName().isEmpty()) {
                 ps.setString(++index, inpatient.getDepName());
             }
+
+            if (StringUtils.isNotBlank(inpatient.getTime1()) || StringUtils.isNotBlank(inpatient.getTime2())) {
+                if (StringUtils.isNotBlank(inpatient.getTime1())) {
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse(inpatient.getTime1()).getTime()));
+                } else {
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse("1980-01-01").getTime()));
+                }
+                if (StringUtils.isNotBlank(inpatient.getTime2())) {
+                    long k = 24 * 60 * 60 * 1000 - 1;
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse(inpatient.getTime2()).getTime() + k));
+                } else {
+                    ps.setTimestamp(++index, new Timestamp(System.currentTimeMillis()));
+                }
+            }
             rs = ps.executeQuery();
             if (rs.next()) {
                 col = rs.getInt(1);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         } finally {
             closeAll();
@@ -227,6 +249,9 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
         if (inpatient1.getDepName() != null && !inpatient1.getDepName().isEmpty()) {
             sql += " and department.depName like \"%\" ? \"%\" ";
         }
+        if (StringUtils.isNotBlank(inpatient1.getTime1()) || StringUtils.isNotBlank(inpatient1.getTime2())) {
+            sql += " and inpatient.inptime between ? and ?";
+        }
         sql += " order by inpatient.medicalNum limit ?,?";
         List<Inpatient> list = new ArrayList<>();
         try {
@@ -241,6 +266,20 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
             if (inpatient1.getDepName() != null && !inpatient1.getDepName().isEmpty()) {
                 ps.setString(++index, inpatient1.getDepName());
             }
+            if (StringUtils.isNotBlank(inpatient1.getTime1()) || StringUtils.isNotBlank(inpatient1.getTime2())) {
+                if (StringUtils.isNotBlank(inpatient1.getTime1())) {
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse(inpatient1.getTime1()).getTime()));
+                } else {
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse("1980-01-01").getTime()));
+                }
+                if (StringUtils.isNotBlank(inpatient1.getTime2())) {
+                    long k = 24 * 60 * 60 * 1000 - 1;
+                    ps.setTimestamp(++index, new Timestamp(sdf1.parse(inpatient1.getTime2()).getTime() + k));
+                } else {
+                    ps.setTimestamp(++index, new Timestamp(System.currentTimeMillis()));
+                }
+            }
+
             ps.setInt(++index, page.getOffset());
             ps.setInt(++index, page.getPageSize());
             rs = ps.executeQuery();
@@ -260,6 +299,8 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
                 list.add(inpatient);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         } finally {
             closeAll();

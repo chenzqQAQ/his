@@ -288,6 +288,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -305,6 +307,8 @@ public class DispensedDrugDaoImpl extends BaseDao implements DispensedDrugDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }

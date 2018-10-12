@@ -41,6 +41,8 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -64,6 +66,8 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -80,6 +84,8 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }
@@ -131,6 +137,8 @@ public class DepartmentDaoImpl extends BaseDao implements DepartmentDao {
         } catch (
                 SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return department;
     }

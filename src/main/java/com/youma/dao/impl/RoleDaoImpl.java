@@ -302,6 +302,8 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
             rs = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return role;
     }

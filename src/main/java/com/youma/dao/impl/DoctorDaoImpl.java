@@ -295,7 +295,9 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        finally {
+            closeAll();
+        }
         return col;
     }
 
@@ -456,6 +458,8 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             col = rs.getRow();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            closeAll();
         }
         return col;
     }

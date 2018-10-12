@@ -67,7 +67,7 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            if (${newid}==${sessionScope.role}) {
+            if (${sessionScope.role==newid}) {
                 alert("当前用户角色权限修改,需要刷新页面");
                 <% session.removeAttribute("newid");
                 %>

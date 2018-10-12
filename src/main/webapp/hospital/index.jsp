@@ -17,7 +17,9 @@
     <script type="text/javascript" src="/his/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/his/Js/ckform.js"></script>
     <script type="text/javascript" src="/his/Js/common.js"></script>
-
+    <script type="text/javascript" src="/his/Js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/his/Js/messages_zh.js"></script>
+    <script type="text/javascript" src="/his/Js/My97DatePicker/WdatePicker.js"></script>
     <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -87,7 +89,7 @@
                 window.location.href = "/his/hospital/add.jsp";
             });
             $('#ExlOut').click(function () {
-                window.location.href="/his/inpExlOut"
+                window.location.href = "/his/inpExlOut"
                 return false;
             })
         });
@@ -131,6 +133,9 @@
             $('input[name="medicalNum"]').val("");
             $('input[name="docName"]').val("");
             $('input[name="depName"]').val("");
+            $('input[name="time1"]').val("");
+            $('input[name="time2"]').val("");
+
         }
 
         function out(a) {
@@ -151,6 +156,69 @@
             })
 
         }
+    </script>
+    <script type="text/javascript">
+        /**
+         * 校验规则
+         */
+        var rules = {
+            medicalNum: {
+                number: true,
+                maxlength: 15
+            }
+
+        };
+        /**
+         * 错误提示信息
+         */
+        var messages = {
+            medicalNum: {
+                number: "请输入数字",
+                maxlength: "请输入合理病历号"
+            }
+        };
+        $(function () {
+            $("#form1").validate(
+                {
+                    // "debug": true,
+                    //失去焦点验证
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    "rules": rules,
+                    "messages": messages,
+                    errorPlacement: function (error, element) {
+                        element.after(error);
+                        // error.appendTo(element);
+                    }
+                }
+            );
+            $.validator.setDefaults({
+                submitHandler: function () {
+                    alert("提交事件");
+                }
+            });
+        })
+        var datepicker1 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '1980-1-1',
+            maxDate: '#F{$dp.$D(\'time2\')||\'%y-%M-%d\'}',
+            startDate: '2018-9-20',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
+        var datepicker2 = {
+            lang: 'zh-cn',
+            dateFmt: 'yyyy-MM-dd',
+            minDate: '#F{$dp.$D(\'time1\')}',
+            maxDate: new Date(),
+            startDate: new Date() || '#F{$dp.$D(\'time1\')}',
+            readOnly: true,
+            highLineWeekDay: true,
+            isShowWeek: true
+        };
     </script>
 </head>
 <body>
@@ -173,7 +241,10 @@
             <td width="10%" class="tableleft">住院时间：</td>
 
             <td colspan="5">
-                <input type="text" name="pname" value=""/>&nbsp;至&nbsp;<input type="text" name="pname" value=""/>
+                <input type="text" id="time1" name="time1" class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker1)" value="${inp.time1}"/>&nbsp;至&nbsp;
+                <input type="text" id="time2" name="time2" class="Wdate" autocomplete="off"
+                       onfocus="WdatePicker(datepicker2)" value="${inp.time2}"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary" onclick="clearA()">查询</button>
                 <button type="submit" class="btn btn-primary" onclick="clearB();return false">清空</button>

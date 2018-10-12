@@ -48,8 +48,12 @@ public class InpFindAction extends HttpServlet {
             if (req.getParameter("medicalNum") != null && !req.getParameter("medicalNum").isEmpty()) {
                 inpatient.setMedicalNum(Integer.parseInt(req.getParameter("medicalNum")));
             }
-           inpatient.setDoctor(req.getParameter("docName"));
-           inpatient.setDepName(req.getParameter("depName"));
+            inpatient.setDoctor(req.getParameter("docName"));
+            inpatient.setDepName(req.getParameter("depName"));
+
+            inpatient.setTime1(req.getParameter("time1"));
+            inpatient.setTime2(req.getParameter("time2"));
+
             page.setTotalCount(inpServer.inpCount(inpatient));
             if (pageNo != null && !"".equals(pageNo)) {
                 page.setPageNo(Integer.parseInt(pageNo));
@@ -63,16 +67,14 @@ public class InpFindAction extends HttpServlet {
             req.setAttribute("page", page);
             req.setAttribute("inp", inpatient);
             req.getRequestDispatcher("/hospital/index.jsp").forward(req, resp);
-        }
-        else if("find".equals(action)){
-            int id= Integer.parseInt(req.getParameter("medicalNum"));
-            inpatient=inpServer.findInpatient(id);
+        } else if ("find".equals(action)) {
+            int id = Integer.parseInt(req.getParameter("medicalNum"));
+            inpatient = inpServer.findInpatient(id);
             req.setAttribute("inp", inpatient);
             req.getRequestDispatcher("/hospital/edit.jsp").forward(req, resp);
-        }
-        else if("look".equals(action)){
-            int id= Integer.parseInt(req.getParameter("medicalNum"));
-            inpatient=inpServer.findInpatient(id);
+        } else if ("look".equals(action)) {
+            int id = Integer.parseInt(req.getParameter("medicalNum"));
+            inpatient = inpServer.findInpatient(id);
             req.setAttribute("inp", inpatient);
             req.getRequestDispatcher("/hospital/look.jsp").forward(req, resp);
         }
