@@ -128,19 +128,43 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     @Override
     public int delDoctor(int id) {
         conn = ConnectionDB.getConnection();
-        String sql = "DELETE FROM doctor\n" +
-                "WHERE ID=?;";
         int col = 0;
+        String sql = "insert into doctorhis(`ID`,\n" +
+                "`doctorName`,\n" +
+                "`identifierType`,\n" +
+                "`identifierNum`,\n" +
+                "`phoneNum`,\n" +
+                "`seatPhoneNum`,\n" +
+                "`sex`,\n" +
+                "`age`,\n" +
+                "`birthday`,\n" +
+                "`email`,\n" +
+                "`depID`,\n" +
+                "`degree`,\n" +
+                "`remark`,\n" +
+                "`docDate`) select `ID`,\n" +
+                "`doctorName`,\n" +
+                "`identifierType`,\n" +
+                "`identifierNum`,\n" +
+                "`phoneNum`,\n" +
+                "`seatPhoneNum`,\n" +
+                "`sex`,\n" +
+                "`age`,\n" +
+                "`birthday`,\n" +
+                "`email`,\n" +
+                "`depID`,\n" +
+                "`degree`,\n" +
+                "`remark`,\n" +
+                "`docDate` from doctor where ID=?";
         try {
             ps = conn.prepareStatement(sql);
-            ps.setObject(1, id);
+            ps.setInt(1, id);
             col = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeAll();
         }
-
         return col;
     }
 
@@ -162,7 +186,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    degree,\n" +
                 "    remark,depName,docDate\n" +
                 "FROM\n" +
-                "    doctor join department on doctor.depID=department.ID;";
+                "    doctor join department on doctor.depID=department.ID where doctor.ID not in (select id from doctorhis)";
         List<Doctor> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);
@@ -319,7 +343,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    degree,\n" +
                 "    remark,docDate\n" +
                 "FROM\n" +
-                "    doctor\n" +
+                "    doctor where ID not in (select id from doctorhis)\n" +
                 "limit ?,?";
         List<Doctor> list = new ArrayList<>();
         try {
@@ -366,7 +390,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     public int allDoctorCount(String depName) {
         conn = ConnectionDB.getConnection();
         String sql = "select count(doctor.ID) from  doctor join department\n" +
-                "on doctor.depID=department.ID where department.depName=?";
+                "on doctor.depID=department.ID where department.depName=? and doctor.ID not in (select id from doctorhis)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -402,6 +426,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    remark,docDate\n" +
                 "FROM\n" +
                 "    doctor join department on doctor.depID=department.ID where department.depName=?\n" +
+                "and doctor.ID not in (select id from doctorhis)\n" +
                 "limit ?,?";
         List<Doctor> list = new ArrayList<>();
         try {
@@ -448,7 +473,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     @Override
     public int findDocName(String name) {
         conn = ConnectionDB.getConnection();
-        String sql = "select doctor.ID from doctor where doctorName=?";
+        String sql = "select doctor.ID from doctor where doctorName=? and doctor.ID not in (select id from doctorhis)";
         int col = 0;
         try {
             ps = conn.prepareStatement(sql);
@@ -468,7 +493,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
     public int allDoctorCount(String[] args) {
         conn = ConnectionDB.getConnection();
         String sql = "select count(doctor.ID) from  doctor join department\n" +
-                "on doctor.depID=department.ID where 1=1\n";
+                "on doctor.depID=department.ID where  doctor.ID not in (select id from doctorhis) \n";
         int col = 0;
         if (args[0] != null && !("").equals(args[0])) {
             sql += "and doctor.ID=?\n";
@@ -512,7 +537,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
                 "    depID,\n" +
                 "docDate\n" +
                 "FROM\n" +
-                "    doctor join department on doctor.depID=department.ID where 1=1 \n";
+                "    doctor join department on doctor.depID=department.ID where doctor.ID not in (select id from doctorhis) \n";
         if (args[0] != null && !("").equals(args[0])) {
             sql += " and doctor.ID=?\n";
         }

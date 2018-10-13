@@ -238,8 +238,9 @@
                 <c:set value="${doctor.depId+0}" var="bb"/>
                 <c:out value="${dep[bb]}"/>
             </td>
-            <td style="vertical-align:middle;"><a href="/his/doctorFindAction?id=${doctor.id}">详情>>></a>&nbsp;&nbsp;&nbsp;<a
-                    href="/his/doctorFindAction?id=${doctor.id}">更改</a>
+            <td style="vertical-align:middle;"><a href="/his/doctorFindAction?id=${doctor.id}">详情>>></a>&nbsp;&nbsp;&nbsp;
+                <a href="/his/doctorFindAction?id=${doctor.id}">更改</a>&nbsp;&nbsp;&nbsp;
+                <a href="/his/doctorDelAction?id=${doctor.id}">删除</a>
             </td>
         </tr>
     </c:forEach>
