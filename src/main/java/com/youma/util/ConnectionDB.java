@@ -28,7 +28,7 @@ public class ConnectionDB {
     /**
      * 数据库驱动
      */
-    public static String DIVER= "jdbc:mysql://192.168.1.136:3306/";
+    public static String DIVER= "jdbc:mysql://localhost:3306/";
     /**
      * 操作的数据库
      */

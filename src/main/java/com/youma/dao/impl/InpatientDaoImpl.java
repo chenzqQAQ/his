@@ -252,7 +252,7 @@ public class InpatientDaoImpl extends BaseDao implements InpatientDao {
         if (StringUtils.isNotBlank(inpatient1.getTime1()) || StringUtils.isNotBlank(inpatient1.getTime2())) {
             sql += " and inpatient.inptime between ? and ?";
         }
-        sql += " order by inpatient.medicalNum limit ?,?";
+        sql += " order by inpatient.medicalNum desc limit ?,?";
         List<Inpatient> list = new ArrayList<>();
         try {
             ps = conn.prepareStatement(sql);

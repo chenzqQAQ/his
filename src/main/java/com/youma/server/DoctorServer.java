@@ -11,6 +11,7 @@ package com.youma.server;
 
 import com.youma.util.Page;
 import com.youma.vo.Doctor;
+import com.youma.vo.Register;
 
 import java.util.List;
 
@@ -111,4 +112,11 @@ public interface DoctorServer {
      * @return
      */
     public List<Doctor> findAllDoctor(String[] args, Page page);
+    /**
+     * 根据医生编号查询病患(已挂号)
+     *
+     * @param id 医生编号
+     * @return
+     */
+    public List<Register> findAllReg(int id);
 }

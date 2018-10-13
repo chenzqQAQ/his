@@ -75,6 +75,11 @@ public class HosServerImpl implements HosServer {
     }
 
     @Override
+    public int pay(int id, Date date, double cash) {
+        return hosSettleDao.payCash(id, date, cash);
+    }
+
+    @Override
     public List<HosSettle> findAll(HosSettle hosSettle, Page page) {
         return hosSettleDao.findAll(hosSettle, page);
     }
@@ -82,5 +87,10 @@ public class HosServerImpl implements HosServer {
     @Override
     public int allCount(HosSettle hosSettle) {
         return hosSettleDao.allCount(hosSettle);
+    }
+
+    @Override
+    public List<HosSettle> findAllCash() {
+        return hosSettleDao.findAllCash();
     }
 }

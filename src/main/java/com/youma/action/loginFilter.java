@@ -12,7 +12,6 @@ package com.youma.action;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,7 +23,7 @@ import java.io.IOException;
  * @author 陈泽群
  * @date 2018/9/25 9:55
  */
-@WebFilter(filterName = "loginFilter", urlPatterns = "/*")
+//@WebFilter(filterName = "loginFilter", urlPatterns = "/*")
 public class loginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

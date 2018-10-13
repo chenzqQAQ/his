@@ -239,7 +239,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 "    rtime\n" +
                 "FROM\n" +
                 "    register\n" +
-                "LIMIT ?,?";
+                "order by medicalNum desc LIMIT ?,?";
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, page.getOffset());
@@ -291,7 +291,7 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
         if (null != args[1]) {
             sql += "and depName = ?";
         }
-        if (null != args[2]||null != args[3]) {
+        if (null != args[2] || null != args[3]) {
             sql += "and rtime between ? and ? ";
         }
         // System.out.println(sql);
@@ -305,19 +305,17 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             if (null != args[1]) {
                 ps.setString(index++, args[1]);
             }
-            if(null != args[2]||null != args[3])
-            {
+            if (null != args[2] || null != args[3]) {
                 if (null != args[2]) {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[2]).getTime()));
-                }else{
+                } else {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
                 }
                 if (null != args[3]) {
                     //获取当天24点毫秒值
-                    long k=24*60*60*1000-1;
-                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()+k));
-                }
-                else{
+                    long k = 24 * 60 * 60 * 1000 - 1;
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[3]).getTime() + k));
+                } else {
                     ps.setTimestamp(index++, new Timestamp(System.currentTimeMillis()));
                 }
             }
@@ -348,18 +346,18 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
                 "    doctor ON register.doctorID = doctor.ID\n" +
                 "        JOIN\n" +
                 "    department ON department.ID = doctor.depID\n" +
-                "where 1=1 ";
+                "where 1=1\n";
         if (null != args[0]) {
-            sql += "and doctorName = ? ";
+            sql += " and doctorName = ? ";
         }
         if (null != args[1]) {
-            sql += "and depName = ?";
+            sql += " and depName = ? ";
         }
-        if (null != args[2]||null != args[3]) {
-            sql += "and rtime between ? and ? ";
+        if (null != args[2] || null != args[3]) {
+            sql += " and rtime between ? and ? ";
         }
-        sql += " Limit ?,?";
-        // System.out.println(sql);
+        sql += " order by medicalNum desc Limit ?,?";
+        System.out.println(sql);
         try {
             int index = 1;
             ps = conn.prepareStatement(sql);
@@ -369,23 +367,22 @@ public class RegisterDaoImpl extends BaseDao implements RegisterDao {
             if (null != args[1]) {
                 ps.setString(index++, args[1]);
             }
-            if(null != args[2]||null != args[3])
-            {
+            if (null != args[2] || null != args[3]) {
                 if (null != args[2]) {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[2]).getTime()));
-                }else{
+                } else {
                     ps.setTimestamp(index++, new Timestamp(sdf1.parse("1980-01-01").getTime()));
                 }
                 if (null != args[3]) {
-                    long k=24*60*60*1000-1;
-                    ps.setTimestamp(index++,new Timestamp(sdf1.parse(args[3]).getTime()+k));
-                }
-                else{
+                    long k = 24 * 60 * 60 * 1000 - 1;
+                    ps.setTimestamp(index++, new Timestamp(sdf1.parse(args[3]).getTime() + k));
+                } else {
                     ps.setTimestamp(index++, new Timestamp(System.currentTimeMillis()));
                 }
             }
             ps.setInt(index++, page.getOffset());
             ps.setInt(index++, page.getPageSize());
+            System.out.println(index);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Register register = new Register();

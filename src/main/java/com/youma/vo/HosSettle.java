@@ -52,6 +52,10 @@ public class HosSettle {
      */
     private String payDate;
     /**
+     * 住院日期
+     */
+    private String inpDate;
+    /**
      * 医疗费用
      */
     private double medicalCost;
@@ -63,6 +67,26 @@ public class HosSettle {
      * 已缴金额
      */
     private double paidCost;
+    /**
+     * 住院天数
+     */
+    private int hosDay;
+
+    public int getHosDay() {
+        return hosDay;
+    }
+
+    public void setHosDay(int hosDay) {
+        this.hosDay = hosDay;
+    }
+
+    public String getInpDate() {
+        return inpDate;
+    }
+
+    public void setInpDate(String inpDate) {
+        this.inpDate = inpDate;
+    }
 
     public String getPayDate() {
         return payDate;

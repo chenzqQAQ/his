@@ -124,10 +124,15 @@ public class RegisterFindAction extends HttpServlet {
                 page.setTotalCount(0);
                 page.setPageNo(1);
             }
+            httpSession.removeAttribute("depName");
+            httpSession.removeAttribute("docName");
+            httpSession.removeAttribute("time1");
+            httpSession.removeAttribute("time2");
         } else if (b) {
             /**
              * 当医生名字or科室名字有(包括在会话session中时),进行模糊查询
              */
+            httpSession.removeAttribute("medicalNum");
             String[] args = new String[4];
             if (null != docName && !("").equals(docName)) {
                 args[0] = docName;

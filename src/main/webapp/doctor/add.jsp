@@ -93,7 +93,7 @@
                 required: "请选择证件类型"
             }, identifierNum: {
                 required: "请输入证件号",
-                minlength: "证件号必须8位及以上",
+                minlength: "证件号必须10位及以上",
                 digits: "证件号必须是整数"
 
             }, phoneNum: {

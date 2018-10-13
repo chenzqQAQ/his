@@ -110,14 +110,24 @@
                 alert("请选中要删除的项");
             }
         }
+
         //清空输入框
         function clearA() {
-            $('input[name="resName"]') .val("");
+            $('input[name="resName"]').val("");
         }
+
         //清空页面信息
         function clearB() {
             $("#pageNo").val("");
         }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            if (${sessionScope.RoleMessage!=null}) {
+                alert(${sessionScope.RoleMessage});
+                <%session.removeAttribute("RoleMessage");%>
+            }
+        })
     </script>
 </head>
 <body>

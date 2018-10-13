@@ -34,6 +34,10 @@
             }
         }
 
+        .jiaofei {
+            color: red;
+        }
+
 
     </style>
     <script type="text/javascript">
@@ -73,6 +77,7 @@
                 alert("请选中要操作的项");
             }
         }
+
         function totalPage() {
             $("#pageNo").val(1);
             $("#form1").attr("action", "/his/hosFindAction").submit();
@@ -101,6 +106,7 @@
             $("#form1").attr("action", "/his/hosFindAction").submit();
             return false;
         }
+
         function clearA() {
             $('#pageNo').val("");
         }
@@ -116,8 +122,8 @@
          */
         var rules = {
             medicalNum: {
-                number:true,
-                maxlength:15
+                number: true,
+                maxlength: 15
             }
 
         };
@@ -127,7 +133,7 @@
         var messages = {
             medicalNum: {
                 number: "请输入数字",
-                maxlength:"请输入合理病历号"
+                maxlength: "请输入合理病历号"
             }
         };
         $(function () {
@@ -152,6 +158,10 @@
                 }
             });
         })
+
+        function qf() {
+            window.location.href = "/his/qfAction"
+        }
     </script>
 </head>
 <body>
@@ -167,8 +177,9 @@
         <tr>
             <td colspan="4">
                 <center>
-                    <button type="submit" class="btn btn-primary"  onclick="clearA()">查询</button>
-                    <button type="submit" class="btn btn-primary" onclick="clearB();return false" >清空</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearA()">查询</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearB();return false">清空</button>
+                    <button type="submit" class="btn btn-primary" onclick="qf();return false">查询欠费用户</button>
                 </center>
             </td>
         </tr>
@@ -192,17 +203,24 @@
     </thead>
 
     <c:forEach items="${hos}" var="ho">
-        <tr>
-            <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${ho.id}"></td>
-            <td style="vertical-align:middle;">${ho.medicalNum}</td>
-            <td style="vertical-align:middle;">${ho.rName}</td>
-            <td style="vertical-align:middle;">${ho.deposit}元</td>
-            <td style="vertical-align:middle;">${ho.balance}元</td>
-            <td style="vertical-align:middle;">${type[ho.flag]}</td>
-            <td style="vertical-align:middle;">
-                <a href="/his/hosFindAction?action=find&medicalNum=${ho.medicalNum}">详细信息</a>&nbsp;&nbsp;&nbsp;
-                <a href="">结算</a>
-            </td>
+        <c:choose>
+            <c:when test="${ho.deposit+ho.balance<0}">
+                <tr class="jiaofei">
+            </c:when>
+            <c:otherwise>
+                <tr>
+            </c:otherwise>
+        </c:choose>
+        <td style="vertical-align:middle;"><input type="checkbox" name="check" value="${ho.id}"></td>
+        <td style="vertical-align:middle;">${ho.medicalNum}</td>
+        <td style="vertical-align:middle;">${ho.rName}</td>
+        <td style="vertical-align:middle;">${ho.deposit}元</td>
+        <td style="vertical-align:middle;">${ho.balance}元</td>
+        <td style="vertical-align:middle;">${type[ho.flag]}</td>
+        <td style="vertical-align:middle;">
+            <a href="/his/hosFindAction?action=find&medicalNum=${ho.medicalNum}">详细信息</a>&nbsp;&nbsp;&nbsp;
+            <a href="">结算</a>
+        </td>
         </tr>
     </c:forEach>
 </table>

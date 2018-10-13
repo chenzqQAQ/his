@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.youma.util.Czq" %>
 <%@ page import="com.youma.vo.Inpatient" %>
 <%@ page import="java.lang.reflect.Field" %>
-<%@ page import="com.youma.util.Czq" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@page isELIgnored="false" %>
 <!DOCTYPE html>

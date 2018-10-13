@@ -13,6 +13,7 @@ import com.youma.dao.DoctorDao;
 import com.youma.util.ConnectionDB;
 import com.youma.util.Page;
 import com.youma.vo.Doctor;
+import com.youma.vo.Register;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -294,8 +295,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             closeAll();
         }
         return col;
@@ -458,7 +458,7 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             col = rs.getRow();
         } catch (SQLException e) {
             e.printStackTrace();
-        }  finally {
+        } finally {
             closeAll();
         }
         return col;
@@ -556,6 +556,28 @@ public class DoctorDaoImpl extends BaseDao implements DoctorDao {
             e.printStackTrace();
         } finally {
             closeAll();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Register> findAllReg(int id) {
+        conn = ConnectionDB.getConnection();
+        String sql = "select register.medicalNum,registerName from register left join inpatient on register.medicalNum=inpatient.medicalNum\n" +
+                "where doctorID=? and register.flag=0 and isnull(inptime)";
+        List<Register> list = new ArrayList<Register>();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Register register = new Register();
+                register.setMedicalNum(rs.getInt("medicalNum"));
+                register.setRegisterName(rs.getString("registerName"));
+                list.add(register);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }

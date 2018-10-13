@@ -131,16 +131,17 @@
 <table class="table table-bordered table-hover definewidth m10">
     <tr>
         <th colspan="5">
-            <div class="inline pull-right page">
+            <%--<div class="inline pull-right page">
                 <a href='#'>第一页</a> <a href='#'>上一页</a> <span class='current'>1</span><a href='#'>2</a><a
                     href='/chinapost/index.php?m=Label&a=index&p=3'>3</a><a href='#'>4</a><a href='#'>5</a> <a href='#'>下一页</a>
                 <a href='#'>最后一页</a>
                 &nbsp;&nbsp;&nbsp;共<span class='current'>32</span>条记录<span class='current'> 1/33 </span>页
-            </div>
+            </div>--%>
             <div>
                 <button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
                 <button type="button" class="btn btn-success">打印</button>
                 <a href="/his/payAction?medicalNum=${medicalNum}">结算</a>
+                <a href="/his/payAction?action=payCash&medicalNum=${medicalNum}&cash=${hosSettle.deposit}">重缴押金</a>
             </div>
 
         </th>
@@ -149,6 +150,21 @@
 
 
 <table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td width="10%" class="tableleft">住院时间</td>
+        <td>${hosSettle.inpDate}</td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">上次付款时间</td>
+        <td>${hosSettle.payDate}</td>
+    </tr>
+    <c:if test="${hosSettle.flag==0}">
+        <tr>
+            <td width="10%" class="tableleft">未付款住院天数</td>
+            <td>${hosSettle.hosDay}天</td>
+        </tr>
+
+    </c:if>
     <tr>
         <td width="10%" class="tableleft">总花费：</td>
         <td>${hosSettle.cost}元</td>
@@ -181,7 +197,7 @@
             <td>${hosSettle.overplusCost}元</td>
         </tr>
     </c:if>
-    <c:if test="${hosSettle.balance==0}">
+    <c:if test="${hosSettle.flag==1}">
         <tr>
             <td width="10%" class="tableleft" colspan="2">已结算</td>
         </tr>

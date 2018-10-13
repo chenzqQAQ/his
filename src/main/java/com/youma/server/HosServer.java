@@ -17,12 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *HosServer
- *住院结算
- *@author 陈泽群
- *@date 2018/9/19 9:37
+ * HosServer
+ * 住院结算
+ *
+ * @author 陈泽群
+ * @date 2018/9/19 9:37
  */
-public interface HosServer{
+public interface HosServer {
     /**
      * 住院结算信息添加操作
      *
@@ -30,6 +31,7 @@ public interface HosServer{
      * @return 影响行数
      */
     public int hosSettleAdd(HosSettle hosSettle);
+
     /**
      * 根据住院信息自动添加结算表
      *
@@ -68,12 +70,14 @@ public interface HosServer{
      * @return HosSettle 住院结算信息
      */
     public HosSettle findHosSettle(int id);
+
     /**
      * 查询所有住院结算信息操作
      *
      * @return List<HosSettle> 住院结算信息集合
      */
     public List<HosSettle> findAll();
+
     /**
      * 计算指定病历号的全部花费
      *
@@ -81,22 +85,39 @@ public interface HosServer{
      * @return 修改行数
      */
     public int updateCost(int id);
+
     /**
      * 付款
+     *
      * @param id
      * @return
      */
     public int pay(int id, Date date);
+
+    /**
+     * 重新支付押金
+     *
+     * @param id
+     * @return
+     */
+    public int pay(int id, Date date, double cash);
+
     /**
      * 分页查询所有住院结算信息操作
      *
      * @return List<HosSettle> 住院结算信息集合
      */
-    public List<HosSettle> findAll(HosSettle hosSettle,Page page);
+    public List<HosSettle> findAll(HosSettle hosSettle, Page page);
+
     /**
      * 分页查询所有住院结算信息操作
      *
      * @return int 住院结算信息总条数
      */
     public int allCount(HosSettle hosSettle);
+    /**
+     * 查询全部欠费用户
+     * @return List<HosSettle> 住院结算信息集合
+     */
+    public List<HosSettle> findAllCash();
 }

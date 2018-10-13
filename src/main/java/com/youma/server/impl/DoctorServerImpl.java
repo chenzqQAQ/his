@@ -14,6 +14,7 @@ import com.youma.dao.impl.DoctorDaoImpl;
 import com.youma.server.DoctorServer;
 import com.youma.util.Page;
 import com.youma.vo.Doctor;
+import com.youma.vo.Register;
 
 import java.util.List;
 
@@ -86,5 +87,10 @@ public class DoctorServerImpl implements DoctorServer {
     @Override
     public List<Doctor> findAllDoctor(String[] args, Page page) {
         return doctorDao.findAllDoctor(args, page);
+    }
+
+    @Override
+    public List<Register> findAllReg(int id) {
+        return doctorDao.findAllReg(id);
     }
 }

@@ -2,6 +2,7 @@ package com.youma.dao;
 
 import com.youma.util.Page;
 import com.youma.vo.Doctor;
+import com.youma.vo.Register;
 
 import java.util.List;
 
@@ -105,10 +106,19 @@ public interface DoctorDao {
 
     /**
      * 根据医生编号,医生姓名,科室名分页查询医生信息
+     *
      * @param args
      * @param page
      * @return
      */
     public List<Doctor> findAllDoctor(String[] args, Page page);
+
+    /**
+     * 根据医生编号查询病患(已挂号)
+     *
+     * @param id 医生编号
+     * @return
+     */
+    public List<Register> findAllReg(int id);
 
 }

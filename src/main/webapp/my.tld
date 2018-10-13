@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>myshortname</short-name>
+    <uri>http://mycompany.com</uri>
+
+    <!-- Invoke 'Generate' action to add tags or functions -->
+    <!-- 学到的知识
+Ajax请求用户是否存在（消息有效性等）
+资源可配置，根据用户权限显示可见页面（主页面index.jsp）
+内联框架刷新父页面(管理员权限修改时)
+验证码生成及校验CodeUtil（登录页面）
+Ajax实现2级联动(挂号信息增加页面)
+文本框和下拉框结合使用（css样式+js代码）（非datalist）（药品分发添加页面）
+分页显示查询信息
+自己编写了Excel文件导出工具类Exl（配合自己编写Czq注解使用）（挂号信息等导出Excel）
+自己编写文件上传下载类Upload
+多选框异步传值（直接url后拼接参数）
+Sql根据查询信息统计计算并修改某张表。（住院结算）
+StringUitls的部分方法（isnotBlank等（commons-lang3下的字符串工具类））
+Mysql 日期类型or时间戳类型 的default设置
+Json格式拼写（Gson类使用（配合注解可以将带注解的属性不写入json字符串，也可跳过特定类的属性））
+图片上传的预览，（及input file类型的value只读，不可写）
+Idea设置虚拟目录
+Maven导入jar包及本地仓库配置等
+Github实现项目版本控制等
+注意事项：
+Ajax中get传参时，url后跟的参数会被data覆盖
+Js 里只有var,只能处理json格式对象（数组），当后台传array or （list等集合）时，
+Js只能看到地址，处理不了（可以后台用gson转为json格式or前台用<%%>处理（c:foreach可行，因为java代码处理））
+El表达式里写三目关系式（如${a==0?””:a}）用空字符串代替0（文本框中好用）
+当后台传来map类型集合时，key如果为数值型（如integer）最好改为Long，
+EL表达式在解析Integer类型数字的时候，会自动把数字转换成Long类型
+多选框的根据后台传来id选中时最好用prop
+对于HTML元素本身就带有的固有属性，在处理时，使用prop方法。
+对于HTML元素我们自己自定义的DOM属性，在处理时，使用attr方法。
+Response的getwriter和getoutstream冲突，只能选一个。
+Ajax的返回对象如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，比如 XML MIME 类型就被识别为 XML。在 1.4 中，JSON 就会生成一个 JavaScript 对象，而 script 则会执行这个脚本。随后服务器端返回的数据会根据这个值解析后，传递给回调函数。可用值:
+"xml": 返回 XML 文档，可用 jQuery 处理。
+"html": 返回纯文本 HTML 信息；包含的 script 标签会在插入 dom 时执行。
+"script": 返回纯文本 JavaScript 代码。不会自动缓存结果。除非设置了 "cache" 参数。注意：在远程请求时(不在同一个域下)，所有 POST 请求都将转为 GET 请求。（因为将使用 DOM 的 script标签来加载）
+"json": 返回 JSON 数据 。
+"jsonp": JSONP 格式。使用 JSONP 形式调用函数时，如 "myurl?callback=?" jQuery 将自动替换 ? 为正确的函数名，以执行回调函数。
+"text": 返回纯文本字符串
+（ajxa不能传递文件）
+-->
+
+</taglib>

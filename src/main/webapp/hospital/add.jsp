@@ -53,6 +53,7 @@
             '0': "初诊",
             '1': "复诊"
         };
+
         //清空挂号信息
         function pp() {
             $("#registerName").next().empty();
@@ -109,7 +110,13 @@
                                     $('input[name="medicalNum"]').next("span").text("病历号已住院");
                                     //清空挂号信息,上次信息可能存在
                                     pp();
-                                } else {
+                                }
+                                if (parseInt(k['noFind']) === 1) {
+                                    $('input[name="medicalNum"]').next("span").text("病历号已住院");
+                                    //清空挂号信息,上次信息可能存在
+                                    pp();
+                                }
+                                else {
                                     //找到了病历号对应的挂号信息
                                     $('input[name="medicalNum"]').next("span").text("病历号存在,自动录入相关信息");
                                     //将挂号信息显示到页面上
@@ -134,13 +141,82 @@
             });
 
         });
+        $(function () {
+            $.ajax({
+                url: "/his/doctorFindAllAction",
+                type: "POST",
+                data: {
+                    "action": "findAll"
+                },
+                success: function (msg) {
+                    var docs = $('select[name="ssss"]');
+                    var doc = eval("(" + msg + ")");
+                    $.each(doc, function (index, a) {
+                        var option = $("<option></option>");
+                        option.val(a['id']).text(a['doctorName']).appendTo(docs);
+                    });
+                    findReg();
+                }
+            });
+            $('select[name="ssss"]').change(function () {
+                findReg();
+            });
+            $('select[name="ssss1"]').change(function () {
+                $('#kkkk').text(this.value);
+            });
+        })
+
+        //异步查询医生对应的已挂号病患
+        function findReg() {
+            var k = $('select[name="ssss"]').val();
+            $.ajax({
+                url: "/his/doctorFindAllAction",
+                type: "POST",
+                data: {
+                    "action": "docReg",
+                    "docId": k
+                },
+                success: function (msg) {
+                    var docs = $('select[name="ssss1"]');
+                    docs.html("");
+                    var reg = eval("(" + msg + ")");
+                    if (reg.length != 0) {
+                        $.each(reg, function (index, a) {
+                            var option = $("<option></option>");
+                            option.val(a['medicalNum']).text(a['registerName']).appendTo(docs);
+                        })
+                        $('#kkkk').text($('select[name="ssss1"]').val());
+                    }
+                    else {
+                        alert("无可住院用户");
+                    }
+                }
+            })
+
+        }
     </script>
 </head>
 <body>
-<form action="/his/inpatientAction" method="post" class="definewidth m20">
+<form id="form2">
+
+</form>
+<form action="/his/inpatientAction" method="post" class="definewidth m20" id="form1">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
             <input type="hidden" name="action" value="add">
+            <td width="10%" class="tableleft">医生</td>
+            <td><select name="ssss" form="form2">
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="10%" class="tableleft">病患</td>
+            <td><select name="ssss1" form="form2">
+            </select><span id="kkkk">
+            </span>
+            </td>
+        </tr>
+        <tr>
             <td width="10%" class="tableleft">病历号</td>
             <td><input type="text" name="medicalNum" value="" placeholder="输入病历号回车自动带出挂号人信息"/>
                 <span>输入病历号回车自动带出挂号人信息</span>

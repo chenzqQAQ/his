@@ -20,6 +20,7 @@ import com.youma.util.Exclude;
 import com.youma.util.Page;
 import com.youma.vo.Department;
 import com.youma.vo.Doctor;
+import com.youma.vo.Register;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,12 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 医生全查信息
+ *
  * @author 陈泽群
  */
 @WebServlet("/doctorFindAllAction")
@@ -93,6 +96,25 @@ public class DoctorFindAllAction extends HttpServlet {
             //将信息转为json格式
             String json = gson.toJson(list);
             PrintWriter out = resp.getWriter();
+            System.out.println(json);
+            out.write(json);
+            out.flush();
+            return;
+        } else if ("docReg".equals(action)) {
+            //查询医生对应的已挂号病人
+            System.out.println("查询医生病患");
+            List<Register> list = new ArrayList<>();
+            //获取医生信息
+            if (req.getParameter("docId") != null) {
+                //有科室,查询该科室的全部医生
+                int id = Integer.parseInt(req.getParameter("docId"));
+                System.out.println(id);
+                list = doctorServer.findAllReg(id);
+            }
+            String json = gson.toJson(list);
+            //将信息转为json格式
+            PrintWriter out = resp.getWriter();
+            System.out.println(json);
             out.write(json);
             out.flush();
             return;
